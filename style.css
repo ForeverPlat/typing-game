@@ -1,0 +1,86 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+body {
+    display: grid;
+    grid-template-rows: 20% 2rem 70%;
+    background-color: #1e1f22;
+
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
+    height: 90vh;
+}
+
+.header {
+    
+}
+
+.logo-container {
+    align-content: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    gap: 1%;
+}
+
+.logo-image {
+    height: 4rem;
+}
+
+.logo-text {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.interface {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.reload-button {
+    background-color: transparent;
+    border: none;
+
+    transition: transform 0.25s;
+}
+
+.reload-button:hover{
+    cursor: pointer;
+}
+
+.reload-button:active {
+    transform: rotate(90deg);
+}
+
+.reload-button-image {
+    height: 1.5rem;
+}
+
+.wpm-count {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: yellow;
+}
+
+.typing-test-container {
+    margin-top: 2%;
+    font-size: 2em;
+
+    color: #363a43;
+
+    word-spacing: 0.045 rem;
+    text-align: justify;
+    letter-spacing: 0.05rem;
+    line-height: 185%;
+}
