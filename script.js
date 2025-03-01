@@ -58,6 +58,18 @@ function resetTypeTest() {
 
 //might need a wrong counter
 
+//might want this to be called every certain number of seconds
+function calcWPM(totalCharactersTyped, timeMinutes) {
+
+    var wpm = (totalCharactersTyped/5)/timeMinutes;
+    wpm = Math.round(wpm);
+    return wpm;
+}
+
+// this should start after the first key press happens
+var start = Date.now();
+
+console.log("start timer")
 
 document.addEventListener("keydown", event => {
 
@@ -89,12 +101,20 @@ document.addEventListener("keydown", event => {
 
         }
 
-
         count++;
         
+        
     }
-    
 
+    console.log("timer for each keypress")
+    var end = Date.now();
+
+    var elapsed = (end - start)/60000;
+
+    var wpm = calcWPM(count, elapsed);
+    console.log(wpm)
+
+    document.getElementById("wpm-count").innerHTML = wpm;
 
 });
 
