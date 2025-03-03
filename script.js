@@ -39,16 +39,16 @@ function getLetters() {
 
 // get letter
 function getCurrLetter(userLetterIndex) {
-    return getLetters()[userLetterIndex];
+    return getLetters()[userLetterIndex].textContent;
 }
 
 // create a function that tracks the users typing
-function updateTypingText(userLetterIndex, typedLetter) {
-    if (typedLetter == "Backspace" && userLetterIndex != 0) {
+function updateTypingText(typedLetter, letterIndex) {
+    if (typedLetter == "Backspace" && letterIndex != 0) {
         userLetterIndex--;
         getLetters()[userLetterIndex].style="color: #363a43;"
 
-    } else if (typedLetter == getCurrLetter(userLetterIndex)) {
+    } else if (typedLetter == getCurrLetter(letterIndex)) {
         getLetters()[userLetterIndex].style="color: rgb(209, 209, 202);"
         userLetterIndex++;
 
@@ -59,31 +59,46 @@ function updateTypingText(userLetterIndex, typedLetter) {
     }
 }
 
-document.addEventListener("keydown", event => {
-    var typedLetter = event.key;
-    updateTypingText(userLetterIndex, typedLetter)
-    console.log(userLetterIndex);
-})
 
 
-
-var typingText = generateText();
-addTextToPage(typingText);
 
 // create a function to pause the test if user does not type for a set amount of time
 
 // create a function for reseting
 // should also generate new text
 function resetTypeTest() {
+    document.getElementById("typing-test-text").innerHTML = "";
+
     userLetterIndex = 0;
     totalErrors = 0;
-    generateText();
-    addTextToPage();
+    addTextToPage(generateText());
 
     getLetters().style="color: #363a43;"
 }
 
 // create a function for the wpm
+// https://stackoverflow.com/questions/52819891/how-do-i-make-a-keydown-event-that-only-works-the-first-time-it-is-pressed
+
+
+var startTime;
+const eventHandler = function(event){
+    startTime = Date.now();
+    document.removeEventListener('keydown', eventHandler);
+}
+document.addEventListener('keydown', eventHandler);
+
+function calculateWPM(totalCharactersTyped, startTime) {
+    var endTime = Date.now();
+    var elapsedTime = (endTime-startTime)/60000;
+
+    //> need to take errors into account later
+    var wpm = Math.round((totalCharactersTyped/5)/ elapsedTime);
+    return wpm;
+}
+
+function displayWPM(wpm) {
+    document.getElementById("wpm-count").innerHTML = wpm;
+}
 
 // create a function for the word count
 
@@ -92,8 +107,39 @@ function resetTypeTest() {
 // create  a function for user accuracy
 
 
+// may be create a start game function
+var typingText = generateText();
+addTextToPage(typingText);
 
 
+document.addEventListener("keydown", event => {
+    var typedLetter = event.key;
+    updateTypingText(typedLetter, userLetterIndex)
+
+    if (userLetterIndex >= 10 || Date.now() > startTime + 3000) {
+        displayWPM(calculateWPM(userLetterIndex, startTime));
+    }
+});
+
+// using recursion to check if user typed then updating wpm display by set value
+function checkIfTyped() {
+    // add a condition for and key is not pressed
+    if(userLetterIndex != 0) {
+        console.log(userLetterIndex)
+        setInterval(() => {
+            displayWPM(calculateWPM(userLetterIndex, startTime));
+        }, 1000);
+    } else {
+        console.log("checking");
+        setTimeout(checkIfTyped, 3000);
+    }
+}
+
+checkIfTyped();
+
+
+
+// make it so that wpm will decrease if you don't type
 
 
 // var letters = document.querySelectorAll(".letter");
