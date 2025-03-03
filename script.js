@@ -1,5 +1,7 @@
 var userLetterIndex = 0;
 var totalErrors = 0;
+var startTime;
+
 
 // create a function to generate the text
 //later us an api to generate random strings
@@ -22,7 +24,7 @@ function addTextToPage(generatedText) {
 
         for (var j = 0; j < letterList.length; j++) {
             // creating the letter span
-            currWord.innerHTML += "<span class='letter'>" + letterList[j] + "</span>";
+            currWord.innerHTML += "<span class='letter' data-status='pendingText'>" + letterList[j] + "</span>";
         }
         // adding spaces
         if (i < wordList.length - 1) {
@@ -36,56 +38,68 @@ function getLetters() {
     return document.querySelectorAll(".letter");
 }
 
-
 // get letter
 function getCurrLetter(userLetterIndex) {
     return getLetters()[userLetterIndex].textContent;
 }
 
+// get letter span tag
+function getCurrLetterTag(userLetterIndex) {
+    return getLetters()[userLetterIndex];
+}
+
+// set letters status
+function setLetterStatus(userLetterIndex, letterStatus){
+    getCurrLetterTag(userLetterIndex).dataset.status = letterStatus;
+}
+
+// get letter status
+function getLetterStatus(userLetterIndex) {
+    return getCurrLetterTag(userLetterIndex).dataset.status;
+}
+
 // create a function that tracks the users typing
 function updateTypingText(typedLetter, letterIndex) {
     if (typedLetter == "Backspace" && letterIndex != 0) {
+
         userLetterIndex--;
-        getLetters()[userLetterIndex].style="color: #363a43;"
+
+        if (getLetterStatus(userLetterIndex) == "correctLetter") {
+            
+            setLetterStatus(userLetterIndex, "pendingText");
+
+        } else if (getLetterStatus(userLetterIndex) == "incorrectLetter") {
+
+            setLetterStatus(userLetterIndex, "pendingIncorrectLetter");
+
+        }  
+
+    } else if (typedLetter == getCurrLetter(userLetterIndex) && getLetterStatus(userLetterIndex) == "pendingIncorrectLetter") {
+
+        setLetterStatus(userLetterIndex, "correctedLetter");
+        userLetterIndex++;
 
     } else if (typedLetter == getCurrLetter(letterIndex)) {
-        getLetters()[userLetterIndex].style="color: rgb(209, 209, 202);"
+        setLetterStatus(userLetterIndex, "correctLetter")
         userLetterIndex++;
 
     } else {
-        getLetters()[userLetterIndex].style="color: rgb(219, 108, 108);"
+        setLetterStatus(userLetterIndex, "incorrectLetter")
         totalErrors++;
         userLetterIndex++;
     }
 }
 
-
-
-
-// create a function to pause the test if user does not type for a set amount of time
-
-// create a function for reseting
-// should also generate new text
-function resetTypeTest() {
-    document.getElementById("typing-test-text").innerHTML = "";
-
-    userLetterIndex = 0;
-    totalErrors = 0;
-    addTextToPage(generateText());
-
-    getLetters().style="color: #363a43;"
-}
-
 // create a function for the wpm
 // https://stackoverflow.com/questions/52819891/how-do-i-make-a-keydown-event-that-only-works-the-first-time-it-is-pressed
 
-
-var startTime;
-const eventHandler = function(event){
+// need to turn this into a function
+var eventHandler = function(event){
     startTime = Date.now();
     document.removeEventListener('keydown', eventHandler);
 }
 document.addEventListener('keydown', eventHandler);
+
 
 function calculateWPM(totalCharactersTyped, startTime) {
     var endTime = Date.now();
@@ -100,11 +114,72 @@ function displayWPM(wpm) {
     document.getElementById("wpm-count").innerHTML = wpm;
 }
 
+
+// create a function to pause the test if user does not type for a set amount of time
+
+// create a function for reseting
+// should also generate new text
+function resetTypeTest() {
+    document.getElementById("typing-test-text").innerHTML = "";
+
+    var eventHandler = function(event){
+        startTime = Date.now();
+        document.removeEventListener('keydown', eventHandler);
+    }
+    document.addEventListener('keydown', eventHandler);
+
+    userLetterIndex = 0;
+    totalErrors = 0;
+    addTextToPage(generateText());
+
+    getLetters().dataset.status="pendingText"
+}
+
+
+
 // create a function for the word count
 
 // create a function for character count
 
 // create  a function for user accuracy
+
+function calculateAccuracy() {
+
+    var numCorrectedLetter = 0;
+
+    var letters = getLetters();
+
+    for (var i = 0; i < letters.length; i++) {
+
+        var letter = letters[i];
+
+        if (getLetterStatus(letter) == "correctedLetter") {
+            numCorrectedLetter++;
+        }
+    }
+
+    return numCorrectedLetter/(letters.length) * 100;
+}
+
+function calculateRealAccuracy() {
+
+    var numIncorrectLetter = 0;
+
+    var letters = getLetters();
+
+    for (var i = 0; i < letters.length; i++) {
+
+        var letter = letters[i];
+
+        if (getLetterStatus(letter) == "incorrectLetter") {
+            numIncorrectLetter++;
+        } 
+    }
+
+    return numIncorrectLetter/(letters.length) * 100;
+}
+
+
 
 
 // may be create a start game function
@@ -116,7 +191,8 @@ document.addEventListener("keydown", event => {
     var typedLetter = event.key;
     updateTypingText(typedLetter, userLetterIndex)
 
-    if (userLetterIndex >= 10 || Date.now() > startTime + 3000) {
+    console.log(userLetterIndex);
+    if ((5 <= userLetterIndex && userLetterIndex <= 10) || Date.now() > startTime + 3000) {
         displayWPM(calculateWPM(userLetterIndex, startTime));
     }
 });
@@ -131,7 +207,7 @@ function checkIfTyped() {
         }, 1000);
     } else {
         console.log("checking");
-        setTimeout(checkIfTyped, 3000);
+        setTimeout(checkIfTyped, 1000);
     }
 }
 
@@ -163,16 +239,6 @@ checkIfTyped();
 
 
 //might need a wrong counter
-
-//might want this to be called every certain number of seconds
-function calcWPM(totalCharactersTyped, timeMinutes) {
-
-    // ===> don't let the wrong worlds count towards wpm <===
-
-    var wpm = (totalCharactersTyped/5)/timeMinutes;
-    wpm = Math.round(wpm);
-    return wpm;
-}
 
 
 // var start = Date.now();

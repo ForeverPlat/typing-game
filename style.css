@@ -90,3 +90,23 @@ body {
     /* line-height: 100%; */
     
 }
+
+[data-status="pendingText"] {
+    color: rgb(54, 58, 67);
+}
+
+[data-status="correctLetter"] {
+    color: rgb(209, 209, 202);
+}
+
+[data-status="incorrectLetter"] {
+    color: rgb(219, 108, 108);
+}
+
+[data-status="correctedLetter"] {
+    color: rgb(209, 209, 202);
+}
+
+[data-status="pendingIncorrectLetter"] {
+    color: rgb(54, 58, 67);
+}
