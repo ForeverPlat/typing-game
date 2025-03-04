@@ -7,8 +7,8 @@ var updatingWPMDisplay;
 //later us an api to generate random strings
 function generateText() {
     // return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exleac sed do eiusmod";
-    // return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim";
-    return "lorem";
+    return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim";
+    // return "lorem";
 }
 
 function addTextToPage(generatedText) {
@@ -173,6 +173,26 @@ function resetTypeTest() {
     }
 }
 
+function unpauseTypingTest() {
+    document.getElementById("paused-test-overlay").remove();
+}
+
+// pause the typing 
+function pauseTypingTest() {
+    for (var wordTag of getWords()) {
+        wordTag.dataset.status = "pausedTypingTest";
+    }
+    document.getElementById("typing-cursor").style = "background-color: transparent;";
+    //still need to pause the letter index from moving
+
+    document.getElementById("typing-test-text").innerHTML += "<div class='paused-test-overlay' id='paused-test-overlay'>Click here or any key</div>"
+    document.getElementById("paused-test-overlay").onclick = unpauseTypingTest;
+}
+
+
+
+// document.addEventListener("keydown", unpauseTypingTest);
+// document.addEventListener("click", unpauseTypingTest);
 
 
 // create a function for the word count
@@ -266,3 +286,6 @@ function checkIfTyped() {
 
 typingCursor();
 checkIfTyped();
+
+
+pauseTypingTest();
