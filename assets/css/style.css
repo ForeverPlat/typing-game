@@ -91,7 +91,13 @@ body {
     /* line-height: 100%; */
 }
 
-[data-status="pausedTypingTest"]{
+[data-status="pausedCorrectLetter"],
+[data-status="pausedIncorrectLetter"],
+[data-status="pausedCorrectedLetter"],
+[data-status="pausedIncorrectLetter"],
+[data-status="pausedPendingIncorrectLetter"],
+[data-status="pausedPendingText"]
+ {
     filter: blur(5px);
 }
 
@@ -101,7 +107,9 @@ body {
     left: 50%;
     transform: translate(-50%, -100%);
     z-index: 1000;
+
     color: white;
+    font-size: 1.5rem;
     cursor: pointer;
 
 }

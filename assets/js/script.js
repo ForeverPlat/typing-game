@@ -29,7 +29,7 @@ function addTextToPage(generatedText) {
         }
         // adding spaces
         if (i < wordList.length - 1) {
-            document.getElementById("typing-test-text").innerHTML += "<span class='letter'>&nbsp;</span>";
+            document.getElementById("typing-test-text").innerHTML += "<span data-status='pendingText' class='letter'>&nbsp;</span>";
         }
     }
 
@@ -76,13 +76,24 @@ function typingCursor() {
 function moveCursor(userLetterIndex) {
     var cursor = document.getElementById("typing-cursor");
     getCurrLetterTag(userLetterIndex).prepend(cursor);
+
+
+    //> WORK ON THIS
+    // pausing animation when cursor moves
+    if (userLetterIndex != 0) {
+        getCurrLetterTag(userLetterIndex).style.animationPlayState = 'paused';
+    }
 }
 
 
+const statuses = ["pausedCorrectLetter", "pausedIncorrectLetter", "pausedCorrectedLetter", "pausedIncorrectLetter", "pausedPendingIncorrectLetter", "pausedPendingText"];
 
 //this should prob not be doing all this
+// make functions that break these into like seperate backspace
 function updateTypingText(typedLetter, letterIndex) {
-    if (typedLetter == "Backspace" && letterIndex != 0) {
+    if (statuses.includes(getLetterStatus(userLetterIndex))) {
+
+    } else if (typedLetter == "Backspace" && letterIndex != 0) {
 
         userLetterIndex--;
 
@@ -175,18 +186,76 @@ function resetTypeTest() {
 
 function unpauseTypingTest() {
     document.getElementById("paused-test-overlay").remove();
+
+    for (var letterTag of getLetters()) {
+        console.log(letterTag);
+    
+        if (letterTag.dataset.status == "pausedCorrectLetter") {
+    
+            letterTag.dataset.status = "correctLetter";
+    
+        } else if (letterTag.dataset.status == "pausedIncorrectLetter") {
+    
+            letterTag.dataset.status = "incorrectLetter";
+    
+        } else if (letterTag.dataset.status == "pausedCorrectedLetter") {
+    
+            letterTag.dataset.status = "correctedLetter";
+    
+        } else if (letterTag.dataset.status == "pausedPendingIncorrectLetter") {
+    
+            letterTag.dataset.status = "pendingIncorrectLetter";
+    
+        } else if (letterTag.dataset.status == "pausedPendingText") {
+    
+            letterTag.dataset.status = "pendingText";
+    
+        } else {
+            console.log("unexpected status");
+        }
+
+        document.getElementById("typing-cursor").style = "background-color: yellow;";
+    }    
+
 }
 
 // pause the typing 
+// this cannot stay like this
 function pauseTypingTest() {
-    for (var wordTag of getWords()) {
-        wordTag.dataset.status = "pausedTypingTest";
+    for (var letterTag of getLetters()) {
+
+        
+        if (letterTag.dataset.status == "correctLetter") {
+
+            letterTag.dataset.status = "pausedCorrectLetter";
+
+        } else if (letterTag.dataset.status == "incorrectLetter") {
+
+            letterTag.dataset.status = "pausedIncorrectLetter";
+
+        }  else if (letterTag.dataset.status == "correctedLetter") {
+            
+            letterTag.dataset.status = "pausedCorrectedLetter";
+
+        } else if (letterTag.dataset.status == "pendingIncorrectLetter") {
+            
+            letterTag.dataset.status = "pausedPendingIncorrectLetter";
+
+        } else if (letterTag.dataset.status == "pendingText") {
+
+            letterTag.dataset.status = "pausedPendingText";
+
+        } else {
+            console.log("unexpexted status")
+        }
     }
     document.getElementById("typing-cursor").style = "background-color: transparent;";
     //still need to pause the letter index from moving
 
     document.getElementById("typing-test-text").innerHTML += "<div class='paused-test-overlay' id='paused-test-overlay'>Click here or any key</div>"
     document.getElementById("paused-test-overlay").onclick = unpauseTypingTest;
+
+    //> Pause wpm counting
 }
 
 
@@ -285,7 +354,8 @@ function checkIfTyped() {
 }
 
 typingCursor();
+// think about where to put this later
 checkIfTyped();
-
-
 pauseTypingTest();
+
+
