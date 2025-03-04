@@ -1,23 +1,21 @@
 var userLetterIndex = 0;
-var totalErrors = 0;
+var numCorrectlyTypedChars = 0;
 var startTime;
 var updatingWPMDisplay;
 
 
-// create a function to generate the text
 //later us an api to generate random strings
 function generateText() {
     // return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exleac sed do eiusmod";
     return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim";
 }
 
-// create a function to add the text to the webpage
 function addTextToPage(generatedText) {
 
     var wordList = generatedText.split(" ")
 
     for (var i = 0; i < wordList.length; i++) {
-        // creating the word span
+
         document.getElementById("typing-test-text").innerHTML += "<span class='word'></span>";
 
         var words = document.querySelectorAll(".word")
@@ -36,17 +34,14 @@ function addTextToPage(generatedText) {
 
 }
 
-
 function getWords() {
     return document.querySelectorAll(".word");
 }
 
-// get word
 function getCurrWord(userLetterIndex) {
-    return getWord()[userLetterIndex].textContent;
+    return getWords()[userLetterIndex].textContent;
 }
 
-// get letter span tag
 function getCurrWordTag(userLetterIndex) {
     return getWords()[userLetterIndex];
 }
@@ -55,27 +50,23 @@ function getLetters() {
     return document.querySelectorAll(".letter");
 }
 
-// get letter
 function getCurrLetter(userLetterIndex) {
     return getLetters()[userLetterIndex].textContent;
 }
 
-// get letter span tag
 function getCurrLetterTag(userLetterIndex) {
     return getLetters()[userLetterIndex];
 }
 
-// set letters status
 function setLetterStatus(userLetterIndex, letterStatus){
     getCurrLetterTag(userLetterIndex).dataset.status = letterStatus;
 }
 
-// get letter status
 function getLetterStatus(userLetterIndex) {
     return getCurrLetterTag(userLetterIndex).dataset.status;
 }
 
-// create a function that tracks the users typing
+//this should prob not be doing all this
 function updateTypingText(typedLetter, letterIndex) {
     if (typedLetter == "Backspace" && letterIndex != 0) {
 
@@ -94,23 +85,27 @@ function updateTypingText(typedLetter, letterIndex) {
     } else if (typedLetter == getCurrLetter(userLetterIndex) && getLetterStatus(userLetterIndex) == "pendingIncorrectLetter") {
 
         setLetterStatus(userLetterIndex, "correctedLetter");
+        
+        numCorrectlyTypedChars++;
         userLetterIndex++;
 
     } else if (typedLetter == getCurrLetter(letterIndex)) {
-        setLetterStatus(userLetterIndex, "correctLetter")
+
+        setLetterStatus(userLetterIndex, "correctLetter");
+
+        numCorrectlyTypedChars++;
         userLetterIndex++;
 
     } else {
-        setLetterStatus(userLetterIndex, "incorrectLetter")
-        totalErrors++;
+
+        setLetterStatus(userLetterIndex, "incorrectLetter");
+        
         userLetterIndex++;
     }
 }
 
-// create a function for the wpm
 // https://stackoverflow.com/questions/52819891/how-do-i-make-a-keydown-event-that-only-works-the-first-time-it-is-pressed
-
-// need to turn this into a function
+//> need to turn this into a function
 var eventHandler = function(event){
     startTime = Date.now();
     document.removeEventListener('keydown', eventHandler);
@@ -215,12 +210,12 @@ document.addEventListener("keydown", event => {
 
     console.log(userLetterIndex);
     if ((5 <= userLetterIndex && userLetterIndex <= 10) || Date.now() > startTime + 3000) {
-        displayWPM(calculateWPM(userLetterIndex, startTime));
+        displayWPM(calculateWPM(numCorrectlyTypedChars, startTime));
     }
 
     if (userLetterIndex == (getLetters().length)) {
         console.log("opening new page")
-        window.location = "test-results.html";
+        window.location = "/pages/typing-test-results.html";
     }
 
 
@@ -232,7 +227,7 @@ function checkIfTyped() {
     if(userLetterIndex != 0) {
         console.log(userLetterIndex)
         updatingWPMDisplay = setInterval(() => {
-            displayWPM(calculateWPM(userLetterIndex, startTime));
+            displayWPM(calculateWPM(numCorrectlyTypedChars, startTime));
         }, 1000);
     } else {
         console.log("checking");
@@ -241,85 +236,3 @@ function checkIfTyped() {
 }
 
 checkIfTyped();
-
-
-
-// make it so that wpm will decrease if you don't type
-
-
-// var letters = document.querySelectorAll(".letter");
-
-
-// var count = 0;
-
-// function resetTypeTest() {
-//     count = 0;
-//     console.log("count: " + count)
-//     var letter = document.querySelectorAll(".letter");
-
-//     // change to for each later
-
-//     for (var letter of letters) {
-//         letter.style="color: #363a43;"
-//     }
-
-// }
-
-
-
-//might need a wrong counter
-
-
-// var start = Date.now();
-
-// console.log("start timer")
-
-// document.addEventListener("keydown", event => {
-
-//     console.log(typingText.charAt(count));
-//     console.log(event.key);
-
-//     var currChar = typingText.charAt(count);
-//     var typedChar = event.key;
-
-//     if (typedChar == "Backspace") {
-
-//         count--;
-
-//         letters[count].style="color: #363a43;"
-
-
-//     } else if (currChar == typedChar) {
-
-//         letters[count].style="color:rgb(209, 209, 202);"
-//         count++;
-
-//     } else {
-
-//         if (letters[count] == "&nbsp;") {
-//             letters[count].style="background-color:rgb(219, 108, 108);"
-
-//         } else {
-//             letters[count].style="color:rgb(219, 108, 108);"
-
-//         }
-
-//         count++;
-        
-        
-//     }
-
-//     console.log("timer for each keypress")
-//     var end = Date.now();
-
-//     var elapsed = (end - start)/60000;
-
-//     var wpm = calcWPM(count, elapsed);
-//     console.log(wpm)
-
-
-//     document.getElementById("wpm-count").innerHTML = wpm;
-
-// });
-
-
