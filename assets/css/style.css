@@ -91,6 +91,33 @@ body {
     
 }
 
+.letter {
+    position: relative;
+    z-index: 1;
+}
+
+.typing-cursor {
+    width: 0.2rem;
+    height: 2.5rem;
+    background-color: yellow;
+    position: absolute;
+    left: -2px;
+    top: 0;
+    margin-right: 10px;
+    z-index: -1;
+
+    /* https://stackoverflow.com/questions/16344354/how-to-make-blinking-flashing-text-with-css-3 */
+
+    /* make it so this only happens at the start */
+    animation: blinker 1.25s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
 [data-status="pendingText"] {
     color: rgb(54, 58, 67);
 }

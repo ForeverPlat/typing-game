@@ -66,6 +66,19 @@ function getLetterStatus(userLetterIndex) {
     return getCurrLetterTag(userLetterIndex).dataset.status;
 }
 
+
+function typingCursor() {
+    getCurrLetterTag(0).innerHTML += "<div class='typing-cursor' id='typing-cursor'></div>"
+}
+
+
+function moveCursor(userLetterIndex) {
+    var cursor = document.getElementById("typing-cursor");
+    getCurrLetterTag(userLetterIndex).prepend(cursor);
+}
+
+
+
 //this should prob not be doing all this
 function updateTypingText(typedLetter, letterIndex) {
     if (typedLetter == "Backspace" && letterIndex != 0) {
@@ -99,10 +112,12 @@ function updateTypingText(typedLetter, letterIndex) {
     } else {
 
         setLetterStatus(userLetterIndex, "incorrectLetter");
-        
+
         userLetterIndex++;
     }
 }
+
+
 
 // https://stackoverflow.com/questions/52819891/how-do-i-make-a-keydown-event-that-only-works-the-first-time-it-is-pressed
 //> need to turn this into a function
@@ -199,14 +214,16 @@ function calculateRealAccuracy() {
 
 
 
-// may be create a start game function
+// maybe create a start game function
 var typingText = generateText();
 addTextToPage(typingText);
 
 
 document.addEventListener("keydown", event => {
     var typedLetter = event.key;
-    updateTypingText(typedLetter, userLetterIndex)
+    updateTypingText(typedLetter, userLetterIndex);
+
+    moveCursor(userLetterIndex);
 
     console.log(userLetterIndex);
     if ((5 <= userLetterIndex && userLetterIndex <= 10) || Date.now() > startTime + 3000) {
@@ -225,7 +242,7 @@ document.addEventListener("keydown", event => {
 function checkIfTyped() {
     // add a condition for and key is not pressed
     if(userLetterIndex != 0) {
-        console.log(userLetterIndex)
+        console.log(userLetterIndex);
         updatingWPMDisplay = setInterval(() => {
             displayWPM(calculateWPM(numCorrectlyTypedChars, startTime));
         }, 1000);
@@ -235,4 +252,5 @@ function checkIfTyped() {
     }
 }
 
+typingCursor();
 checkIfTyped();
