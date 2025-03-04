@@ -1,12 +1,14 @@
 var userLetterIndex = 0;
 var totalErrors = 0;
 var startTime;
+var updatingWPMDisplay;
 
 
 // create a function to generate the text
 //later us an api to generate random strings
 function generateText() {
-    return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exleac sed do eiusmod";
+    // return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exleac sed do eiusmod";
+    return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim";
 }
 
 // create a function to add the text to the webpage
@@ -32,6 +34,21 @@ function addTextToPage(generatedText) {
         }
     }
 
+}
+
+
+function getWords() {
+    return document.querySelectorAll(".word");
+}
+
+// get word
+function getCurrWord(userLetterIndex) {
+    return getWord()[userLetterIndex].textContent;
+}
+
+// get letter span tag
+function getCurrWordTag(userLetterIndex) {
+    return getWords()[userLetterIndex];
 }
 
 function getLetters() {
@@ -120,7 +137,12 @@ function displayWPM(wpm) {
 // create a function for reseting
 // should also generate new text
 function resetTypeTest() {
+    userLetterIndex = 0;
+    totalErrors = 0;
+    clearInterval(updatingWPMDisplay);
+
     document.getElementById("typing-test-text").innerHTML = "";
+    document.getElementById("wpm-count").innerHTML = "";
 
     var eventHandler = function(event){
         startTime = Date.now();
@@ -128,11 +150,11 @@ function resetTypeTest() {
     }
     document.addEventListener('keydown', eventHandler);
 
-    userLetterIndex = 0;
-    totalErrors = 0;
     addTextToPage(generateText());
 
-    getLetters().dataset.status="pendingText"
+    for (var i = 0; i < getCurrLetter.length; i++)  {
+        getCurrLetterTag(i).dataset.status="pendingText";
+    }
 }
 
 
@@ -195,6 +217,13 @@ document.addEventListener("keydown", event => {
     if ((5 <= userLetterIndex && userLetterIndex <= 10) || Date.now() > startTime + 3000) {
         displayWPM(calculateWPM(userLetterIndex, startTime));
     }
+
+    if (userLetterIndex == (getLetters().length)) {
+        console.log("opening new page")
+        window.location = "test-results.html";
+    }
+
+
 });
 
 // using recursion to check if user typed then updating wpm display by set value
@@ -202,7 +231,7 @@ function checkIfTyped() {
     // add a condition for and key is not pressed
     if(userLetterIndex != 0) {
         console.log(userLetterIndex)
-        setInterval(() => {
+        updatingWPMDisplay = setInterval(() => {
             displayWPM(calculateWPM(userLetterIndex, startTime));
         }, 1000);
     } else {
