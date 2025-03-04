@@ -7,7 +7,8 @@ var updatingWPMDisplay;
 //later us an api to generate random strings
 function generateText() {
     // return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exleac sed do eiusmod";
-    return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim";
+    // return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim";
+    return "lorem";
 }
 
 function addTextToPage(generatedText) {
@@ -67,6 +68,7 @@ function getLetterStatus(userLetterIndex) {
 }
 
 
+
 function typingCursor() {
     getCurrLetterTag(0).innerHTML += "<div class='typing-cursor' id='typing-cursor'></div>"
 }
@@ -75,6 +77,7 @@ function moveCursor(userLetterIndex) {
     var cursor = document.getElementById("typing-cursor");
     getCurrLetterTag(userLetterIndex).prepend(cursor);
 }
+
 
 
 //this should prob not be doing all this
@@ -226,15 +229,21 @@ document.addEventListener("keydown", event => {
     var typedLetter = event.key;
     updateTypingText(typedLetter, userLetterIndex);
 
-    moveCursor(userLetterIndex);
 
     console.log(userLetterIndex);
     if ((5 <= userLetterIndex && userLetterIndex <= 10) || Date.now() > startTime + 3000) {
         displayWPM(calculateWPM(numCorrectlyTypedChars, startTime));
     }
 
-    if (userLetterIndex == (getLetters().length)) {
-        console.log("opening new page")
+    if ((getLetters().length) != userLetterIndex) {
+
+        moveCursor(userLetterIndex); 
+    }
+
+    if ((getLetters().length) == userLetterIndex) {
+        document.getElementById("typing-cursor").style = "background-color: transparent;";
+        
+        console.log("opening new page");
         window.location = "/pages/typing-test-results.html";
     }
 
