@@ -71,12 +71,10 @@ function typingCursor() {
     getCurrLetterTag(0).innerHTML += "<div class='typing-cursor' id='typing-cursor'></div>"
 }
 
-
 function moveCursor(userLetterIndex) {
     var cursor = document.getElementById("typing-cursor");
     getCurrLetterTag(userLetterIndex).prepend(cursor);
 }
-
 
 
 //this should prob not be doing all this
@@ -154,13 +152,18 @@ function resetTypeTest() {
     document.getElementById("typing-test-text").innerHTML = "";
     document.getElementById("wpm-count").innerHTML = "";
 
+
     var eventHandler = function(event){
         startTime = Date.now();
         document.removeEventListener('keydown', eventHandler);
     }
     document.addEventListener('keydown', eventHandler);
 
+    // has to be in this order (props to adrii for the solution)
     addTextToPage(generateText());
+    typingCursor();
+    moveCursor(userLetterIndex);
+
 
     for (var i = 0; i < getCurrLetter.length; i++)  {
         getCurrLetterTag(i).dataset.status="pendingText";
