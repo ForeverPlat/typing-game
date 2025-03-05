@@ -313,8 +313,32 @@ function calculateRealAccuracy() {
 var typingText = generateText();
 addTextToPage(typingText);
 
+var lastTypedTime;
 
 document.addEventListener("keydown", event => {
+    lastTypedTime = Date.now();
+    
+});
+
+function checkLastTypedTime() {
+    var currTime = Date.now();
+
+    comparedTime = currTime - lastTypedTime;
+
+    if (comparedTime >= 5000) {
+        pauseTypingTest();
+        clearInterval(lastTypeInterval);
+    }
+}
+
+var lastTypeInterval = setInterval(checkLastTypedTime, 1000);
+
+
+
+
+document.addEventListener("keydown", event => {
+
+
     var typedLetter = event.key;
     updateTypingText(typedLetter, userLetterIndex);
 
@@ -347,6 +371,8 @@ function checkIfTyped() {
         updatingWPMDisplay = setInterval(() => {
             displayWPM(calculateWPM(numCorrectlyTypedChars, startTime));
         }, 1000);
+
+        
     } else {
         console.log("checking");
         setTimeout(checkIfTyped, 1000);
@@ -356,6 +382,5 @@ function checkIfTyped() {
 typingCursor();
 // think about where to put this later
 checkIfTyped();
-pauseTypingTest();
 
 
