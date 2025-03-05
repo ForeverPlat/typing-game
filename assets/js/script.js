@@ -184,44 +184,79 @@ function resetTypeTest() {
     }
 }
 
-function unpauseTypingTest() {
-    document.getElementById("paused-test-overlay").remove();
 
-    for (var letterTag of getLetters()) {
-        console.log(letterTag);
+var lastTypedTime;
+var lastTypeInterval;
+var isTyping;
+var isPaused;
+
+document.addEventListener("keydown", event => {
+    lastTypedTime = Date.now();
+});
+
+
+function isTyping() {
+    if (userLetterIndex != 0) {
+        var currTime = Date.now();
+
+        var typeDiff = currTime - lastTypedTime;
     
-        if (letterTag.dataset.status == "pausedCorrectLetter") {
-    
-            letterTag.dataset.status = "correctLetter";
-    
-        } else if (letterTag.dataset.status == "pausedIncorrectLetter") {
-    
-            letterTag.dataset.status = "incorrectLetter";
-    
-        } else if (letterTag.dataset.status == "pausedCorrectedLetter") {
-    
-            letterTag.dataset.status = "correctedLetter";
-    
-        } else if (letterTag.dataset.status == "pausedPendingIncorrectLetter") {
-    
-            letterTag.dataset.status = "pendingIncorrectLetter";
-    
-        } else if (letterTag.dataset.status == "pausedPendingText") {
-    
-            letterTag.dataset.status = "pendingText";
-    
-        } else {
-            console.log("unexpected status");
+        if (typeDiff > 1000) {
+            console.log("is not typing");
+            clearInterval(typingInterval);
+            pauseTypingTest();
+            return false;
         }
-
-        document.getElementById("typing-cursor").style = "background-color: yellow;";
-    }    
-
+    
+        console.log("is typing");
+        return true;
+    }
+    
 }
+
+
+var typingInterval = setInterval(isTyping, 5000);
+
+
+
+// document.addEventListener("keydown", event => {
+//     lastTypedTime = Date.now();
+    
+// });
+
+// function checkLastTypedTime() {
+//     var currTime = Date.now();
+
+//     comparedTime = currTime - lastTypedTime;
+//     console.log("it is repeating")
+
+//     if (isPaused == true) {
+
+//         clearInterval(lastTypeInterval);
+//         console.log("interval cleared");
+        
+//     } 
+    
+//     else if (comparedTime >= 1000) {
+
+//         pauseTypingTest();
+//         console.log("paused status: " + isPaused);
+
+//         // clearInterval(lastTypeInterval);
+//     }
+//     else if (isPaused == false) {
+        
+//     }
+// }
+
+// lastTypeInterval = setInterval(checkLastTypedTime, 10000);
+
 
 // pause the typing 
 // this cannot stay like this
 function pauseTypingTest() {
+    isPaused = true;
+    console.log(isPaused);
     for (var letterTag of getLetters()) {
 
         
@@ -257,6 +292,50 @@ function pauseTypingTest() {
 
     //> Pause wpm counting
 }
+
+
+// this isn't unpausing but updating the status of the 
+function unpauseTypingTest() {
+    lastTypedTime = Date.now();
+
+
+    document.getElementById("paused-test-overlay").remove();
+
+    for (var letterTag of getLetters()) {
+        console.log(letterTag);
+    
+        if (letterTag.dataset.status == "pausedCorrectLetter") {
+    
+            letterTag.dataset.status = "correctLetter";
+    
+        } else if (letterTag.dataset.status == "pausedIncorrectLetter") {
+    
+            letterTag.dataset.status = "incorrectLetter";
+    
+        } else if (letterTag.dataset.status == "pausedCorrectedLetter") {
+    
+            letterTag.dataset.status = "correctedLetter";
+    
+        } else if (letterTag.dataset.status == "pausedPendingIncorrectLetter") {
+    
+            letterTag.dataset.status = "pendingIncorrectLetter";
+    
+        } else if (letterTag.dataset.status == "pausedPendingText") {
+    
+            letterTag.dataset.status = "pendingText";
+    
+        } else {
+            console.log("unexpected status");
+        }
+
+        document.getElementById("typing-cursor").style = "background-color: yellow;";
+    }   
+    
+    typingInterval = setInterval(isTyping, 5000);
+
+}
+
+
 
 
 
@@ -313,25 +392,7 @@ function calculateRealAccuracy() {
 var typingText = generateText();
 addTextToPage(typingText);
 
-var lastTypedTime;
 
-document.addEventListener("keydown", event => {
-    lastTypedTime = Date.now();
-    
-});
-
-function checkLastTypedTime() {
-    var currTime = Date.now();
-
-    comparedTime = currTime - lastTypedTime;
-
-    if (comparedTime >= 5000) {
-        pauseTypingTest();
-        clearInterval(lastTypeInterval);
-    }
-}
-
-var lastTypeInterval = setInterval(checkLastTypedTime, 1000);
 
 
 
