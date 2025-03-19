@@ -1,447 +1,188 @@
-var userLetterIndex = 0;
-var numCorrectlyTypedChars = 0;
-var startTime;
-var updatingWPMDisplay;
+let letterIndex = 0;
+let wordIndex = 0;
+let time = 0;
+let timeInterval;
+let stopTime;
+let isRuning = false;
 
+export function getLetterIndex() {
+    return letterIndex;
+}
 
-//later us an api to generate random strings
+export function getTime() {
+    return time;
+}
+
 function generateText() {
-    // return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip exleac sed do eiusmod";
-    return "lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim";
-    // return "lorem";
+
+    let text = "lorem ipsum dolor sit amet";
+
+    return text;
 }
 
-function addTextToPage(generatedText) {
+function formatText(text) {
+    let words = text.split(" ");
+    let newText = "";
 
-    var wordList = generatedText.split(" ")
+    for (let i = 0; i < words.length; i++) {
+        let currWord = words[i];
+        newText += `<div id="word">`;
 
-    for (var i = 0; i < wordList.length; i++) {
-
-        document.getElementById("typing-test-text").innerHTML += "<span class='word'></span>";
-
-        var words = document.querySelectorAll(".word")
-        var currWord = words[words.length - 1];
-        var letterList = wordList[i].split("");
-
-        for (var j = 0; j < letterList.length; j++) {
-            // creating the letter span
-            currWord.innerHTML += "<span class='letter' data-status='pendingText'>" + letterList[j] + "</span>";
+        for (let j = 0; j < currWord.length; j++) {
+            let currLetter = currWord[j];
+            newText += `<span class="pending" id="letter">${currLetter}</span>`;
         }
-        // adding spaces
-        if (i < wordList.length - 1) {
-            document.getElementById("typing-test-text").innerHTML += "<span data-status='pendingText' class='letter'>&nbsp;</span>";
-        }
+        newText += `</div>`;
+        newText += `<span class="pending" id="letter">&nbsp;</span>`;
+
     }
-
-}
-
-function getWords() {
-    return document.querySelectorAll(".word");
-}
-
-function getCurrWord(userLetterIndex) {
-    return getWords()[userLetterIndex].textContent;
-}
-
-function getCurrWordTag(userLetterIndex) {
-    return getWords()[userLetterIndex];
+    
+    return newText;
 }
 
 function getLetters() {
-    return document.querySelectorAll(".letter");
+    return document.querySelectorAll("#letter");
 }
 
-function getCurrLetter(userLetterIndex) {
-    return getLetters()[userLetterIndex].textContent;
-}
+function isValidLetter(letter, index) {
 
-function getCurrLetterTag(userLetterIndex) {
-    return getLetters()[userLetterIndex];
-}
+    let letters = getLetters();
+    let currLetter = letters[index].textContent;
 
-function setLetterStatus(userLetterIndex, letterStatus){
-    getCurrLetterTag(userLetterIndex).dataset.status = letterStatus;
-}
-
-function getLetterStatus(userLetterIndex) {
-    return getCurrLetterTag(userLetterIndex).dataset.status;
-}
-
-
-
-function typingCursor() {
-    getCurrLetterTag(0).innerHTML += "<div class='typing-cursor' id='typing-cursor'></div>"
-}
-
-function moveCursor(userLetterIndex) {
-    var cursor = document.getElementById("typing-cursor");
-    getCurrLetterTag(userLetterIndex).prepend(cursor);
-
-
-    //> WORK ON THIS
-    // pausing animation when cursor moves
-    if (userLetterIndex != 0) {
-        getCurrLetterTag(userLetterIndex).style.animationPlayState = 'paused';
-    }
-}
-
-
-const statuses = ["pausedCorrectLetter", "pausedIncorrectLetter", "pausedCorrectedLetter", "pausedIncorrectLetter", "pausedPendingIncorrectLetter", "pausedPendingText"];
-
-//this should prob not be doing all this
-// make functions that break these into like seperate backspace
-function updateTypingText(typedLetter, letterIndex) {
-    if (statuses.includes(getLetterStatus(userLetterIndex))) {
-
-    } else if (typedLetter == "Backspace" && letterIndex != 0) {
-
-        userLetterIndex--;
-
-        if (getLetterStatus(userLetterIndex) == "correctLetter") {
-            
-            setLetterStatus(userLetterIndex, "pendingText");
-
-        } else if (getLetterStatus(userLetterIndex) == "incorrectLetter") {
-
-            setLetterStatus(userLetterIndex, "pendingIncorrectLetter");
-
-        }  
-
-    } else if (typedLetter == getCurrLetter(userLetterIndex) && getLetterStatus(userLetterIndex) == "pendingIncorrectLetter") {
-
-        setLetterStatus(userLetterIndex, "correctedLetter");
-        
-        numCorrectlyTypedChars++;
-        userLetterIndex++;
-
-    } else if (typedLetter == getCurrLetter(letterIndex)) {
-
-        setLetterStatus(userLetterIndex, "correctLetter");
-
-        numCorrectlyTypedChars++;
-        userLetterIndex++;
-
-    } else {
-
-        setLetterStatus(userLetterIndex, "incorrectLetter");
-
-        userLetterIndex++;
-    }
-}
-
-
-
-// https://stackoverflow.com/questions/52819891/how-do-i-make-a-keydown-event-that-only-works-the-first-time-it-is-pressed
-//> need to turn this into a function
-var eventHandler = function(event){
-    startTime = Date.now();
-    document.removeEventListener('keydown', eventHandler);
-}
-document.addEventListener('keydown', eventHandler);
-
-
-function calculateWPM(totalCharactersTyped, startTime) {
-    var endTime = Date.now();
-    var elapsedTime = (endTime-startTime)/60000;
-
-    //> need to take errors into account later
-    var wpm = Math.round((totalCharactersTyped/5)/ elapsedTime);
-    return wpm;
-}
-
-function displayWPM(wpm) {
-    document.getElementById("wpm-count").innerHTML = wpm;
-}
-
-
-// create a function to pause the test if user does not type for a set amount of time
-
-// create a function for reseting
-// should also generate new text
-function resetTypeTest() {
-    userLetterIndex = 0;
-    totalErrors = 0;
-    clearInterval(updatingWPMDisplay);
-
-    document.getElementById("typing-test-text").innerHTML = "";
-    document.getElementById("wpm-count").innerHTML = "";
-
-
-    var eventHandler = function(event){
-        startTime = Date.now();
-        document.removeEventListener('keydown', eventHandler);
-    }
-    document.addEventListener('keydown', eventHandler);
-
-    // has to be in this order (props to adrii for the solution)
-    addTextToPage(generateText());
-    typingCursor();
-    moveCursor(userLetterIndex);
-
-
-    for (var i = 0; i < getCurrLetter.length; i++)  {
-        getCurrLetterTag(i).dataset.status="pendingText";
-    }
-}
-
-
-var lastTypedTime;
-var lastTypeInterval;
-var isTyping;
-var isPaused;
-
-document.addEventListener("keydown", event => {
-    lastTypedTime = Date.now();
-});
-
-
-function isTyping() {
-    if (userLetterIndex != 0) {
-        var currTime = Date.now();
-
-        var typeDiff = currTime - lastTypedTime;
-    
-        if (typeDiff > 1000) {
-            console.log("is not typing");
-            clearInterval(typingInterval);
-            pauseTypingTest();
-            return false;
-        }
-    
-        console.log("is typing");
+    if (currLetter == letter) {
         return true;
     }
-    
+
+    return false;
 }
 
 
-var typingInterval = setInterval(isTyping, 5000);
+function updateLetter(status, index) {
+    let letters = getLetters();
+    let currLetter = letters[index];
 
+    if (status == "correct") {
+        currLetter.className = "correct";
 
+    } else if (status == "incorrect") {
+        currLetter.className = "incorrect";
 
-// document.addEventListener("keydown", event => {
-//     lastTypedTime = Date.now();
-    
-// });
+    } else if (status == "pending") {
+        currLetter.className = "pending";
 
-// function checkLastTypedTime() {
-//     var currTime = Date.now();
-
-//     comparedTime = currTime - lastTypedTime;
-//     console.log("it is repeating")
-
-//     if (isPaused == true) {
-
-//         clearInterval(lastTypeInterval);
-//         console.log("interval cleared");
-        
-//     } 
-    
-//     else if (comparedTime >= 1000) {
-
-//         pauseTypingTest();
-//         console.log("paused status: " + isPaused);
-
-//         // clearInterval(lastTypeInterval);
-//     }
-//     else if (isPaused == false) {
-        
-//     }
-// }
-
-// lastTypeInterval = setInterval(checkLastTypedTime, 10000);
-
-
-// pause the typing 
-// this cannot stay like this
-function pauseTypingTest() {
-    isPaused = true;
-    console.log(isPaused);
-    for (var letterTag of getLetters()) {
-
-        
-        if (letterTag.dataset.status == "correctLetter") {
-
-            letterTag.dataset.status = "pausedCorrectLetter";
-
-        } else if (letterTag.dataset.status == "incorrectLetter") {
-
-            letterTag.dataset.status = "pausedIncorrectLetter";
-
-        }  else if (letterTag.dataset.status == "correctedLetter") {
-            
-            letterTag.dataset.status = "pausedCorrectedLetter";
-
-        } else if (letterTag.dataset.status == "pendingIncorrectLetter") {
-            
-            letterTag.dataset.status = "pausedPendingIncorrectLetter";
-
-        } else if (letterTag.dataset.status == "pendingText") {
-
-            letterTag.dataset.status = "pausedPendingText";
-
-        } else {
-            console.log("unexpexted status")
-        }
-    }
-    document.getElementById("typing-cursor").style = "background-color: transparent;";
-    //still need to pause the letter index from moving
-
-    document.getElementById("typing-test-text").innerHTML += "<div class='paused-test-overlay' id='paused-test-overlay'>Click here or any key</div>"
-    document.getElementById("paused-test-overlay").onclick = unpauseTypingTest;
-
-    //> Pause wpm counting
-}
-
-
-// this isn't unpausing but updating the status of the 
-function unpauseTypingTest() {
-    lastTypedTime = Date.now();
-
-
-    document.getElementById("paused-test-overlay").remove();
-
-    for (var letterTag of getLetters()) {
-        console.log(letterTag);
-    
-        if (letterTag.dataset.status == "pausedCorrectLetter") {
-    
-            letterTag.dataset.status = "correctLetter";
-    
-        } else if (letterTag.dataset.status == "pausedIncorrectLetter") {
-    
-            letterTag.dataset.status = "incorrectLetter";
-    
-        } else if (letterTag.dataset.status == "pausedCorrectedLetter") {
-    
-            letterTag.dataset.status = "correctedLetter";
-    
-        } else if (letterTag.dataset.status == "pausedPendingIncorrectLetter") {
-    
-            letterTag.dataset.status = "pendingIncorrectLetter";
-    
-        } else if (letterTag.dataset.status == "pausedPendingText") {
-    
-            letterTag.dataset.status = "pendingText";
-    
-        } else {
-            console.log("unexpected status");
-        }
-
-        document.getElementById("typing-cursor").style = "background-color: yellow;";
-    }   
-    
-    typingInterval = setInterval(isTyping, 5000);
+    } 
 
 }
 
 
+function updateLetterIndex(key) {
+    if (key == "Backspace") {
+        if (letterIndex > 0) {
 
-
-
-// document.addEventListener("keydown", unpauseTypingTest);
-// document.addEventListener("click", unpauseTypingTest);
-
-
-// create a function for the word count
-
-// create a function for character count
-
-// create  a function for user accuracy
-
-function calculateAccuracy() {
-
-    var numCorrectedLetter = 0;
-
-    var letters = getLetters();
-
-    for (var i = 0; i < letters.length; i++) {
-
-        var letter = letters[i];
-
-        if (getLetterStatus(letter) == "correctedLetter") {
-            numCorrectedLetter++;
+            letterIndex--;
         }
+
+    } else if (key == " " || /^[a-zA-Z]$/.test(key)) {
+        letterIndex++;
+
     }
 
-    return numCorrectedLetter/(letters.length) * 100;
 }
 
-function calculateRealAccuracy() {
 
-    var numIncorrectLetter = 0;
+function createCursor() {
+    getLetters()[0].innerHTML += "<div class='typing-cursor' id='typing-cursor'></div>"
+}
 
-    var letters = getLetters();
 
-    for (var i = 0; i < letters.length; i++) {
+function moveCursor(index) {
+    let cursor = document.getElementById("typing-cursor");
+    let letters = getLetters();
+    if (index < letters.length) {
+        letters[index].prepend(cursor);
+    }
+}
 
-        var letter = letters[i];
 
-        if (getLetterStatus(letter) == "incorrectLetter") {
-            numIncorrectLetter++;
+function updateTime() {
+    time += 1000;
+}
+
+
+function pauseTimer() {
+
+}
+
+function stopTimer() {
+    clearInterval(timeInterval);
+}
+
+
+function openResults() {
+    window.location = "/pages/typing-test-results.html";
+}
+
+function endGame() {
+    stopTimer();
+    openResults();
+}
+
+
+function startGame() {
+    let text = generateText();
+    document.getElementById("typing-test-text").innerHTML = formatText(text);
+    createCursor();
+    
+
+    document.addEventListener("keydown", event => {        
+
+        if (!isRuning) {
+            isRuning = true;
+            timeInterval = setInterval(updateTime, 1000);
+        }
+
+        if (letterIndex == (text.length - 1)) {
+            endGame();
+        }
+
+        if (/^[a-zA-Z]$/.test(event.key)){
+
+            if (isValidLetter(event.key, letterIndex)) {
+                updateLetter("correct", letterIndex);
+                updateLetterIndex(event.key);
+
+            } else {
+                updateLetter("incorrect", letterIndex);
+                updateLetterIndex(event.key);
+    
+            }
+
+        } else if (event.key == " ") {
+            updateLetter("correct", letterIndex);
+            updateLetterIndex(event.key);
+
+        } else if (event.key == "Backspace") {
+            updateLetterIndex(event.key);
+            updateLetter("pending", letterIndex);
+
         } 
-    }
+        moveCursor(letterIndex);
 
-    return numIncorrectLetter/(letters.length) * 100;
+    });
+
 }
 
-
-
-
-// maybe create a start game function
-var typingText = generateText();
-addTextToPage(typingText);
-
-
-
-
-
-
-document.addEventListener("keydown", event => {
-
-
-    var typedLetter = event.key;
-    updateTypingText(typedLetter, userLetterIndex);
-
-
-    console.log(userLetterIndex);
-    if ((5 <= userLetterIndex && userLetterIndex <= 10) || Date.now() > startTime + 3000) {
-        displayWPM(calculateWPM(numCorrectlyTypedChars, startTime));
-    }
-
-    if ((getLetters().length) != userLetterIndex) {
-
-        moveCursor(userLetterIndex); 
-    }
-
-    if ((getLetters().length) == userLetterIndex) {
-        document.getElementById("typing-cursor").style = "background-color: transparent;";
-        
-        console.log("opening new page");
-        window.location = "/pages/typing-test-results.html";
-    }
-
-
+document.addEventListener("DOMContentLoaded", function() {
+    startGame();
 });
 
-// using recursion to check if user typed then updating wpm display by set value
-function checkIfTyped() {
-    // add a condition for and key is not pressed
-    if(userLetterIndex != 0) {
-        console.log(userLetterIndex);
-        updatingWPMDisplay = setInterval(() => {
-            displayWPM(calculateWPM(numCorrectlyTypedChars, startTime));
-        }, 1000);
+//test
+function displayTime() {
+	console.log(time);
 
-        
-    } else {
-        console.log("checking");
-        setTimeout(checkIfTyped, 1000);
-    }
 }
 
-typingCursor();
-// think about where to put this later
-checkIfTyped();
 
+setInterval(displayTime, 1000);
 
+//

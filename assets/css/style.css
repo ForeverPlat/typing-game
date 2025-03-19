@@ -1,162 +1,176 @@
+:root {
+    --purple: #603ca8;
+    --grey: #363a43;
+    --white: #e4e4e4;
+    --red: #db6c6c;
+}
+
 * {
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-    display: grid;
-    grid-template-rows: 30% 2rem 70%;
     background-color: #1e1f22;
 
     margin-left: 5%;
     margin-right: 5%;
-    margin-top: 5%;
+    margin-top: 4em;
+}
+
+.page-grid {
+    display: grid;
+    grid-template-rows: 5rem 1fr 5rem;
     height: 90vh;
 }
 
-.header {
-    
-}
+/* left side of header */
 
-.logo-container {
-    align-content: center;
+.header {
+    display: flex;
+    justify-content: space-between;
 }
 
 .logo {
     display: flex;
+    gap: 5px;
+    height: 100%;
+    justify-self: left;
     align-items: center;
+}
 
-    gap: 1%;
+.logo:hover {
+    cursor: pointer;
 }
 
 .logo-image {
-    height: 4rem;
+    display: inline;
+    height: 100%;
+    color: var(--purple);
 }
 
 .logo-text {
-    font-size: 2rem;
+    display: inline;
+    font-size: 2.4rem;
     font-weight: bold;
-    color: white;
+    color: var(--white);
 }
 
-.interface {
+/* right side of header */
+
+.header-icons {
     display: flex;
-    flex-direction: row;
-
     align-items: center;
-    justify-content: space-between;
-
+    gap: 1rem;
+    height: 100%;
+    color: var(--grey);
 }
 
-.reload-button {
-    background-color: transparent;
-    border: none;
-
-    transition: transform 0.25s;
-}
-
-.reload-button:hover{
-    cursor: pointer;
-}
-
-.reload-button:active {
-    transform: rotate(90deg);
-}
-
-.reload-button-image {
+.settings-button {
+    align-self: center;
     height: 1.5rem;
 }
 
-.wpm-count {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: yellow;
+.settings-button:hover {
+    cursor: pointer;
 }
 
-.typing-test-container {
+.profile-button {
+    align-self: center;
+    height: 1.2rem;
+}
+
+.profile-button:hover {
+    cursor: pointer;
+}
+
+/* main content */
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-self: center;
+    gap: 2rem;
+    color: var(--grey);
+}
+
+.typing-test {
     display: flex;
     flex-wrap: wrap;
     position: relative;
-
-    height: 10rem;
-
-    margin-top: 2%;
-    font-size: 2.5em;
-
-    color: #363a43;
-
-    word-spacing: 0.045 rem;
+    font-size: 2.5rem;
+    font-weight: 600;
     text-align: justify;
-    letter-spacing: 0.05rem;
-    /* line-height: 100%; */
-}
-
-[data-status="pausedCorrectLetter"],
-[data-status="pausedIncorrectLetter"],
-[data-status="pausedCorrectedLetter"],
-[data-status="pausedIncorrectLetter"],
-[data-status="pausedPendingIncorrectLetter"],
-[data-status="pausedPendingText"]
- {
-    filter: blur(5px);
-}
-
-.paused-test-overlay {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -100%);
-    z-index: 1000;
-
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-
-}
-
-.letter {
-    position: relative;
-    z-index: 1;
+    max-width: 45em;
+    margin-top: 15px;   
 }
 
 .typing-cursor {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: -2px;
+    background-color: var(--purple);
     width: 0.2rem;
     height: 2.5rem;
-    background-color: yellow;
-    position: absolute;
-    left: -2px;
-    top: 0;
     margin-right: 10px;
-    z-index: -1;
-
-    /* https://stackoverflow.com/questions/16344354/how-to-make-blinking-flashing-text-with-css-3 */
-
-    /* make it so this only happens at the start */
-    animation: blinker 1.25s linear infinite;
 }
 
-@keyframes blinker {
-    50% {
-        opacity: 0;
-    }
+.correct {
+    color: var(--white);
 }
 
-[data-status="pendingText"] {
-    color: rgb(54, 58, 67);
+.incorrect {
+    color: var(--red);
 }
 
-[data-status="correctLetter"] {
-    color: rgb(209, 209, 202);
+.pending {
+    color: var(--grey);
 }
 
-[data-status="incorrectLetter"] {
-    color: rgb(219, 108, 108);
+.reset-button {
+    height: 1.5rem;
 }
 
-[data-status="correctedLetter"] {
-    color: rgb(209, 209, 202);
+.reset-button:hover {
+    cursor: pointer;
 }
 
-[data-status="pendingIncorrectLetter"] {
-    color: rgb(54, 58, 67);
+/* left side of footer */
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    color: var(--grey);
+}
+
+.footer-left-side, .footer-right-side {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-weight: bold;
+    height: 100%;
+}
+
+.footer-content svg{
+    height: 1rem;
+}
+
+.contact-button,
+.linkedin-button,
+.github-button,
+.themes-button {
+    display: flex;
+    align-content: center;
+    gap: 5px;
+}
+
+.contact-button:hover,
+.linkedin-button:hover,
+.github-button:hover,
+.themes-button:hover {
+    cursor: pointer;
 }
