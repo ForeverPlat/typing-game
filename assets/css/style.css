@@ -1,6 +1,7 @@
 :root {
     --purple: #603ca8;
     --grey: #363a43;
+    --hover: #2e3037;
     --white: #e4e4e4;
     --red: #db6c6c;
 }
@@ -45,7 +46,7 @@ body {
 
 .logo-image {
     display: inline;
-    height: 100%;
+    height: 60%;
     color: var(--purple);
 }
 
@@ -71,17 +72,20 @@ body {
     height: 1.5rem;
 }
 
-.settings-button:hover {
-    cursor: pointer;
-}
-
 .profile-button {
     align-self: center;
     height: 1.2rem;
 }
 
-.profile-button:hover {
+.profile-button:hover,
+.settings-button:hover {
     cursor: pointer;
+    color: var(--hover);
+}
+
+.profile-button:active,
+.settings-button:active {
+    opacity: 0.7;
 }
 
 /* main content */
@@ -106,6 +110,11 @@ body {
     margin-top: 15px;   
 }
 
+#letter {
+    position: relative;
+    z-index: 1;
+}
+
 .typing-cursor {
     position: absolute;
     z-index: -1;
@@ -115,7 +124,16 @@ body {
     width: 0.2rem;
     height: 2.5rem;
     margin-right: 10px;
+    animation: blinker 1.5s linear infinite;
 }
+
+/* cursor animation */
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
 
 .correct {
     color: var(--white);
@@ -131,10 +149,19 @@ body {
 
 .reset-button {
     height: 1.5rem;
+    transition: color 0.35s;
+    transition: transform 0.35s;
 }
 
 .reset-button:hover {
     cursor: pointer;
+    transform: rotate(25deg);
+    color: var(--hover);
+}
+
+.reset-button:active {
+    opacity: 0.7;
+    transform: rotate(50deg);
 }
 
 /* left side of footer */
@@ -166,6 +193,7 @@ body {
     display: flex;
     align-content: center;
     gap: 5px;
+    transition: color 0.15s;
 }
 
 .contact-button:hover,
@@ -173,4 +201,12 @@ body {
 .github-button:hover,
 .themes-button:hover {
     cursor: pointer;
+    color: var(--hover);
+}
+
+.contact-button:active,
+.linkedin-button:active,
+.github-button:active,
+.themes-button:active {
+    opacity: 0.7;
 }

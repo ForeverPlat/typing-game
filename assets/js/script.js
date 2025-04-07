@@ -1,6 +1,6 @@
-let letterIndex = 0;
+export let letterIndex = 0;
 let wordIndex = 0;
-let time = 0;
+export let time = 0;
 let timeInterval;
 let stopTime;
 let isRuning = false;
@@ -91,13 +91,17 @@ function updateLetterIndex(key) {
 
 
 function createCursor() {
-    getLetters()[0].innerHTML += "<div class='typing-cursor' id='typing-cursor'></div>"
+    let letters = getLetters();
+    if (letters.length > 0) {
+        letters[0].innerHTML += "<div class='typing-cursor' id='typing-cursor'></div>";
+    }
 }
 
 
 function moveCursor(index) {
     let cursor = document.getElementById("typing-cursor");
     let letters = getLetters();
+    
     if (index < letters.length) {
         letters[index].prepend(cursor);
     }
@@ -119,7 +123,7 @@ function stopTimer() {
 
 
 function openResults() {
-    window.location = "/pages/typing-test-results.html";
+    window.location = "pages/typing-test-results.html";
 }
 
 function endGame() {
