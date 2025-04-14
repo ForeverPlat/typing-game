@@ -1,6 +1,7 @@
 export let letterIndex = 0;
 let wordIndex = 0;
-export let time = 0;
+let time = 0;
+let text;
 let timeInterval;
 let stopTime;
 let isRuning = false;
@@ -15,7 +16,7 @@ function getTime() {
 
 function generateText() {
 
-    let text = "lorem ipsum dolor sit amet";
+    let text = "lorem";
 
     return text;
 }
@@ -172,52 +173,54 @@ function openResults() {
 
 // need to make actually terminate the game
 function endGame() {
+    document.removeEventListener("keydown", keyDownHandler);
     stopTimer();
     openResults();
 }
 
 
-function startGame() {
-    let text = generateText();
-    document.getElementById("typing-test-text").innerHTML = formatText(text);
-    createCursor();
-    
+function keyDownHandler(event) {
 
-    document.addEventListener("keydown", event => {        
+    if (!isRuning) {
+        isRuning = true;
+        timeInterval = setInterval(updateTime, 1000);
+    }
 
-        if (!isRuning) {
-            isRuning = true;
-            timeInterval = setInterval(updateTime, 1000);
-        }
+    if (letterIndex == (text.length - 1)) {
+        endGame();
+    }
 
-        if (letterIndex == (text.length - 1)) {
-            endGame();
-        }
+    if (/^[a-zA-Z]$/.test(event.key)){
 
-        if (/^[a-zA-Z]$/.test(event.key)){
-
-            if (isValidLetter(event.key, letterIndex)) {
-                updateLetter("correct", letterIndex);
-                updateLetterIndex(event.key);
-
-            } else {
-                updateLetter("incorrect", letterIndex);
-                updateLetterIndex(event.key);
-    
-            }
-
-        } else if (event.key == " ") {
+        if (isValidLetter(event.key, letterIndex)) {
             updateLetter("correct", letterIndex);
             updateLetterIndex(event.key);
 
-        } else if (event.key == "Backspace") {
+        } else {
+            updateLetter("incorrect", letterIndex);
             updateLetterIndex(event.key);
-            updateLetter("pending", letterIndex);
 
-        } 
-        moveCursor(letterIndex);
+        }
 
-    });
+    } else if (event.key == " ") {
+        updateLetter("correct", letterIndex);
+        updateLetterIndex(event.key);
+
+    } else if (event.key == "Backspace") {
+        updateLetterIndex(event.key);
+        updateLetter("pending", letterIndex);
+
+    } 
+    moveCursor(letterIndex);
+
+}
+
+function startGame() {
+    text = generateText();
+    document.getElementById("typing-test-text").innerHTML = formatText(text);
+    createCursor();
+
+    document.addEventListener("keydown", keyDownHandler);
 
 }
 
