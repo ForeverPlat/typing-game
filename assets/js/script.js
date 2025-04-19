@@ -16,7 +16,7 @@ function getTime() {
 
 function generateText() {
 
-    let text = "lorem";
+    let text = "lorem ipsum dolor sit amet";
 
     return text;
 }
@@ -34,7 +34,10 @@ function formatText(text) {
             newText += `<span class="pending" id="letter">${currLetter}</span>`;
         }
         newText += `</div>`;
-        newText += `<span class="pending" id="letter">&nbsp;</span>`;
+
+        if (i < words.length - 1) {
+            newText += `<span class="pending" id="letter">&nbsp;</span>`;
+        }
 
     }
     
@@ -108,6 +111,13 @@ function moveCursor(index) {
     }
 }
 
+function startTimer() {
+    if (!isRuning) {
+        time = 0;
+    }
+    isRuning = true;
+    timeInterval = setInterval(updateTime, 1000);
+}
 
 function updateTime() {
     time += 1000;
@@ -120,6 +130,7 @@ function pauseTimer() {
 
 function stopTimer() {
     clearInterval(timeInterval);
+    isRuning = false;
 }
 
 const getWpm = () => {
@@ -127,7 +138,7 @@ const getWpm = () => {
     const letterIndex = getLetterIndex();
     const time = getTime()/60000;
 
-    return Math.round((letterIndex/5)/ time);
+    return Math.round(((letterIndex * (getAccuracy()/100))/5)/ time);
 }
 
 const getAccuracy = () => {
@@ -162,15 +173,12 @@ const getCharCount = () => {
 
 
 
-
-
 function keyDownHandler(event) {
 
-    if (letterIndex != (text.length - 1)) {
+    if (letterIndex != (text.length)) {
 
         if (!isRuning) {
-            isRuning = true;
-            timeInterval = setInterval(updateTime, 1000);
+            startTimer();
         }
         
         if (/^[a-zA-Z]$/.test(event.key)){
@@ -196,7 +204,7 @@ function keyDownHandler(event) {
         } 
         moveCursor(letterIndex);
 
-    } else {
+    } if (letterIndex == text.length) {
         endGame();
     }
 
@@ -206,6 +214,10 @@ function keyDownHandler(event) {
 
 function startGame() {
     letterIndex = 0;
+    document.getElementById('reset-button').addEventListener('click', event => {
+        stopTimer();
+        startGame();
+    });
     text = generateText();
     document.getElementById("typing-test-text").innerHTML = formatText(text);
     createCursor();
@@ -222,7 +234,7 @@ function openTypingTest() {
     mainContent.classList.add("main-content");
     mainContent.innerHTML = `<div class="typing-test" id="typing-test-text"></div>
                 
-                <svg class="reset-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="reset-button" id="reset-button" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier"> 
