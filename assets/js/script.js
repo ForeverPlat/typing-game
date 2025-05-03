@@ -16,7 +16,29 @@ function getTime() {
 
 function generateText() {
 
-    let text = "lorem ipsum dolor sit amet";
+    let textPool = "the and have that for you with not this but his from they say her she one all would there their what about which when make can like time just him know take into year your good some could them see other than then now look only come its over think also back after use two how our work first well way even new want because any these give day most us";
+
+    let poolList = textPool.split(" ");
+
+    let text = "";
+
+    for (let i = 0; i <= 25; i++) {
+
+        let randTextIndex = Math.floor(Math.random() * poolList.length);
+
+        console.log(randTextIndex);
+
+        text += poolList[randTextIndex];
+
+        if (i < 25) {
+            text += " ";
+        }
+
+        poolList.splice(randTextIndex, 1);
+    }
+
+
+    // let text = "lorem ipsum dolor sit amet";
 
     return text;
 }
