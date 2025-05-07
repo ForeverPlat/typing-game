@@ -22,15 +22,13 @@ function generateText() {
 
     let text = "";
 
-    for (let i = 0; i <= 25; i++) {
+    for (let i = 0; i <= 37; i++) {
 
         let randTextIndex = Math.floor(Math.random() * poolList.length);
 
-        console.log(randTextIndex);
-
         text += poolList[randTextIndex];
 
-        if (i < 25) {
+        if (i < 37) {
             text += " ";
         }
 
@@ -216,8 +214,16 @@ function keyDownHandler(event) {
             }
     
         } else if (event.key == " ") {
-            updateLetter("correct", letterIndex);
-            updateLetterIndex(event.key);
+
+            if (isValidLetter(event.key, letterIndex)) {
+                updateLetter("correct", letterIndex);
+                updateLetterIndex(event.key);
+    
+            } else {
+                updateLetter("incorrect", letterIndex);
+                updateLetterIndex(event.key);
+    
+            }
     
         } else if (event.key == "Backspace") {
             updateLetterIndex(event.key);
