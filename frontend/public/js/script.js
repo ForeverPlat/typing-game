@@ -4,17 +4,14 @@ let time = 0;
 let text;
 let timeInterval;
 let stopTime;
-let isRuning = false;
+let isRunning = false;
 
-function getLetterIndex() {
-    return letterIndex;
-}
+const getLetterIndex = () => letterIndex;
 
-function getTime() {
-    return time;
-}
 
-function generateText() {
+const getTime = () => time;
+
+const generateText = () => {
 
     let textPool = "the and have that for you with not this but his from they say her she one all would there their what about which when make can like time just him know take into year your good some could them see other than then now look only come its over think also back after use two how our work first well way even new want because any these give day most us";
 
@@ -41,7 +38,7 @@ function generateText() {
     return text;
 }
 
-function formatText(text) {
+const formatText = (text) => {
     let words = text.split(" ");
     let newText = "";
 
@@ -64,11 +61,11 @@ function formatText(text) {
     return newText;
 }
 
-function getLetters() {
+const getLetters = () => {
     return document.querySelectorAll("#letter");
 }
 
-function isValidLetter(letter, index) {
+const isValidLetter = (letter, index) => {
 
     let letters = getLetters();
     let currLetter = letters[index].textContent;
@@ -81,7 +78,7 @@ function isValidLetter(letter, index) {
 }
 
 
-function updateLetter(status, index) {
+const updateLetter = (status, index) => {
     let letters = getLetters();
     let currLetter = letters[index];
 
@@ -99,7 +96,7 @@ function updateLetter(status, index) {
 }
 
 
-function updateLetterIndex(key) {
+const updateLetterIndex = (key) => {
     if (key == "Backspace") {
         if (letterIndex > 0) {
 
@@ -114,7 +111,7 @@ function updateLetterIndex(key) {
 }
 
 
-function createCursor() {
+const createCursor = () => {
     let letters = getLetters();
     if (letters.length > 0) {
         letters[0].innerHTML += "<div class='typing-cursor' id='typing-cursor'></div>";
@@ -122,7 +119,7 @@ function createCursor() {
 }
 
 
-function moveCursor(index) {
+const moveCursor = (index) => {
     let cursor = document.getElementById("typing-cursor");
     let letters = getLetters();
     
@@ -131,26 +128,26 @@ function moveCursor(index) {
     }
 }
 
-function startTimer() {
-    if (!isRuning) {
+const startTimer = () => {
+    if (!isRunning) {
         time = 0;
     }
-    isRuning = true;
+    isRunning = true;
     timeInterval = setInterval(updateTime, 1000);
 }
 
-function updateTime() {
+const updateTime = () => {
     time += 1000;
 }
 
 
-function pauseTimer() {
+const pauseTimer = () => {
 
 }
 
-function stopTimer() {
+const stopTimer = () => {
     clearInterval(timeInterval);
-    isRuning = false;
+    isRunning = false;
 }
 
 const getWpm = () => {
@@ -193,11 +190,11 @@ const getCharCount = () => {
 
 
 
-function keyDownHandler(event) {
+const keyDownHandler = (event) => {
 
     if (letterIndex != (text.length)) {
 
-        if (!isRuning) {
+        if (!isRunning) {
             startTimer();
         }
         
@@ -240,7 +237,7 @@ function keyDownHandler(event) {
 
 }
 
-function startGame() {
+const startGame = () => {
     letterIndex = 0;
     document.getElementById('reset-button').addEventListener('click', event => {
         stopTimer();
@@ -254,7 +251,7 @@ function startGame() {
 
 }
 
-function openTypingTest() {
+const openTypingTest = () => {
 
     let mainContent = document.getElementById("main-content");
 
@@ -274,7 +271,7 @@ function openTypingTest() {
 
 }
 
-function openResults() {
+const openResults = () => {
 
     let mainContent = document.getElementById("main-content");
 
@@ -290,7 +287,7 @@ function openResults() {
 
 
 // need to make actually terminate the game
-function endGame() {
+const endGame = () => {
     document.removeEventListener("keydown", keyDownHandler);
     stopTimer();
     openResults();
@@ -300,13 +297,6 @@ document.addEventListener("DOMContentLoaded", function() {
     startGame();
 });
 
-//test
-function displayTime() {
-	console.log(time);
-
-}
-
+const displayTime = () => console.log(time);
 
 setInterval(displayTime, 1000);
-
-//
