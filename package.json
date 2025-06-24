@@ -2,12 +2,12 @@
   "name": "typing-game",
   "version": "1.0.0",
   "description": "A simple typing game built with HTML, CSS, and JavaScript. Test your speed and accuracy by typing randomly generated text within a time limit. Perfect for improving typing skills!",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "start": "node backend/server",
     "dev": "node --watch backend/server"
-    },
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ForeverPlat/typing-game.git"
@@ -20,6 +20,10 @@
   },
   "homepage": "https://github.com/ForeverPlat/typing-game#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongodb": "^6.17.0",
+    "mongoose": "^8.16.0"
   }
 }
