@@ -5,9 +5,9 @@ import dotenv from 'dotenv';
 import connectToDB from './Database/db.js';
 
 import auth from './Routes/auth.js';
-import { log } from 'console';
+import profile from './Routes/profile.js';
 
-dotenv.config();
+dotenv.config({ path: './.env' });
 
 const PORT = process.env.PORT || 3000;
 
@@ -25,7 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 //  setup static folder
 app.use(express.static(path.join(frontendDir, 'public')));
 
-app.use('/api', auth);
+app.use('/api/auth', auth);
+app.use('/api', profile);
 
 // Connect to db before starting server
 connectToDB().then(() => {

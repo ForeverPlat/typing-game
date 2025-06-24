@@ -1,6 +1,6 @@
-import express from 'express';
 import User from '../Models/User.js';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 export const signup = async (req, res) => {
 
@@ -43,12 +43,12 @@ export const signup = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-
-    const { username, password } = req.body;
  
     try {
         
-        const user = await User.findOne({ username })
+        const { username, password } = req.body;
+
+        const user = await User.findOne({ username });
 
         //  check if all fields are filled
         if (!username || !password) {
@@ -65,8 +65,25 @@ export const login = async (req, res) => {
             return res.status(401).json({ msg: `Incorrect Password` });
         }
 
+        // create user token using JsonWebToken (jwt)
+        const token = jwt.sign({
+            userId: user._id,
+            username: user.username,
+            role: user.role
+        }, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRES_IN
+        });
+
         const safeUser = { username: user.username }; //  this is called masking the response
-        return res.json({ message: 'Login Successful', user: safeUser });
+
+        return res.json({
+            success: true,
+            message: 'Login Successful',
+            data: {
+                token,
+                user: safeUser
+            }
+        });
 
     } catch (error) {
         
