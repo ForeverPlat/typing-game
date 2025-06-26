@@ -33,8 +33,9 @@ const signup = async (e) => {
     const data = await res.json();
     console.log(data);
 
-    // make a callback to open the profile page
-    // window.location.href='../index.html';
+    localStorage.setItem('token', data.data.token);
+    window.location.href='../pages/profile.html';
+
 }
 
 // login
@@ -56,6 +57,7 @@ const login = async (e) => {
     console.log(data);
 
     localStorage.setItem('token', data.data.token);
+    window.location.href='../pages/profile.html';
 }
 
 loginForm.addEventListener('submit', login);

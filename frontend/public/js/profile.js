@@ -1,4 +1,4 @@
-document.querySelector('#profile-button').addEventListener("click", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const token = localStorage.getItem('token');
 
     const res = await fetch('http://localhost:3000/api/profile', {
@@ -8,13 +8,13 @@ document.querySelector('#profile-button').addEventListener("click", async () => 
         }
     });
 
-    const json = await res.json();
-    console.log(json);
+    const data = await res.json();
+    console.log(data);
 
-    if (!json.success) {
+    if (!data.success) {
         window.location.href='../pages/auth.html';
         return;
     }
 
-    window.location.href='../pages/profile.html';
+    document.getElementById("username").textContent = data.user.username;
 });

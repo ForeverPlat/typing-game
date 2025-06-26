@@ -31,8 +31,14 @@ export const signup = async (req, res) => {
         await newUser.save();
 
         const safeUser = { username: newUser.username }; //  this is called masking the response
-        return res.json({ message: 'Signup Successful', user: safeUser });
-
+        return res.json({
+            success: true,
+            message: 'Signup Successful',
+            data: {
+                token,
+                user: safeUser
+            }
+        });
     } catch (error) {
 
         console.error(error);
