@@ -297,9 +297,7 @@ document.addEventListener("DOMContentLoaded", function() {
     startGame();
 });
 
-document.querySelector('#profile-button').addEventListener("click", () => {
-     window.location.href='../pages/auth.html';
-});
+
 
 const displayTime = () => console.log(time);
 

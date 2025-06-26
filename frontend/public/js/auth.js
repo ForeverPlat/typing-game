@@ -28,12 +28,35 @@ const signup = async (e) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ username, email, password })
-    })
+    });
 
     const data = await res.json();
     console.log(data);
 
+    // make a callback to open the profile page
     // window.location.href='../index.html';
 }
 
+// login
+const login = async (e) => {
+    e.preventDefault();
+    
+    const username = loginForm.querySelector("input[type='text']").value;
+    const password = loginForm.querySelector("input[type='password']").value;
+
+    const res = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    localStorage.setItem('token', data.data.token);
+}
+
+loginForm.addEventListener('submit', login);
 signupForm.addEventListener('submit', signup);
