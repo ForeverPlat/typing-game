@@ -31,7 +31,11 @@ export const addTestResult = async (req, res) => {
 export const getUserResults = async (req, res) => {
     const userId = req.userInfo.userId;
 
-    const results = await TestResult.find({ user: userId });
+    const results = await TestResult.find({ user: userId }).sort({ createdAt: -1});
+
+    // results.forEach(result => {
+    //     console.log(result.wpm);
+    // });
 
     res.json({
         success: true,
