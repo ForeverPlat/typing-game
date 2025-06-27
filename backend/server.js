@@ -6,6 +6,7 @@ import connectToDB from './Database/db.js';
 
 import auth from './Routes/auth.js';
 import profile from './Routes/profile.js';
+import testResult from './Routes/testResult.js';
 
 dotenv.config({ path: './.env' });
 
@@ -27,6 +28,7 @@ app.use(express.static(path.join(frontendDir, 'public')));
 
 app.use('/api/auth', auth);
 app.use('/api', profile);
+app.use('/api', testResult);
 
 // Connect to db before starting server
 connectToDB().then(() => {

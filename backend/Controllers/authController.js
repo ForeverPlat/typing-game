@@ -30,6 +30,17 @@ export const signup = async (req, res) => {
 
         await newUser.save();
 
+        // create user token using JsonWebToken (jwt)
+        // ---> THIS MIGHT CAUSE ISSUE DO TESTING
+        const token = jwt.sign({
+            userId: newUser._id,
+            username: newUser.username,
+            email: newUser.email,
+            role: newUser.role
+        }, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRES_IN
+        });
+
         const safeUser = { username: newUser.username }; //  this is called masking the response
         return res.json({
             success: true,
@@ -75,6 +86,7 @@ export const login = async (req, res) => {
         const token = jwt.sign({
             userId: user._id,
             username: user.username,
+            email: user.email,
             role: user.role
         }, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIRES_IN
