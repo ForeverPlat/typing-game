@@ -28,7 +28,16 @@ export const addTestResult = async (req, res) => {
     });
 }
 
+export const getUserResults = async (req, res) => {
+    const userId = req.userInfo.userId;
 
-export const getUserResults = () => {
+    const results = await TestResult.find({ user: userId });
 
+    res.json({
+        success: true,
+        message: 'Got user result',
+        data: {
+            results
+        }
+    });
 }

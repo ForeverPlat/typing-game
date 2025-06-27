@@ -5,10 +5,11 @@ const testResultSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: true,
+        index: true
     },
     wpm: {
-        type: String,
+        type: Number,
         required: true
     },
     accuracy: {
