@@ -1,4 +1,66 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+.main-results {
+    display: grid;
+    grid-template-rows: 0.75fr 1fr 1fr;
+    justify-items: center;
+    text-align: center;
+}
+
+.user-profile {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
 .profile-image {
-    height: 10rem;
+    height: 5rem;
     color: var(--grey);
+}
+
+.profile-info {
+    justify-items: left;
+    align-self: center;
+}
+
+.username {
+    font-size: 3rem;
+    color: var(--grey);
+}
+
+.time-typing-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.time-typing-text {
+    color: var(--grey);
+}
+
+.time-typing {
+    color: var(--white);
+}
+
+/* stats */
+
+.profile-stats-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 66%;
+}
+
+.stats-num {
+    font-size: 5rem;
+    font-weight: bold;
+    color: var(--purple);
+}
+
+.stats-text {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--white);
 }

@@ -62,16 +62,75 @@
 
             <div class="main-results">
 
-                <div>
-                    <svg class="profile-image" id="profile-button" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path d="M12 11.796C14.7189 11.796 16.9231 9.60308 16.9231 6.89801C16.9231 4.19294 14.7189 2.00005 12 2.00005C9.28106 2.00005 7.07692 4.19294 7.07692 6.89801C7.07692 9.60308 9.28106 11.796 12 11.796Z" fill="currentColor"></path> 
-                            <path d="M14.5641 13.8369H9.4359C6.46154 13.8369 4 16.2859 4 19.245C4 19.9593 4.30769 20.5716 4.92308 20.8777C5.84615 21.3879 7.89744 22.0001 12 22.0001C16.1026 22.0001 18.1538 21.3879 19.0769 20.8777C19.5897 20.5716 20 19.9593 20 19.245C20 16.1838 17.5385 13.8369 14.5641 13.8369Z" fill="currentColor"></path>
-                        </g>
-                    </svg>
-                    <div class="username" id="username"></div>
+                <div class="profile-container" id="user-profile-container">
+
+                    <div class="user-profile">
+
+                        <!-- Left side of user profile -->
+                        <svg class="profile-image" id="profile-button" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M12 11.796C14.7189 11.796 16.9231 9.60308 16.9231 6.89801C16.9231 4.19294 14.7189 2.00005 12 2.00005C9.28106 2.00005 7.07692 4.19294 7.07692 6.89801C7.07692 9.60308 9.28106 11.796 12 11.796Z" fill="currentColor"></path> 
+                                <path d="M14.5641 13.8369H9.4359C6.46154 13.8369 4 16.2859 4 19.245C4 19.9593 4.30769 20.5716 4.92308 20.8777C5.84615 21.3879 7.89744 22.0001 12 22.0001C16.1026 22.0001 18.1538 21.3879 19.0769 20.8777C19.5897 20.5716 20 19.9593 20 19.245C20 16.1838 17.5385 13.8369 14.5641 13.8369Z" fill="currentColor"></path>
+                            </g>
+                        </svg>
+
+                        <!-- Right side of user profile -->
+                         <div class="profile-info">
+                            <div class="username" id="username"></div>
+
+                            <div class="time-typing-container">
+                                <div class="time-typing-text">time typing:</div>
+                                <div class="time-typing"></div>
+                            </div>
+
+                         </div>
+                    </div>
+                </div>
+
+                <!-- profile stats -->
+
+                <!-- wpm stats -->
+                <div class="profile-stats-container" id="wpm-stats-container">
+
+                    <div class="wpm-container" id="highest-wpm-container">
+                        <div class="stats-num" id="highest-wpm-num"></div>
+                        <div class="stats-text">highest wpm</div>
+                    </div>
+
+                    <div class="wpm-container" id="average-wpm-container">
+                        <div class="stats-num" id="average-wpm-num"></div>
+                        <div class="stats-text">average wpm</div>
+                    </div>
+
+                    <div class="wpm-container" id="last-5-average-wpm-container">
+
+                        <div class="stats-num" id="last-5-average-wpm-num"></div>
+                        <div class="stats-text">average wpm <br>(last 5 tests)</div>
+                    </div>
+
+                </div>
+
+                <!-- accuracy stats -->
+                <div class="profile-stats-container" id="accuracy-stats-container">
+                    
+                    <div class="accuracy-container" id="highest-accuracy-container">
+                        <div class="stats-num" id="highest-accuracy-num"></div>
+                        <div class="stats-text">highest accuracy</div>
+                    </div>
+
+                    <div class="accuracy-container" id="average-accuracy-container">
+                        <div class="stats-num" id="average-accuracy-num"></div>
+                        <div class="stats-text">average accuracy</div>
+                    </div>
+
+                    <div class="accuracy-container" id="last-5-average-accuracy-container">
+
+                        <div class="stats-num" id="last-5-average-accuracy-num"></div>
+                        <div class="stats-text">average accuracy <br>(last 5 tests)</div>
+                    </div>
+
                 </div>
 
             </div>
