@@ -1,6 +1,6 @@
 const token = localStorage.getItem('token');
 
-const setHighestWPM = async (results) => {
+const setHighestWPM = (results) => {
     let highestWPM = 0;
     
     results.forEach(result => {
@@ -16,7 +16,7 @@ const setHighestWPM = async (results) => {
     console.log(highestWPM);
 }
 
-const setAverageWPM = async (results) => {
+const setAverageWPM = (results) => {
     let total = 0;
     let count = 0;
 
@@ -26,12 +26,12 @@ const setAverageWPM = async (results) => {
         count++;
     });
 
-    const average = total / count;
+    const average = Math.floor(total / count);
 
     document.getElementById('average-wpm-num').textContent = average;
 }
 
-const setAverageWPMLastFive = async (results) => {
+const setAverageWPMLastFive = (results) => {
     let total = 0;
     const limit = Math.min(results.length, 5);
 
@@ -40,15 +40,14 @@ const setAverageWPMLastFive = async (results) => {
     }
 
     
-
-    const average = total / limit;
+    const average = Math.floor(total / limit);
 
     document.getElementById('last-5-average-wpm-num').textContent = average;
 }
 
 //  accuracy stats
 
-const setHighestAccuracy = async (results) => {
+const setHighestAccuracy = (results) => {
     let highestAccuracy = 0;
     
     results.forEach(result => {
@@ -64,7 +63,7 @@ const setHighestAccuracy = async (results) => {
     console.log(highestAccuracy); 
 }
 
-const setAverageAccuracy = async (results) => {
+const setAverageAccuracy = (results) => {
     let total = 0;
     let count = 0;
 
@@ -74,12 +73,12 @@ const setAverageAccuracy = async (results) => {
         count++;
     });
 
-    const average = total / count;
+    const average = Math.floor(total / count);
 
     document.getElementById('average-accuracy-num').textContent = average;
 }
 
-const setAverageAccuracyLastFive = async (results) => {
+const setAverageAccuracyLastFive = (results) => {
     let total = 0;
     const limit = Math.min(results.length, 5);
 
@@ -87,9 +86,31 @@ const setAverageAccuracyLastFive = async (results) => {
         total += results[i].accuracy;
     }
 
-    const average = total / limit;
+    const average = Math.floor(total / limit);
 
     document.getElementById('last-5-average-accuracy-num').textContent = average;
+}
+
+
+const setTimeTyping = (results) => {
+    let totalTime = 0;
+
+    results.forEach(result => {
+        totalTime += result.duration;
+    });
+
+    const totalSeconds = Math.floor(totalTime / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const formattedTime = [
+        hours.toString().padStart(2, '0'),
+        minutes.toString().padStart(2, '0'),
+        seconds.toString().padStart(2, '0')
+    ].join(':');
+
+    document.getElementById('time-typing').textContent = formattedTime;
 }
 
 //  --------------------------------------------    //
@@ -114,8 +135,7 @@ const getStats = async () => {
     setAverageAccuracy(results);
     setAverageAccuracyLastFive(results);
 
-
-
+    setTimeTyping(results);
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
