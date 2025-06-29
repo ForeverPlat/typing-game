@@ -40,7 +40,8 @@
     color: var(--grey);
 }
 
-.settings-button {
+.logout-button {
+    display: none;
     align-self: center;
     height: 1.5rem;
 }
@@ -51,12 +52,12 @@
 }
 
 .profile-button:hover,
-.settings-button:hover {
+.logout-button:hover {
     cursor: pointer;
     color: var(--hover);
 }
 
 .profile-button:active,
-.settings-button:active {
+.logout-button:active {
     opacity: 0.7;
 }

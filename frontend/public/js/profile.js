@@ -13,7 +13,6 @@ const setHighestWPM = (results) => {
     }); 
 
     document.getElementById('highest-wpm-num').textContent = highestWPM;
-    console.log(highestWPM);
 }
 
 const setAverageWPM = (results) => {
@@ -60,7 +59,6 @@ const setHighestAccuracy = (results) => {
     }); 
 
     document.getElementById('highest-accuracy-num').textContent = highestAccuracy;
-    console.log(highestAccuracy); 
 }
 
 const setAverageAccuracy = (results) => {
@@ -147,7 +145,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     const data = await res.json();
-    console.log(data);
 
     if (!data.success) {
         window.location.href='../pages/auth.html';
@@ -157,6 +154,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("username").textContent = data.user.username;
     await getStats();
 
-
-    
 });
