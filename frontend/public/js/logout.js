@@ -1,14 +1,14 @@
-const token = localStorage.getItem('token');
+const logoutToken = localStorage.getItem('token');
 
 const checkLoginStatus = async() => {
-    if (!token) {
+    if (!logoutToken) {
         return false;
     }
 
     const res = await fetch('http://localhost:3000/api/auth/verify', {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${logoutToken}`
         }
     });
 
@@ -19,8 +19,11 @@ const checkLoginStatus = async() => {
         return false;
     }
 
-    document.getElementById('logout-button').style.display = 'block';
-    document.getElementById('logout-button').addEventListener('click', logout);
+    const logoutBtn = document.getElementById('logout-button');
+    if (logoutBtn) {
+        logoutBtn.style.display = 'block';
+        logoutBtn.addEventListener('click', logout);
+    }
 
     return true;
 }
@@ -30,7 +33,7 @@ const logout = async() => {
 
     if (await checkLoginStatus()) {
         localStorage.removeItem('token'); 
-        window.location.href='../pages/auth.html';
+        window.location.href='../index.html';
     }
 
 }

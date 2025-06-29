@@ -60,5 +60,9 @@ const login = async (e) => {
     window.location.href='../pages/profile.html';
 }
 
-loginForm.addEventListener('submit', login);
-signupForm.addEventListener('submit', signup);
+if (loginForm) {
+    loginForm.addEventListener('submit', login);
+}
+if (signupForm) {
+    signupForm.addEventListener('submit', signup);
+}
