@@ -33,8 +33,8 @@ const signup = async (e) => {
     const data = await res.json();
     console.log(data);
 
-    localStorage.setItem('token', data.data.token);
-    window.location.href='../pages/profile.html';
+    // localStorage.setItem('token', data.data.token);
+    // window.location.href='../pages/profile.html';
 
 }
 
@@ -56,8 +56,10 @@ const login = async (e) => {
     const data = await res.json();
     console.log(data);
 
-    localStorage.setItem('token', data.data.token);
-    window.location.href='../pages/profile.html';
+    if (data.success) {
+        localStorage.setItem('token', data.data.token);
+        window.location.href='../pages/profile.html';
+    }   
 }
 
 if (loginForm) {

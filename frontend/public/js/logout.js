@@ -5,7 +5,7 @@ const checkLoginStatus = async() => {
         return false;
     }
 
-    const res = await fetch('http://localhost:3000/api/auth/verify', {
+    const res = await fetch('http://localhost:3000/api/auth/verify-user', {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${logoutToken}`

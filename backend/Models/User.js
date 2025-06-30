@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
         trim: true,
         lowercase: true
     },
@@ -22,7 +22,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'admin'],
         default: 'user'
+    },
+    verified: {
+        type: Boolean,
+        default: false,
+        required: true
+    },
+    verificationToken: {
+        type: String
+    },
+    verificationTokenExpires: {
+        type: Date
     }
+
 
 }, { timestamps: true })
 

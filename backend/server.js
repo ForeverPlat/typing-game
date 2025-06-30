@@ -7,7 +7,8 @@ import connectToDB from './Database/db.js';
 import auth from './Routes/auth.js';
 import profile from './Routes/profile.js';
 import testResult from './Routes/testResult.js';
-import verify from './Routes/verify.js';
+import verify from './Routes/verifyUser.js';
+import verifyEmail from './Routes/verifyEmail.js';
 
 dotenv.config({ path: './.env' });
 
@@ -28,7 +29,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(frontendDir, 'public')));
 
 app.use('/api/auth', auth);
-app.use('/api/auth', verify)
+app.use('/api/auth', verify);
+app.use('/api/auth', verifyEmail);
 app.use('/api', profile);
 app.use('/api', testResult);
 
