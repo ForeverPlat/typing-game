@@ -75,7 +75,7 @@ const login = async (e) => {
     if (!data.success) {
         loginMsg.style.color = '#db6c6c';
         loginMsg.textContent = data.msg;
-        await delay(3000);
+        await delay(3500);
         return loginMsg.style.display = 'none';
     }
 

@@ -10,17 +10,12 @@ export const signup = async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
-        console.log('Starting signup...');
-
         //  check if username/ email is already in the db
         const userExists = await User.findOne({ $or: [{ username }, { email }] });
         
-        console.log('Checking if user exists...');
         if (userExists && userExists.verified){
             return res.status(409).json({ msg: `This user already exists` });
         }
-        console.log('Checked if user exists...');
-
 
         if (!username || !email || !password) {
             return res.status(404).json({ msg: `All fields need to be filled` });
@@ -44,12 +39,8 @@ export const signup = async (req, res) => {
         });
 
         await newUser.save();
-        console.log('User created');
-
 
         await sendVerificationEmail(newUser);
-        console.log('sending email...');
-
         
         // // create user token using JsonWebToken (jwt)
         // // ---> THIS MIGHT CAUSE ISSUE DO TESTING
@@ -111,13 +102,18 @@ export const login = async (req, res) => {
                 user.verificationToken = crypto.randomBytes(32).toString('hex');
                 user.verificationTokenExpires = new Date(now.getTime() + 60 * 60 * 1000); // 1 hour
                 await user.save();
-            }
+                await sendVerificationEmail(user);
 
-            await sendVerificationEmail(user);
+                return res.status(403).json({
+                    success: false,
+                    msg: 'Email not verified. Verification email sent.',
+                });
+
+            }
 
             return res.status(403).json({
                 success: false,
-                msg: 'Email not verified. A new verification email has been sent.',
+                msg: 'Email not verified. Please check your inbox.',
             });
         }
 
