@@ -3,6 +3,8 @@ const loginForm = document.getElementById("login-form");
 // const signupBtn = document.getElementById("signup-button");
 // const loginBtn = document.getElementById("login-button");
 
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 //  sign up
 
 const signup = async (e) => {
@@ -14,8 +16,6 @@ const signup = async (e) => {
     const passwords = signupForm.querySelectorAll('input[type="password"]');
     const password = passwords[0]?.value;
     const confirmPassword = passwords[1]?.value;
-
-    console.log(password)
 
     if (password !== confirmPassword) {
         console.log("Passwords do not match.");
@@ -32,6 +32,20 @@ const signup = async (e) => {
 
     const data = await res.json();
     console.log(data);
+
+    const signupMsg = document.getElementById('signup-msg');
+
+    if (!data.success) {
+        signupMsg.style.color = '#db6c6c';
+        signupMsg.textContent = data.msg;
+        await delay(3000);
+        return signupMsg.style.display = 'none';
+    }
+
+    signupMsg.style.color = '#70c470';
+    signupMsg.textContent = 'Verification email sent.'
+    await delay(3000);
+    signupMsg.style.display = 'none'; 
 
     // localStorage.setItem('token', data.data.token);
     // window.location.href='../pages/profile.html';
@@ -56,10 +70,17 @@ const login = async (e) => {
     const data = await res.json();
     console.log(data);
 
-    if (data.success) {
-        localStorage.setItem('token', data.data.token);
-        window.location.href='../pages/profile.html';
-    }   
+    const loginMsg = document.getElementById('login-msg');
+
+    if (!data.success) {
+        loginMsg.style.color = '#db6c6c';
+        loginMsg.textContent = data.msg;
+        await delay(3000);
+        return loginMsg.style.display = 'none';
+    }
+
+    localStorage.setItem('token', data.data.token);
+    window.location.href='../pages/profile.html';
 }
 
 if (loginForm) {

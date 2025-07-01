@@ -41,6 +41,12 @@ input:focus {
     width: 100%;
 }
 
+.auth-msg {
+    color: var(--white);
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
 button {
     width: 100%;
     /* margin-top: 0.25rem; */
