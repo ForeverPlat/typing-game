@@ -4,8 +4,9 @@ import { sendVerificationEmail } from '../utils/sendVerificationEmail.js';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { createError } from '../utils/createError.js';
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
 
     try {
         const { username, email, password } = req.body;
@@ -14,11 +15,11 @@ export const signup = async (req, res) => {
         const userExists = await User.findOne({ $or: [{ username }, { email }] });
         
         if (userExists && userExists.verified){
-            return res.status(409).json({ msg: `This user already exists` });
+            return next(createError('This user already exists.', 409));
         }
 
         if (!username || !email || !password) {
-            return res.status(404).json({ msg: `All fields need to be filled` });
+            return next(createError('All fields need to be filled', 400));
         }
 
         //  encrypt password before sending to db
@@ -63,16 +64,14 @@ export const signup = async (req, res) => {
                 user: safeUser
             }
         });
-    } catch (error) {
+    } catch (err) {
 
-        console.error(error);
-        res.status(500).json({ message: 'An error occurred, please try again.'});
-        
+        next(err);
     }
 
 }
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
  
     try {
         
@@ -82,17 +81,17 @@ export const login = async (req, res) => {
 
         //  check if all fields are filled
         if (!username || !password) {
-            return res.status(400).json({ msg: `All fields need to be filled` });
+            return next(createError('All fields need to be filled', 400));
         } 
         
         if (!user) {
-            return res.status(404).json({ msg: `User not found.` });
+            return next(createError('User not found.', 404));
         }
 
         const isCorrectPassword = await bcrypt.compare(password, user.password);
 
         if (!isCorrectPassword) {
-            return res.status(401).json({ msg: `Incorrect Password` });
+            return next(createError('Incorrect Password', 401));
         }
 
         if (!user.verified) {
@@ -104,17 +103,10 @@ export const login = async (req, res) => {
                 await user.save();
                 await sendVerificationEmail(user);
 
-                return res.status(403).json({
-                    success: false,
-                    msg: 'Email not verified. Verification email sent.',
-                });
-
+                return next(createError('Email not verified. Verification email sent.', 403));
             }
 
-            return res.status(403).json({
-                success: false,
-                msg: 'Email not verified. Please check your inbox.',
-            });
+            return next(createError('Email not verified. Please check your inbox.', 403));
         }
 
         // create user token using JsonWebToken (jwt)
@@ -140,11 +132,9 @@ export const login = async (req, res) => {
             }
         });
 
-    } catch (error) {
+    } catch (err) {
         
-        console.error(error);
-        res.status(500).json({ message: 'An error occurred, please try again.'});
-
+        next(err);
     }
 
 }
