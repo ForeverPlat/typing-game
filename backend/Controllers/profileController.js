@@ -3,7 +3,7 @@ export const getProfile = (req, res, next) => {
         const {username, userId} = req.userInfo;
 
         res.json({ 
-            success: 'true',
+            success: true,
             message: 'profile page',
             user: {
                 _id: userId,

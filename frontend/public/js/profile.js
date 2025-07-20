@@ -12,7 +12,7 @@ const setHighestWPM = (results) => {
         }
     }); 
 
-    document.getElementById('highest-wpm-num').textContent = highestWPM;
+    !highestWPM ? document.getElementById('highest-wpm-num').textContent = '-' : document.getElementById('highest-wpm-num').textContent = highestWPM;
 }
 
 const setAverageWPM = (results) => {
@@ -27,7 +27,7 @@ const setAverageWPM = (results) => {
 
     const average = Math.floor(total / count);
 
-    document.getElementById('average-wpm-num').textContent = average;
+    !average ? document.getElementById('average-wpm-num').textContent = '-' : document.getElementById('average-wpm-num').textContent = average;
 }
 
 const setAverageWPMLastFive = (results) => {
@@ -41,7 +41,7 @@ const setAverageWPMLastFive = (results) => {
     
     const average = Math.floor(total / limit);
 
-    document.getElementById('last-5-average-wpm-num').textContent = average;
+    !average ? document.getElementById('last-5-average-wpm-num').textContent = '-' : document.getElementById('last-5-average-wpm-num').textContent = average;
 }
 
 //  accuracy stats
@@ -58,7 +58,7 @@ const setHighestAccuracy = (results) => {
         }
     }); 
 
-    document.getElementById('highest-accuracy-num').textContent = highestAccuracy;
+    highestAccuracy === 0 ? document.getElementById('highest-accuracy-num').textContent = '-' : document.getElementById('highest-accuracy-num').textContent = highestAccuracy;
 }
 
 const setAverageAccuracy = (results) => {
@@ -73,7 +73,7 @@ const setAverageAccuracy = (results) => {
 
     const average = Math.floor(total / count);
 
-    document.getElementById('average-accuracy-num').textContent = average;
+    !average ? document.getElementById('average-accuracy-num').textContent = '-' : document.getElementById('average-accuracy-num').textContent = average;
 }
 
 const setAverageAccuracyLastFive = (results) => {
@@ -86,7 +86,7 @@ const setAverageAccuracyLastFive = (results) => {
 
     const average = Math.floor(total / limit);
 
-    document.getElementById('last-5-average-accuracy-num').textContent = average;
+    !average ? document.getElementById('last-5-average-accuracy-num').textContent = '-' : document.getElementById('last-5-average-accuracy-num').textContent = average;
 }
 
 
@@ -123,7 +123,7 @@ const getStats = async () => {
 
     const data = await res.json();
     const results = data.data.results;
-    console.log(results);
+    // console.log(results);
 
     setHighestWPM(results);
     setAverageWPM(results);

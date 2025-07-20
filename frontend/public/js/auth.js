@@ -1,5 +1,7 @@
 const signupForm = document.getElementById("signup-form");
 const loginForm = document.getElementById("login-form");
+const passwordField = document.getElementById('pass-input');
+const showPassBtn = document.getElementById('show-password-btn');
 // const signupBtn = document.getElementById("signup-button");
 // const loginBtn = document.getElementById("login-button");
 
@@ -55,6 +57,8 @@ const signup = async (e) => {
 // login
 const login = async (e) => {
     e.preventDefault();
+
+    passwordField.type = 'password';
     
     const username = loginForm.querySelector("input[type='text']").value;
     const password = loginForm.querySelector("input[type='password']").value;
@@ -88,4 +92,13 @@ if (loginForm) {
 }
 if (signupForm) {
     signupForm.addEventListener('submit', signup);
+}
+
+//  show password
+
+const showPassword = () => passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password';
+
+
+if (showPassBtn) {
+    showPassBtn.addEventListener('click', showPassword);
 }
