@@ -293,6 +293,10 @@ document.querySelector('#profile-button').addEventListener("click", () => {
     window.location.href='../pages/profile.html';
 });
 
+document.querySelector('#leaderboard-button').addEventListener("click", () => {
+    window.location.href='../pages/leaderboard.html';
+});
+
 const displayTime = () => console.log(time);
 
 setInterval(displayTime, 1000);

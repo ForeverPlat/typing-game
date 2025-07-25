@@ -155,3 +155,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await getStats();
 
 });
+
+document.querySelector('#leaderboard-button').addEventListener("click", () => {
+    window.location.href='../pages/leaderboard.html';
+});

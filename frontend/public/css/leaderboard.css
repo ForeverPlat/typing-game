@@ -1,0 +1,47 @@
+#leaderboard-container {
+    max-width: 1000px;
+    margin: auto;
+    overflow-x: auto;
+    color: var(--white);
+}
+
+#leaderboard {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 90%;
+    table-layout: fixed;
+}
+
+#leaderboard th, #leaderboard td {
+    border: none;
+    padding: 1.2em;             
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#leaderboard td:nth-child(2),
+#leaderboard th:nth-child(2) {
+    text-align: left;
+    padding-left: 1.75em; /* optional: add some breathing room */
+}
+
+#leaderboard tbody tr:nth-child(odd) {
+    background-color: var(--grey);
+}
+
+/* #leaderboard tbody tr:nth-child(even) {
+    background-color: var(--grey);
+} */
+
+#leaderboard tbody tr td:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#leaderboard tbody tr td:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+

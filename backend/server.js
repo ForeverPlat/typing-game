@@ -9,6 +9,7 @@ import profile from './Routes/profile.js';
 import testResult from './Routes/testResult.js';
 import verify from './Routes/verifyUser.js';
 import verifyEmail from './Routes/verifyEmail.js';
+import leaderboard from './Routes/leaderboard.js';
 import errorHandler from './Middlewares/errorMiddleware.js';
 
 dotenv.config({ path: './.env' });
@@ -34,6 +35,7 @@ app.use('/api/auth', verify);
 app.use('/api/auth', verifyEmail);
 app.use('/api', profile);
 app.use('/api', testResult);
+app.use('/api', leaderboard);
 
 app.use(errorHandler);
 

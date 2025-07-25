@@ -46,18 +46,25 @@
     height: 1.5rem;
 }
 
+.leaderboard-button {
+    align-self: center;
+    height: 1.25rem;
+}
+
 .profile-button {
     align-self: center;
     height: 1.25rem;
 }
 
 .profile-button:hover,
-.logout-button:hover {
+.logout-button:hover,
+.leaderboard-button:hover {
     cursor: pointer;
     color: var(--hover);
 }
 
 .profile-button:active,
-.logout-button:active {
+.logout-button:active,
+.leaderboard-button:active {
     opacity: 0.7;
 }
