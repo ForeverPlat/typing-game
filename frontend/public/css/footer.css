@@ -6,6 +6,11 @@
     color: var(--grey);
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .footer-left-side, .footer-right-side {
     display: flex;
     flex-direction: row;
