@@ -20,7 +20,7 @@ const generateText = () => {
 
     let poolList = textPool.split(" ");
 
-    let text = "";
+    text = "";
 
     for (let i = 0; i <= numTestWords; i++) {
 
@@ -73,6 +73,9 @@ const isValidLetter = (letter, index) => {
     let letters = getLetters();
     let currLetter = letters[index].textContent;
 
+    if (currLetter == "\u00A0" && letter == " ") {
+        return true;
+    } 
     if (currLetter == letter) {
         return true;
     }
@@ -183,7 +186,7 @@ const getCharCount = () => {
 
     for (let letter of letters) {
         
-        if (letter.textContent != " ") {
+        if (letter.textContent != "\u00A0") {
             charCount++;
         }
     }
@@ -214,6 +217,7 @@ const keyDownHandler = (event) => {
             }
     
         } else if (event.key == " ") {
+            console.log("This checks if space and sets status")
 
             if (isValidLetter(event.key, letterIndex)) {
                 updateLetter("correct", letterIndex);
@@ -299,4 +303,4 @@ document.querySelector('#leaderboard-button').addEventListener("click", () => {
 
 const displayTime = () => console.log(time);
 
-setInterval(displayTime, 1000);
+// setInterval(displayTime, 1000);
