@@ -7,6 +7,10 @@ let text;
 let timeInterval;
 let stopTime;
 let isRunning = false;
+let isPaused = false;
+let lastKeypressTime = 0;
+let inactivityTimeout;
+const INACTIVITY_LIMIT = 1000;
 
 const getLetterIndex = () => letterIndex;
 
@@ -135,26 +139,60 @@ const moveCursor = (index) => {
 }
 
 const startTimer = () => {
-    if (!isRunning) {
+    if (!isRunning && !isPaused) {
         time = 0;
     }
     isRunning = true;
     timeInterval = setInterval(updateTime, 1000);
+    removePauseOverlay();
 }
 
 const updateTime = () => {
     time += 1000;
 }
 
-
-const pauseTimer = () => {
-
-}
-
 const stopTimer = () => {
     clearInterval(timeInterval);
     isRunning = false;
 }
+
+const pauseGame = () => {
+    if (isRunning) {
+        stopTimer();
+        isPaused = true;
+        // showPause
+        showPauseOverlay();
+        console.log("Game paused");
+    }
+}
+
+const showPauseOverlay = () => {
+    const typingTest = document.querySelector(".main-content");
+    const pauseOverlay = document.createElement("div");
+    pauseOverlay.id = "pause-overlay";
+    pauseOverlay.innerHTML = '<div class="pause-message">Press any key to resume</div>';
+    typingTest.appendChild(pauseOverlay);
+};
+
+const removePauseOverlay = () => {
+    const pauseOverlay = document.getElementById("pause-overlay");
+    if (pauseOverlay) {
+        pauseOverlay.remove();
+    }
+};
+
+const resetInactivity = () => {
+    clearTimeout(inactivityTimeout);
+    if(isRunning) {
+        lastKeypressTime = Date.now();
+        inactivityTimeout = setTimeout(() => {
+            if (Date.now() - lastKeypressTime >= INACTIVITY_LIMIT) {
+                pauseGame();
+            }
+        }, INACTIVITY_LIMIT)
+    }
+}
+
 
 const getWpm = () => {
 
@@ -198,54 +236,52 @@ const getCharCount = () => {
 
 const keyDownHandler = (event) => {
 
-    if (letterIndex != (text.length)) {
-
-        if (!isRunning) {
-            startTimer();
-        }
-        
-        if (/^[a-zA-Z]$/.test(event.key)){
-    
-            if (isValidLetter(event.key, letterIndex)) {
-                updateLetter("correct", letterIndex);
-                updateLetterIndex(event.key);
-    
-            } else {
-                updateLetter("incorrect", letterIndex);
-                updateLetterIndex(event.key);
-    
-            }
-    
-        } else if (event.key == " ") {
-            console.log("This checks if space and sets status")
-
-            if (isValidLetter(event.key, letterIndex)) {
-                updateLetter("correct", letterIndex);
-                updateLetterIndex(event.key);
-    
-            } else {
-                updateLetter("incorrect", letterIndex);
-                updateLetterIndex(event.key);
-    
-            }
-    
-        } else if (event.key == "Backspace") {
-            updateLetterIndex(event.key);
-            updateLetter("pending", letterIndex);
-    
-        } 
-        moveCursor(letterIndex);
-
-    } if (letterIndex == text.length) {
+    if (letterIndex >= text.length - 1){
         endGame();
+        return;
     }
 
+    //  resumes game after pause
+    if (!isRunning && isPaused) {
+        startTimer();
+        return;
+    }
 
+    if (!isRunning && (/^[a-zA-Z]$/.test(event.key) || event.key === " ")) {
+        startTimer();
+    }
+
+    lastKeypressTime = Date.now()
+    resetInactivity();
+    
+    if (/^[a-zA-Z]$/.test(event.key) || event.key === " "){
+
+        if (isValidLetter(event.key, letterIndex)) {
+            updateLetter("correct", letterIndex);
+        } else {
+            updateLetter("incorrect", letterIndex);
+        }
+        updateLetterIndex(event.key);
+        moveCursor(letterIndex);
+
+    }  else if (event.key == "Backspace") {
+        updateLetterIndex(event.key);
+        updateLetter("pending", letterIndex);
+        moveCursor(letterIndex);
+    } 
 
 }
 
+// const unpauseHandler = (event) => {
+//     if(!isRunning && isPaused) {
+//         startTimer;
+//     }
+// }
+
 const startGame = () => {
     letterIndex = 0;
+    stopTimer();
+    clearTimeout(inactivityTimeout);
     document.getElementById('reset-button').addEventListener('click', event => {
         stopTimer();
         startGame();
@@ -303,4 +339,4 @@ document.querySelector('#leaderboard-button').addEventListener("click", () => {
 
 const displayTime = () => console.log(time);
 
-// setInterval(displayTime, 1000);
+setInterval(displayTime, 1000);
