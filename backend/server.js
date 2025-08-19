@@ -33,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 //  setup static folder
 app.use(express.static(path.join(frontendDir, 'public')));
 
-app.get('/', async (req, res) => {
+app.get('*.html', async (req, res) => {
   try {
     const indexHTML = await fs.readFile(indexPath, 'utf-8');
     const backendURL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
