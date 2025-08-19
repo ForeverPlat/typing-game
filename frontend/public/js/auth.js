@@ -6,7 +6,7 @@ const showPassBtn = document.getElementById('show-password-btn');
 // const loginBtn = document.getElementById("login-button");
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
-const { BACKEND_URL } = process.env;
+// const { BACKEND_URL } = process.env;
 
 //  sign up
 

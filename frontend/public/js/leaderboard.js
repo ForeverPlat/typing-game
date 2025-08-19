@@ -1,5 +1,5 @@
 const mainContent = document.getElementById('main-content');
-const { BACKEND_URL } = process.env;
+// const { BACKEND_URL } = process.env;
 
 const formatDate = (dateStr) => {
     const date = new Date(dateStr);

@@ -1,5 +1,5 @@
 const logoutToken = localStorage.getItem('token');
-const { BACKEND_URL } = process.env;
+// const { BACKEND_URL } = process.env;
 
 const checkLoginStatus = async() => {
     if (!logoutToken) {
