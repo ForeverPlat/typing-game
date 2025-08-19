@@ -12,6 +12,7 @@ import verify from './Routes/verifyUser.js';
 import verifyEmail from './Routes/verifyEmail.js';
 import leaderboard from './Routes/leaderboard.js';
 import errorHandler from './Middlewares/errorMiddleware.js';
+import { createError } from './utils/createError.js';
 
 dotenv.config({ path: './.env' });
 
@@ -34,18 +35,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(frontendDir, 'public')));
 
 app.get('*.html', async (req, res) => {
-  try {
-    const indexHTML = await fs.readFile(indexPath, 'utf-8');
-    const backendURL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
-    const updatedHTML = indexHTML.replace(
-      '</head>',
-      `<script>window.BACKEND_URL = '${backendURL}';</script></head>`
+const filePath = path.join(frontendDir, 'public', req.path);
+    try {
+        const htmlContent = await fs.readFile(filePath, 'utf-8');
+        const backendURL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
+        const updatedHTML = htmlContent.replace(
+            '</head>',
+            `<script>window.BACKEND_URL = '${backendURL}';</script></head>`
     );
     res.send(updatedHTML);
-  } catch (error) {
-    console.error('Error reading index.html:', error);
-    res.status(500).send('Internal Server Error');
-  }
+    } catch (error) {
+        return next(createError('Error passing website url.', 500));
+        
+    }
 });
 
 app.use('/api/auth', auth);
