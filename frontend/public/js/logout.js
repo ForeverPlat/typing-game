@@ -1,12 +1,12 @@
 const logoutToken = localStorage.getItem('token');
-const { BACKEND_URL } = window;
+// const backendURL = window.BACKEND_URL || 'http://localhost:3000';
 
 const checkLoginStatus = async() => {
     if (!logoutToken) {
         return false;
     }
 
-    const res = await fetch(`${BACKEND_URL}/api/auth/verify-user`, {
+    const res = await fetch(`${backendURL}/api/auth/verify-user`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${logoutToken}`

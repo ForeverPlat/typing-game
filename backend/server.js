@@ -23,9 +23,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const frontendDir = path.join(__dirname, '..', 'frontend');
 
-//  Path to index.html
-const indexPath = path.join(frontendDir, 'public', 'index.html');
-
 const app = express();
 
 app.use(express.json());
@@ -34,21 +31,24 @@ app.use(express.urlencoded({ extended: true }));
 //  setup static folder
 app.use(express.static(path.join(frontendDir, 'public')));
 
-app.get('*.html', async (req, res) => {
-const filePath = path.join(frontendDir, 'public', req.path);
+app.use(async (req, res, next) => {
+  const filePath = path.join(frontendDir, 'public', req.path);
+  if (filePath.endsWith('.html')) {
     try {
-        const htmlContent = await fs.readFile(filePath, 'utf-8');
-        const backendURL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
-        const updatedHTML = htmlContent.replace(
-            '</head>',
-            `<script>window.BACKEND_URL = '${backendURL}';</script></head>`
-    );
-    res.send(updatedHTML);
+      const htmlContent = await fs.readFile(filePath, 'utf-8');
+      const backendURL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
+      const updatedHTML = htmlContent.replace(
+        '</head>',
+        `<script>window.BACKEND_URL = '${backendURL}';</script></head>`
+      );
+      return res.send(updatedHTML);
     } catch (error) {
-        return next(createError('Error passing website url.', 500));
-        
+      return next(); // Pass to next middleware if file not found
     }
+  }
+  next(); // Proceed to other routes if not an HTML file
 });
+
 
 app.use('/api/auth', auth);
 app.use('/api/auth', verify);

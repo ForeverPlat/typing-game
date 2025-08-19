@@ -1,9 +1,9 @@
-const { BACKEND_URL } = window;
+// const backendURL = window.BACKEND_URL || 'http://localhost:3000';
 
 const storeTestResult = async (wpm, accuracy, duration) => {
     const token = localStorage.getItem('token');
 
-    const res = await fetch(`${BACKEND_URL}/api/test-result`, {
+    const res = await fetch(`${backendURL}/api/test-result`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',

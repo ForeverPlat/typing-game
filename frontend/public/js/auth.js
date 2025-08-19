@@ -6,7 +6,7 @@ const showPassBtn = document.getElementById('show-password-btn');
 // const loginBtn = document.getElementById("login-button");
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
-const { BACKEND_URL } = window;
+const backendURL = window.BACKEND_URL || 'http://localhost:3000';
 
 //  sign up
 
@@ -25,7 +25,7 @@ const signup = async (e) => {
         return;
     }
 
-    const res = await fetch(`${BACKEND_URL}/api/auth/signup`, {
+    const res = await fetch(`${backendURL}/api/auth/signup`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -64,7 +64,7 @@ const login = async (e) => {
     const username = loginForm.querySelector("input[type='text']").value;
     const password = loginForm.querySelector("input[type='password']").value;
 
-    const res = await fetch(`${BACKEND_URL}/api/auth/login`, {
+    const res = await fetch(`${backendURL}/api/auth/login`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json'
