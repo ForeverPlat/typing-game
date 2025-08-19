@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import connectToDB from './Database/db.js';
+import fs from 'fs/promises'; // To read the HTML file
 
 import auth from './Routes/auth.js';
 import profile from './Routes/profile.js';
@@ -21,6 +22,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const frontendDir = path.join(__dirname, '..', 'frontend');
 
+//  Path to index.html
+const indexPath = path.join(frontendDir, 'public', 'index.html');
 
 const app = express();
 
@@ -29,6 +32,21 @@ app.use(express.urlencoded({ extended: true }));
 
 //  setup static folder
 app.use(express.static(path.join(frontendDir, 'public')));
+
+app.get('/', async (req, res) => {
+  try {
+    const indexHTML = await fs.readFile(indexPath, 'utf-8');
+    const backendURL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
+    const updatedHTML = indexHTML.replace(
+      '</head>',
+      `<script>window.BACKEND_URL = '${backendURL}';</script></head>`
+    );
+    res.send(updatedHTML);
+  } catch (error) {
+    console.error('Error reading index.html:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 app.use('/api/auth', auth);
 app.use('/api/auth', verify);

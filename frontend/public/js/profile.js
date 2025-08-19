@@ -1,5 +1,5 @@
 const token = localStorage.getItem('token');
-// const { BACKEND_URL } = process.env;
+const { BACKEND_URL } = window;
 
 const setHighestWPM = (results) => {
     let highestWPM = 0;

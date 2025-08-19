@@ -1,4 +1,4 @@
-// const { BACKEND_URL } = process.env;
+const { BACKEND_URL } = window;
 
 const storeTestResult = async (wpm, accuracy, duration) => {
     const token = localStorage.getItem('token');
