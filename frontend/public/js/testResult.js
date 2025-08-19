@@ -1,7 +1,9 @@
+const { BACKEND_URL } = process.env;
+
 const storeTestResult = async (wpm, accuracy, duration) => {
     const token = localStorage.getItem('token');
 
-    const res = await fetch('http://localhost:3000/api/test-result', {
+    const res = await fetch(`${BACKEND_URL}/api/test-result`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',

@@ -1,4 +1,5 @@
 const mainContent = document.getElementById('main-content');
+const { BACKEND_URL } = process.env;
 
 const formatDate = (dateStr) => {
     const date = new Date(dateStr);
@@ -12,7 +13,7 @@ const formatDate = (dateStr) => {
 const getTopWpm = async () => {
 
     try {
-        const res = await fetch('http://localhost:3000/api/leaderboard');
+        const res = await fetch(`${BACKEND_URL}/api/leaderboard`);
 
         const data = await res.json();
         return data.data.topResults;

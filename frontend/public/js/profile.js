@@ -1,4 +1,5 @@
 const token = localStorage.getItem('token');
+const { BACKEND_URL } = process.env;
 
 const setHighestWPM = (results) => {
     let highestWPM = 0;
@@ -114,7 +115,7 @@ const setTimeTyping = (results) => {
 //  --------------------------------------------    //
 
 const getStats = async () => {
-    const res = await fetch('http://localhost:3000/api/test-result', {
+    const res = await fetch(`${BACKEND_URL}/api/test-result`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
@@ -137,7 +138,7 @@ const getStats = async () => {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const res = await fetch('http://localhost:3000/api/profile', {
+    const res = await fetch(`${BACKEND_URL}/api/profile`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
