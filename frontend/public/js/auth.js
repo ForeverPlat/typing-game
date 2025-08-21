@@ -6,7 +6,7 @@ const showPassBtn = document.getElementById('show-password-btn');
 // const loginBtn = document.getElementById("login-button");
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
-const backendURL = window.BACKEND_URL || 'http://localhost:3000';
+const backendURL = 'https://typing-game-6ngx.onrender.com' || 'http://localhost:3000';
 
 //  sign up
 

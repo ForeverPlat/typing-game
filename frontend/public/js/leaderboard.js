@@ -1,5 +1,5 @@
 const mainContent = document.getElementById('main-content');
-const backendURL = window.BACKEND_URL || 'http://localhost:3000';
+const backendURL = 'https://typing-game-6ngx.onrender.com' || 'http://localhost:3000';
 
 const formatDate = (dateStr) => {
     const date = new Date(dateStr);

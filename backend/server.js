@@ -31,23 +31,33 @@ app.use(express.urlencoded({ extended: true }));
 //  setup static folder
 app.use(express.static(path.join(frontendDir, 'public')));
 
-app.use(async (req, res, next) => {
-  const filePath = path.join(frontendDir, 'public', req.path);
-  if (filePath.endsWith('.html')) {
-    try {
-      const htmlContent = await fs.readFile(filePath, 'utf-8');
-      const backendURL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
-      const updatedHTML = htmlContent.replace(
-        '</head>',
-        `<script>window.BACKEND_URL = '${backendURL}';</script></head>`
-      );
-      return res.send(updatedHTML);
-    } catch (error) {
-      return next(); // Pass to next middleware if file not found
-    }
-  }
-  next(); // Proceed to other routes if not an HTML file
-});
+// app.use((req, res, next) => {
+//   console.log('Middleware triggered for path:', req.path); // Debug request path
+//   const filePath = path.join(frontendDir, 'public', req.path);
+//   console.log('Calculated filePath:', filePath); // Debug file path
+//   // Only process if the path is for a static HTML file, not an API route
+//   if (req.path.startsWith('/api/') || req.path.startsWith('/api/auth/')) {
+//     console.log('Skipping API route:', req.path);
+//     return next();
+//   }
+//   if (filePath.endsWith('.html')) {
+//     try {
+//       console.log('Attempting to read HTML file:', filePath);
+//       const htmlContent = fs.readFileSync(filePath, 'utf-8'); // Sync for simplicity
+//       const backendURL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
+//       console.log(`Injecting backendURL: ${backendURL} for ${req.path}`);
+//       const updatedHTML = htmlContent.replace(
+//         '</head>',
+//         `<script>window.BACKEND_URL = '${backendURL}';</script></head>`
+//       );
+//       return res.send(updatedHTML);
+//     } catch (error) {
+//       return next(); // Pass to next middleware if file not found
+//     }
+//   }
+//   console.log('Not an HTML file or API route, proceeding to next middleware');
+//   next(); // Proceed to other routes if not an HTML file
+// });
 
 
 app.use('/api/auth', auth);
