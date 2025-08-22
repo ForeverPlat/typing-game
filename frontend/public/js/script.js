@@ -10,7 +10,7 @@ let isRunning = false;
 let isPaused = false;
 let lastKeypressTime = 0;
 let inactivityTimeout;
-const INACTIVITY_LIMIT = 1000;
+const INACTIVITY_LIMIT = 6000;
 
 const getLetterIndex = () => letterIndex;
 
@@ -18,7 +18,7 @@ const getLetterIndex = () => letterIndex;
 const getTime = () => time;
 
 const generateText = () => {
-    const numTestWords = 5;
+    const numTestWords = 33;
 
     let textPool = "the and have that for you with not this but his from they say her she one all would there their what about which when make can like time just him know take into year your good some could them see other than then now look only come its over think also back after use two how our work first well way even new want because any these give day most us";
 
