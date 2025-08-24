@@ -10,7 +10,7 @@ let isRunning = false;
 let isPaused = false;
 let lastKeypressTime = 0;
 let inactivityTimeout;
-const INACTIVITY_LIMIT = 6000;
+const INACTIVITY_LIMIT = 7000;
 
 const getLetterIndex = () => letterIndex;
 
