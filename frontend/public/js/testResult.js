@@ -1,4 +1,4 @@
-// const backendURL = window.BACKEND_URL || 'http://localhost:3000';
+const backendURL = 'https://typing-game-6ngx.onrender.com' || 'http://localhost:3000';
 
 const storeTestResult = async (wpm, accuracy, duration) => {
     const token = localStorage.getItem('token');

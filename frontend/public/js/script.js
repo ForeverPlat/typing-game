@@ -101,6 +101,9 @@ const updateLetter = (status, index) => {
     } else if (status == "pending") {
         currLetter.className = "pending";
 
+    }  else if (status == "incorrect-space") {
+        currLetter.className = "incorrect-space";
+
     } 
 
 }
@@ -259,7 +262,13 @@ const keyDownHandler = (event) => {
         if (isValidLetter(event.key, letterIndex)) {
             updateLetter("correct", letterIndex);
         } else {
-            updateLetter("incorrect", letterIndex);
+
+            if (getLetters()[letterIndex].textContent === "\u00A0") {
+                console.log("incorrect space")
+                updateLetter("incorrect-space", letterIndex);
+            } else {
+                updateLetter("incorrect", letterIndex);
+            }
         }
         updateLetterIndex(event.key);
         moveCursor(letterIndex);

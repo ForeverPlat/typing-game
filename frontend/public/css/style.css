@@ -88,6 +88,12 @@ body {
     /* border: 0.5px solid var(--red); */
 }
 
+.incorrect-space {
+    color: var(--red);
+    text-decoration: underline;
+    /* border: 0.5px solid var(--red); */
+}
+
 .pending {
     color: var(--grey);
 }
