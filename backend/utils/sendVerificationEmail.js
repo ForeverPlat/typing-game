@@ -13,7 +13,7 @@ export const sendVerificationEmail = async (user) => {
     },
   });
 
-  const verificationLink = `http://localhost:${process.env.PORT}/api/auth/verify-email?userId=${user._id}&verificationToken=${user.verificationToken}`;
+  const verificationLink = `${process.env.BACKEND_URL}/api/auth/verify-email?userId=${user._id}&verificationToken=${user.verificationToken}`;
 
   await transporter.sendMail({
     from: 'noreply.println.typinggame@gmail.com',
