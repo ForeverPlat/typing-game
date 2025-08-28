@@ -200,11 +200,11 @@ const resetInactivity = () => {
 const getWpm = () => {
 
     const letterIndex = getLetterIndex();
-    const accuracy = getAccuracy / 100;
+    const accuracy = getAccuracy() / 100;
     const time = getTime()/60000;
     const correctCharacters = letterIndex * accuracy;
 
-    return Math.min( Math.round((correctCharacters / 5) / time), 300);
+    return Math.min(Math.round((correctCharacters / 5) / time), 300);
 }
 
 const getAccuracy = () => {
