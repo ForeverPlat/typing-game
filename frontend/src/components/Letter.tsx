@@ -1,14 +1,29 @@
-import { useState } from "react"
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react"
+import type { LetterHandle, LetterProps, LetterStatus } from "../types"
 
-type Status = "pending" | "correct" | "incorrect"
+const Letter = forwardRef<LetterHandle, LetterProps>(({ letter }, ref) => {
 
-const Letter = ({ letter }: { letter: string }) => {
+    const [status, setStatus] = useState<LetterStatus>("pending");
+    // useEffect(() => {}, [status]);
 
-    const [status, setStatus] = useState<Status>("pending");
-  
+    useImperativeHandle(ref, () => ({
+      getLetter: () => letter,
+      setLetterStatus: (status: LetterStatus) => setStatus(status)
+    }));
+
   return (
-    <div className={status} id="letter">{ letter }</div>
+    <div
+      className={status}
+      id="letter"
+      style={{ color:
+        status === "correct" ? "white" :
+        status === "incorrect" ? "red" :
+        "grey"
+      }}
+    >
+      { letter }
+    </div>
   )
-}
+})
 
 export default Letter

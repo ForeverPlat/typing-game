@@ -1,16 +1,41 @@
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import type { LetterHandle, WordHandle, WordProps, WordStatus } from "../types";
 import Letter from "./Letter";
 
-const Word = ({ word }: { word: string }) => {
+
+const Word = forwardRef<WordHandle, WordProps>(({ word }, ref)  => {
+
+  const [status, setStatus] = useState<WordStatus>("pending");
+  const [letters, setLetters] = useState<string[]>(word.split(""));
+
+  const letterComponentRefs = useRef<(LetterHandle | null)[]>([]);
+  
+  // useEffect(() => {
+  //   letterComponentRefs.current = Array(letters.length).fill(null);
+  // }, [])
+
+  useImperativeHandle(ref, () => ({
+    getWord: () => word,
+    getLetter: (index: number) => letterComponentRefs.current[index],
+    setWordStatus: (status: WordStatus) => setStatus(status)
+  }));
 
   return (
     <div id="word">
         {
-            word.split("").map((letter, i) => (
-                <Letter key={i} letter={letter} />
+            letters.map((letter, i) => (
+                <Letter 
+                  key={i}
+                  letter={letter} 
+                  status="pending"
+                  ref={(element) => {
+                    letterComponentRefs.current[i] = element
+                  }}
+                />
             ))
         }
     </div>
   )
-}
+})
 
 export default Word
