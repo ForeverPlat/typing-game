@@ -1,7 +1,13 @@
+import { useState } from "react"
+
+type Status = "pending" | "correct" | "incorrect"
+
 const Letter = ({ letter }: { letter: string }) => {
+
+    const [status, setStatus] = useState<Status>("pending");
   
   return (
-    <div id="letter">{ letter }</div>
+    <div className={status} id="letter">{ letter }</div>
   )
 }
 
