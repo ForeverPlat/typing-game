@@ -18,9 +18,11 @@ export type WordHandle = {
     getWord: () => string,
     getLetter: (index: number) => LetterHandle | null, 
     setWordStatus: (status: WordStatus) => void
+    getEndRect: () => { left: number; top: number } | null
 }
 
 export type LetterHandle = {
     getLetter: () => string,
     setLetterStatus: (status: LetterStatus) => void
+    getRect: () => DOMRect | null
 }

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import Word from "./Word"
 import type { LetterStatus, WordHandle } from "../types";
+import TypingCursor from "./TypingCursor";
 
 const TypingTest = () => {
 
@@ -10,6 +11,7 @@ const TypingTest = () => {
     const [letterIndex, setLetterIndex] = useState(0);
 
     const wordComponentRefs = useRef<(WordHandle | null)[]>([]);
+    const cursorRef = useRef<HTMLDivElement | null>(null);
 
     // const currentLetterIndex = letterIndexRef.current;
     // const currentWordIndex = wordIndexRef.current;
@@ -95,8 +97,41 @@ const TypingTest = () => {
         console.log(letterIndex);
     }, [letterIndex])
 
+    useEffect(() => {
+        const wordComponent = wordComponentRefs.current[wordIndex];
+        const container = document.getElementById("typing-test");
+
+        let rect = null;
+
+        if (letterIndex < words[wordIndex].length) {
+            const letter = wordComponent?.getLetter(letterIndex);
+            rect = letter?.getRect() ?? null;
+        } else {
+            rect = wordComponent?.getEndRect() ?? null;
+        }
+
+        if (!rect || !cursorRef.current || !container) return;
+        
+        const containerRect = container.getBoundingClientRect();
+        const x = rect.left - containerRect.left;
+        const y = rect.top - containerRect.top;
+
+        cursorRef.current.style.transform = `translate(${x}px, ${y}px)`;
+    }, [wordIndex, letterIndex])
+
+    useEffect(() => {
+        if (!cursorRef.current) return;
+
+        if (letterIndex > 0) {
+            cursorRef.current.classList.add("no-blink");
+        } else {
+            cursorRef.current.classList.remove("no-blink");
+        }
+    }, [letterIndex]);
+
   return (
     <div id="typing-test" className="typing-test">
+        <TypingCursor ref={cursorRef} />
         {words.map((word, i) => (
             <Word 
                 key={i} 

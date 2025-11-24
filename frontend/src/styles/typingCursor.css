@@ -1,0 +1,16 @@
+.cursor {
+    position: absolute;
+    z-index: -1;
+    background-color: var(--purple);
+    width: 2px;
+    height: 1em;
+    animation: blinker 1.5s linear infinite;
+    transform: translate(0,0);
+    transition: transform 0.05s linear;
+    pointer-events: none;
+}
+
+.cursor.no-blink {
+    animation: none;
+    opacity: 1;
+}
