@@ -1,81 +1,90 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import Word from "./Word"
-import type { WordHandle } from "../types";
+import type { LetterStatus, WordHandle } from "../types";
 
 const TypingTest = () => {
 
-    const [text, setText] = useState("Hello World");
-    const [words, setWords] = useState<string[]>(text.split(" "));
+    const [text] = useState("hello world");
+    const [words] = useState<string[]>(text.split(" "));
     const [wordIndex, setWordIndex] = useState(0);
     const [letterIndex, setLetterIndex] = useState(0);
 
     const wordComponentRefs = useRef<(WordHandle | null)[]>([]);
-    const letterIndexRef = useRef(0);
-    const wordIndexRef = useRef(0);
-
-    // wordComponentRefs.current = Array(words.length).fill(null);
-
-    // useEffect(() => {
-    //     wordComponentRefs.current = Array(words.length).fill(null);
-    // }, [])
-
-    useEffect(() => {
-        letterIndexRef.current = letterIndex
-    }, [letterIndex])
-
-    useEffect(() => {
-        wordIndexRef.current = wordIndex 
-    }, [wordIndex])
 
     // const currentLetterIndex = letterIndexRef.current;
     // const currentWordIndex = wordIndexRef.current;
 
-    const updateLetterIndex = (key: string) => {
-        if (key === "Backspace") {
-            setLetterIndex(prevLetterIndex => Math.max(0, prevLetterIndex - 1));
-        } else if (/^[a-zA-Z]$/.test(key)) {
-            setLetterStatus(key);
-            setLetterIndex(prevLetterIndex => prevLetterIndex + 1);
-        } else if (key === " ") {
-            setLetterStatus(key);
-            setWordIndex(prevWordIndex => prevWordIndex + 1)
-            setLetterIndex(0);
-        }
-        currentLetter();
-        
-    }
+    // const isCorrectLetter = (key: String): boolean => {
+    //     const currWord = words[wordIndexRef.current];
+    //     const currLetter = currWord[letterIndexRef.current];
 
+    //     if (key === currLetter)
+    //         return true;
+    //     return false;
+    // }
 
-    const isCorrectLetter = (key: String): boolean => {
-        const currWord = words[wordIndexRef.current];
-        const currLetter = currWord[letterIndexRef.current];
+    const setLetterStatus = (wordI: number, letterI: number, key: string, force?: LetterStatus ) => {
+        const wordComponent = wordComponentRefs.current[wordI];
+        const letterComponent = wordComponent?.getLetter(letterI);
+        if (!letterComponent) return;
 
-        if (key === currLetter)
-            return true;
-        return false;
-    }
-
-    const setLetterStatus = (key: string) => {
-        const currWordComponent = wordComponentRefs.current[wordIndexRef.current];
-
-        if (isCorrectLetter(key)) {
-            currWordComponent?.getLetter(letterIndexRef.current)?.setLetterStatus("correct");
-        } else {
-            currWordComponent?.getLetter(letterIndexRef.current)?.setLetterStatus("incorrect");
+        if (force) {
+            letterComponent.setLetterStatus(force);
+            return;
         }
 
+        const word = words[wordI][letterI];
+        const status = word === key ? "correct" : "incorrect";
+        letterComponent.setLetterStatus(status);
     }
 
-    const currentLetter = () => {
-        const currWord = words[wordIndex];
-        const currLetter = currWord[letterIndexRef.current];
+    // const currentLetter = () => {
+    //     const currWord = words[wordIndexRef.current];
+    //     const currLetter = currWord[letterIndexRef.current];
 
-        console.log("currLetter: ", currLetter);
-    }
+    //     console.log("currLetter: ", currLetter);
+    // }
     
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
-        updateLetterIndex(event.key);
-    }, [])
+        const key = event.key;
+
+        if (key === "Backspace") {
+            setLetterIndex(prevLetterIndex => {
+                if (wordIndex === 0 && prevLetterIndex === 0) {
+                    return 0;
+                }
+
+                if (prevLetterIndex === 0) {
+                    const newWordIndex = wordIndex - 1;
+                    const newLetterIndex = words[newWordIndex].length;
+
+                    setWordIndex(newWordIndex);
+                    return newLetterIndex;
+                }
+
+                const newLetterIndex = prevLetterIndex - 1;
+                setLetterStatus(wordIndex, newLetterIndex, "", "pending");
+                return newLetterIndex;
+            });
+            return;
+        }
+
+        if (key == " ") {
+            setWordIndex((prevWordIndex) => prevWordIndex + 1);
+            setLetterIndex(0)
+            return;
+        }
+
+        if (/^[a-zA-Z]$/.test(key)) {
+            setLetterIndex((prevLetterIndex) => {
+                if (prevLetterIndex >= words[wordIndex].length) return prevLetterIndex;
+
+                setLetterStatus(wordIndex, prevLetterIndex, key)
+                return prevLetterIndex + 1;
+            })
+            return;
+        }
+    }, [wordIndex, words])
 
     useEffect(() => {
         window.addEventListener("keydown", handleKeyDown);
@@ -87,7 +96,7 @@ const TypingTest = () => {
     }, [letterIndex])
 
   return (
-    <>
+    <div id="typing-test" className="typing-test">
         {words.map((word, i) => (
             <Word 
                 key={i} 
@@ -98,7 +107,7 @@ const TypingTest = () => {
                 }}
             />
         ))}
-    </>
+    </div>
   )
 }
 

@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import type { LetterHandle, WordHandle, WordProps, WordStatus } from "../types";
 import Letter from "./Letter";
+import '../styles/word.css';
 
 
 const Word = forwardRef<WordHandle, WordProps>(({ word }, ref)  => {
@@ -21,7 +22,7 @@ const Word = forwardRef<WordHandle, WordProps>(({ word }, ref)  => {
   }));
 
   return (
-    <div id="word">
+    <div className="word" id="word">
         {
             letters.map((letter, i) => (
                 <Letter 

@@ -13,12 +13,13 @@ const Letter = forwardRef<LetterHandle, LetterProps>(({ letter }, ref) => {
 
   return (
     <div
-      className={status}
+      className={letter}
       id="letter"
       style={{ color:
         status === "correct" ? "white" :
         status === "incorrect" ? "red" :
-        "grey"
+        status === "pending" ? "grey" :
+        "yellow"
       }}
     >
       { letter }
