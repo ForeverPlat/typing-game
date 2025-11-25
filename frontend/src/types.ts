@@ -2,15 +2,22 @@ import type { ReactElement } from "react"
 
 export type LetterStatus = "pending" | "correct" | "incorrect" 
 
+export type Result = {
+    accuracy: number
+    wpm: number
+    charCount: number
+    duration: number
+}
+
 export type LetterProps = {
-    letter: string,
-    status: LetterStatus,
+    letter: string
+    status: LetterStatus
 }
 
 export type WordStatus = "pending" | "correct" | "incorrect" | "incomplete"
 
 export type WordProps = {
-    word: string,
+    word: string
     status: WordStatus
 }
 

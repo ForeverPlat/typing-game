@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import Word from "./Word"
 import type { LetterStatus, WordHandle } from "../types";
 import TypingCursor from "./TypingCursor";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 const TypingTest = () => {
 
@@ -15,6 +16,8 @@ const TypingTest = () => {
 
     const wordComponentRefs = useRef<(WordHandle | null)[]>([]);
     const cursorRef = useRef<HTMLDivElement | null>(null);
+
+    const navigate = useNavigate();
 
     const totalLetters = text?.replaceAll(" ", "").length;
 
@@ -67,6 +70,25 @@ const TypingTest = () => {
     const endGame = () => {
         setHasFinished(true);
         stopTimer();
+
+        // const acc = getAccuracy();
+        // const wpm = getWpm();
+        // const charCount = totalLetters;
+
+        const result = {
+            accuracy: getAccuracy(),
+            wpm: getWpm(),
+            charCount: totalLetters,
+            duration: elapsedTime
+        };
+
+        const resultString = encodeURIComponent(JSON.stringify(result));
+
+        navigate({
+            pathname: '/result',
+            search: `?result=${resultString}`    // come back and check this
+        });
+        
         console.log("Game over");
         console.log(elapsedTime);
         console.log("acc ",getAccuracy());

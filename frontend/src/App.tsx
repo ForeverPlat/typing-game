@@ -4,6 +4,7 @@ import LeaderboardPage from "./pages/LeaderboardPage";
 import ProfilePage from "./pages/ProfilePage";
 import AuthPage from "./pages/AuthPage";
 import Layout from "./components/Layout";
+import ResultPage from "./pages/ResultPage";
 
 
 
@@ -16,6 +17,7 @@ function App() {
         { path: "/", element: <TypingTestPage /> },
         { path: "/leaderboard", element: <LeaderboardPage /> },
         { path: "/profile", element: <ProfilePage /> },
+        { path: "/result", element: <ResultPage /> },
       ]
     },
     { path: "/auth", element: <AuthPage /> }

@@ -1,12 +1,19 @@
+import { useNavigate } from 'react-router-dom'
 import '../styles/header.css'
 
 const Header = () => {
+    const navigate = useNavigate();
+
+    const handleLogoClick = () => {
+        navigate('/');
+    }
+
   return (
     <header className="header">
 
                 {/* <!-- left side of header --> */}
                 
-                <div className="logo">
+                <div className="logo" onClick={handleLogoClick}>
 
                     {/* <!-- curly brackets --> */}
                     {/* <svg className="logo-image" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
