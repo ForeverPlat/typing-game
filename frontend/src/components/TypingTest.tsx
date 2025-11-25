@@ -9,6 +9,9 @@ const TypingTest = () => {
     const [words] = useState<string[]>(text.split(" "));
     const [wordIndex, setWordIndex] = useState(0);
     const [letterIndex, setLetterIndex] = useState(0);
+    const [elapsedTime, setElapsedTime] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+    const [hasFinished, setHasFinished] = useState(false);
 
     const wordComponentRefs = useRef<(WordHandle | null)[]>([]);
     const cursorRef = useRef<HTMLDivElement | null>(null);
@@ -24,6 +27,26 @@ const TypingTest = () => {
     //         return true;
     //     return false;
     // }
+
+    useEffect(() => {
+        let timeInterval;
+        if (isRunning) {
+            timeInterval = setInterval(() => {
+                setElapsedTime((prevTime) => prevTime + 1000)
+            }, 1000);
+        }
+        console.log(elapsedTime);
+    }, [isRunning])
+
+    const startTimer = () => setIsRunning(true);
+    const stopTimer = () => setIsRunning(false);
+    const resetTimer = () => {
+        setIsRunning(false);
+        setElapsedTime(0);
+        setWordIndex(0);
+        setLetterIndex(0);
+        setHasFinished(false);
+    }
 
     const setLetterStatus = (wordI: number, letterI: number, key: string, force?: LetterStatus ) => {
         const wordComponent = wordComponentRefs.current[wordI];
@@ -46,9 +69,31 @@ const TypingTest = () => {
 
     //     console.log("currLetter: ", currLetter);
     // }
+
+    const endGame = () => {
+        // window.removeEventListener("keydown", handleKeyDown);
+        setHasFinished(true);
+        stopTimer();
+        console.log("Game over");
+        console.log(elapsedTime);
+    }
+
     
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
         const key = event.key;
+        // console.log("time", elapsedTime);
+        // console.log(text.replace(" ", "").length - 1);
+
+        if (hasFinished) return;
+
+        const totalLetters = text?.replaceAll(" ", "").length;
+        const lettersTyped = words
+            .slice(0, wordIndex)
+            .reduce((sum, word) => sum + word.length, 0) + letterIndex
+
+        if (!isRunning && (/^[a-zA-Z]$/.test(event.key) || event.key === " ")) {
+            startTimer();
+        }
 
         if (key === "Backspace") {
             setLetterIndex(prevLetterIndex => {
@@ -78,15 +123,21 @@ const TypingTest = () => {
         }
 
         if (/^[a-zA-Z]$/.test(key)) {
+            const isLastLetter = lettersTyped === totalLetters - 1
+
             setLetterIndex((prevLetterIndex) => {
                 if (prevLetterIndex >= words[wordIndex].length) return prevLetterIndex;
 
                 setLetterStatus(wordIndex, prevLetterIndex, key)
                 return prevLetterIndex + 1;
-            })
+            });
+
+            if (isLastLetter) {
+                endGame();
+            }
             return;
         }
-    }, [wordIndex, words])
+    }, [ wordIndex, letterIndex, words, isRunning, text, elapsedTime ])
 
     useEffect(() => {
         window.addEventListener("keydown", handleKeyDown);
@@ -122,7 +173,7 @@ const TypingTest = () => {
     useEffect(() => {
         if (!cursorRef.current) return;
 
-        if (letterIndex > 0) {
+        if (letterIndex > 0 || wordIndex > 0) {
             cursorRef.current.classList.add("no-blink");
         } else {
             cursorRef.current.classList.remove("no-blink");
