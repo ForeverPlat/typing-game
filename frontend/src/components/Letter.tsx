@@ -9,7 +9,8 @@ const Letter = forwardRef<LetterHandle, LetterProps>(({ letter }, ref) => {
 
     useImperativeHandle(ref, () => ({
       getLetter: () => letter,
-      setLetterStatus: (status: LetterStatus) => setStatus(status),
+      getStatus: () => status,
+      setStatus: (status: LetterStatus) => setStatus(status),
       getRect: () => el.current?.getBoundingClientRect() ?? null
     }));
 

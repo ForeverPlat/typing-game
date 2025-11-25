@@ -15,14 +15,16 @@ export type WordProps = {
 }
 
 export type WordHandle = {
-    getWord: () => string,
-    getLetter: (index: number) => LetterHandle | null, 
-    setWordStatus: (status: WordStatus) => void
+    getWord: () => string
+    getLetter: (index: number) => LetterHandle | null
+    getLetterCount: () => number 
+    setStatus: (status: WordStatus) => void
     getEndRect: () => { left: number; top: number } | null
 }
 
 export type LetterHandle = {
-    getLetter: () => string,
-    setLetterStatus: (status: LetterStatus) => void
+    getLetter: () => string
+    getStatus: () => LetterStatus
+    setStatus: (status: LetterStatus) => void
     getRect: () => DOMRect | null
 }

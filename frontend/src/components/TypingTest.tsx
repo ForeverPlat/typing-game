@@ -16,17 +16,7 @@ const TypingTest = () => {
     const wordComponentRefs = useRef<(WordHandle | null)[]>([]);
     const cursorRef = useRef<HTMLDivElement | null>(null);
 
-    // const currentLetterIndex = letterIndexRef.current;
-    // const currentWordIndex = wordIndexRef.current;
-
-    // const isCorrectLetter = (key: String): boolean => {
-    //     const currWord = words[wordIndexRef.current];
-    //     const currLetter = currWord[letterIndexRef.current];
-
-    //     if (key === currLetter)
-    //         return true;
-    //     return false;
-    // }
+    const totalLetters = text?.replaceAll(" ", "").length;
 
     useEffect(() => {
         let timeInterval;
@@ -48,45 +38,62 @@ const TypingTest = () => {
         setHasFinished(false);
     }
 
+    const getAccuracy = () => {
+        let incorrect = 0;
+
+        for (const wordRef of wordComponentRefs.current) {
+            if (!wordRef) continue;
+
+            const lettersCount = wordRef.getLetterCount();
+
+            for (let i = 0; i < lettersCount; i++) {
+                const letterRef = wordRef.getLetter(i);
+                if (!letterRef) continue;
+
+                letterRef.getStatus() === "incorrect" ? incorrect++ : null;
+            }
+        }
+        return Math.round((totalLetters - incorrect)/(totalLetters) * 100);
+    }
+
+    const getWpm = () => {
+        const accuracy = getAccuracy();
+        const time = elapsedTime/60000;
+        const correctChars = totalLetters * accuracy;
+
+        return Math.min(Math.round((correctChars/ 5) / time), 300);
+    }
+
+    const endGame = () => {
+        setHasFinished(true);
+        stopTimer();
+        console.log("Game over");
+        console.log(elapsedTime);
+        console.log("acc ",getAccuracy());
+        console.log("wpm", getWpm());
+    }
+
     const setLetterStatus = (wordI: number, letterI: number, key: string, force?: LetterStatus ) => {
         const wordComponent = wordComponentRefs.current[wordI];
         const letterComponent = wordComponent?.getLetter(letterI);
         if (!letterComponent) return;
 
         if (force) {
-            letterComponent.setLetterStatus(force);
+            letterComponent.setStatus(force);
             return;
         }
 
         const word = words[wordI][letterI];
         const status = word === key ? "correct" : "incorrect";
-        letterComponent.setLetterStatus(status);
+        letterComponent.setStatus(status);
     }
 
-    // const currentLetter = () => {
-    //     const currWord = words[wordIndexRef.current];
-    //     const currLetter = currWord[letterIndexRef.current];
 
-    //     console.log("currLetter: ", currLetter);
-    // }
-
-    const endGame = () => {
-        // window.removeEventListener("keydown", handleKeyDown);
-        setHasFinished(true);
-        stopTimer();
-        console.log("Game over");
-        console.log(elapsedTime);
-    }
-
-    
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
         const key = event.key;
-        // console.log("time", elapsedTime);
-        // console.log(text.replace(" ", "").length - 1);
 
         if (hasFinished) return;
 
-        const totalLetters = text?.replaceAll(" ", "").length;
         const lettersTyped = words
             .slice(0, wordIndex)
             .reduce((sum, word) => sum + word.length, 0) + letterIndex

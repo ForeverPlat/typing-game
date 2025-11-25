@@ -18,14 +18,15 @@ const Word = forwardRef<WordHandle, WordProps>(({ word }, ref)  => {
   useImperativeHandle(ref, () => ({
     getWord: () => word,
     getLetter: (index: number) => letterComponentRefs.current[index],
-    setWordStatus: (status: WordStatus) => setStatus(status),
+    setStatus: (status: WordStatus) => setStatus(status),
+    getLetterCount: () => letters.length,
     getEndRect: () => {
       const lastLetter = letterComponentRefs.current[letters.length - 1];
       if (!lastLetter) return null;
       
       const rect = lastLetter.getRect();
       if (!rect) return null;
-      
+
       return {
         left: rect.right,
         top: rect.top,
