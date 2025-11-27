@@ -4,7 +4,7 @@ import type { LetterStatus, WordHandle } from "../types";
 import TypingCursor from "./TypingCursor";
 import { createSearchParams, useNavigate } from "react-router-dom";
 
-const TypingTest = () => {
+const TypingTest = ({ resetToken }: { resetToken: number }) => {
 
     const [text] = useState("hello world");
     const [words] = useState<string[]>(text.split(" "));
@@ -20,6 +20,17 @@ const TypingTest = () => {
     const navigate = useNavigate();
 
     const totalLetters = text?.replaceAll(" ", "").length;
+
+    const handleReset = () => {
+        for (const wordRef of wordComponentRefs.current) {
+            wordRef?.setPending();
+        }
+    }
+
+    useEffect(() => {
+        handleReset();
+        resetTimer();
+    }, [resetToken])
 
     useEffect(() => {
         let timeInterval;
@@ -222,6 +233,8 @@ const TypingTest = () => {
                 }}
             />
         ))}
+
+
     </div>
   )
 }

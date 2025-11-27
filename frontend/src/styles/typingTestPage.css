@@ -1,0 +1,18 @@
+.reset{
+    display: flex;
+    justify-self: center;
+    height: 1.5rem;
+    transition: color 0.35s;
+    transition: transform 0.35s;
+}
+
+.reset:hover {
+    cursor: pointer;
+    transform: rotate(25deg);
+    color: var(--hover);
+}
+
+.reset:active {
+    opacity: 0.7;
+    transform: rotate(50deg);
+}

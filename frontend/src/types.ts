@@ -26,6 +26,7 @@ export type WordHandle = {
     getLetter: (index: number) => LetterHandle | null
     getLetterCount: () => number 
     setStatus: (status: WordStatus) => void
+    setPending: () => void
     getEndRect: () => { left: number; top: number } | null
 }
 

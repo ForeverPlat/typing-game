@@ -10,6 +10,18 @@ const Word = forwardRef<WordHandle, WordProps>(({ word }, ref)  => {
   const [letters, setLetters] = useState<string[]>(word.split(""));
 
   const letterComponentRefs = useRef<(LetterHandle | null)[]>([]);
+
+  const setAllLettersPending = () => {
+    for (const letterRef of letterComponentRefs.current) {
+      letterRef?.setStatus("pending");
+    }
+  }
+
+  useEffect(() => {
+    if (status == "pending") {
+      setAllLettersPending();
+    }
+  }, [status])
   
   // useEffect(() => {
   //   letterComponentRefs.current = Array(letters.length).fill(null);
@@ -19,6 +31,7 @@ const Word = forwardRef<WordHandle, WordProps>(({ word }, ref)  => {
     getWord: () => word,
     getLetter: (index: number) => letterComponentRefs.current[index],
     setStatus: (status: WordStatus) => setStatus(status),
+    setPending: () => setStatus("pending"),
     getLetterCount: () => letters.length,
     getEndRect: () => {
       const lastLetter = letterComponentRefs.current[letters.length - 1];
