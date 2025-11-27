@@ -225,7 +225,7 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
         <TypingCursor ref={cursorRef} />
         {words.map((word, i) => (
             <Word 
-                key={i} 
+                key={`${i}-${resetToken}`} 
                 word={word}
                 status="pending"
                 ref={(element) => {
