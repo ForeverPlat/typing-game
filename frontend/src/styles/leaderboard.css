@@ -1,47 +1,151 @@
-#leaderboard-container {
-    max-width: 1000px;
-    margin: auto;
-    overflow-x: auto;
-    color: var(--white);
+/* ---------------------------------------------------------
+   MAIN CONTAINER
+---------------------------------------------------------- */
+.lb-container {
+  width: 100%;
+  min-width: 700px;
+  max-width: 900px;
+  height: 75vh;
+  margin: 0 auto;
+  padding: 32px;
+  /* background: var(--grey); */
+  border-radius: 16px;
+  color: var(--white);
+  box-sizing: border-box;
 }
 
-#leaderboard {
-    margin: 0 auto;
-    border-collapse: collapse;
-    width: 90%;
-    table-layout: fixed;
+.lb-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
 }
 
-#leaderboard th, #leaderboard td {
-    border: none;
-    padding: 1.2em;             
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+
+/* ---------------------------------------------------------
+   PODIUM (TOP THREE)
+---------------------------------------------------------- */
+.lb-podiumContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 36px;
 }
 
-#leaderboard td:nth-child(2),
-#leaderboard th:nth-child(2) {
-    text-align: left;
-    padding-left: 1.75em; /* optional: add some breathing room */
+.lb-podiumCard {
+  min-width: 150px;
+  padding: 18px;
+  background: var(--purple);
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  position: relative;
 }
 
-#leaderboard tbody tr:nth-child(odd) {
-    background-color: var(--grey);
+.lb-middleCard {
+  transform: translateY(-30px);
+  min-width: 170px;
 }
 
-/* #leaderboard tbody tr:nth-child(even) {
-    background-color: var(--grey);
-} */
-
-#leaderboard tbody tr td:first-child {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+/* Rank circles (with outer rings) */
+.lb-circle {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background: #ffffff18;
+  border: 4px solid var(--white);   /* outer ring stays */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px auto;
+  font-size: 32px;
+  font-weight: 700;
 }
 
-#leaderboard tbody tr td:last-child {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+.lb-circleLarge {
+  width: 110px;
+  height: 110px;
+  font-size: 42px;
+  border-width: 5px;
 }
 
+/* Medal rings (same as screenshot) */
+.lb-firstBorder { border-color: #ffda44; }   /* gold */
+.lb-secondBorder { border-color: #c0c0c0; }  /* silver */
+.lb-thirdBorder { border-color: #cd7f32; }   /* bronze */
+
+.lb-topName {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.lb-topValue {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.lb-crown {
+    width: 60%;
+}
+
+
+/* ---------------------------------------------------------
+   HEADER & TABLE
+---------------------------------------------------------- */
+.lb-table {
+  /* background: var(--grey); */
+}
+
+.lb-headerRow {
+  display: grid;
+  grid-template-columns: 0.4fr 2fr 1fr 1.2fr;
+  padding-bottom: 12px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--light-grey);
+  font-weight: 700;
+}
+
+.lb-headerColRank {
+  text-align: left;
+}
+
+.lb-headerColUser {
+  text-align: left;
+}
+
+.lb-headerColValue,
+.lb-headerColDate {
+  text-align: right;
+}
+
+
+/* ---------------------------------------------------------
+   ROWS
+---------------------------------------------------------- */
+.lb-row {
+  display: grid;
+  grid-template-columns: 0.4fr 2fr 1fr 1.2fr;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.lb-rank {
+  text-align: left;
+  font-weight: 600;
+}
+
+.lb-name {
+  text-align: left;
+}
+
+.lb-value {
+  text-align: right;
+}
+
+.lb-date {
+  text-align: right;
+  font-size: 14px;
+  opacity: 0.7;
+}
