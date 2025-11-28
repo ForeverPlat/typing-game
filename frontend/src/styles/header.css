@@ -41,7 +41,7 @@
 }
 
 .logout-button {
-    display: none;
+    /* display: none; */
     align-self: center;
     height: 1.5rem;
 }
