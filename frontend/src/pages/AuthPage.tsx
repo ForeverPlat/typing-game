@@ -1,6 +1,10 @@
+import Login from "../components/Login"
+
 const AuthPage = () => {
   return (
-    <div>AuthPage</div>
+    <div>
+        <Login />
+    </div>
   )
 }
 

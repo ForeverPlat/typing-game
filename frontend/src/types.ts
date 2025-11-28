@@ -36,3 +36,14 @@ export type LetterHandle = {
     setStatus: (status: LetterStatus) => void
     getRect: () => DOMRect | null
 }
+
+export type LoginRespone = {
+    success: boolean;
+    message: string;
+    data: {
+        token: string;
+        verified: boolean;
+        user: any;
+    };
+    error?: string
+}

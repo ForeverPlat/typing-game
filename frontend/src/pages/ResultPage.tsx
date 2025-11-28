@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom"
 import Result from "../components/Result";
+import { useEffect } from "react";
 
 const ResultsPage = () => {
   const [searchParams] = useSearchParams();
@@ -7,6 +8,10 @@ const ResultsPage = () => {
 
   let result;
   resultString ? result = JSON.parse(resultString) : result = "";
+
+  useEffect(() => {
+    
+  }, [])
 
   return (
     <div>

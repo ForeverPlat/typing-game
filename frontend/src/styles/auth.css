@@ -1,87 +1,78 @@
-.main-results {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    padding-bottom: 5rem;
-    align-content: center;
-}
-
-h2 {
-    color: #757575;
-}
-
-input {
-    display: block;
-    width: 100%;
-    margin-bottom: 0.25rem;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    padding-left: 1rem;
-
-    border-color: transparent;
-    border-radius: 0.5rem;
-
-    background-color: var(--grey);
-    color: #757575;
-}
-
-input:focus {
-    outline: none;
-    border-style: solid;
-    border-color: var(--white);
-}
-
-.pass-container {
-    position: relative;
+/* Center full screen */
+.auth-wrapper {
+    height: 80vh;
     display: flex;
+    justify-content: center;
     align-items: center;
-    width: 100%;
+    /* background-color: var(--hover); */
 }
 
-.pass-container svg {
-    position: absolute;
-    right: 10px;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    color: var(--light-grey) ;
-}
-
-.form-container {
-    width: 50%;
-    min-width: 10rem;
-    justify-self: center;
-}
-
-.form {
-    width: 100%;
-}
-
-.auth-msg {
+/* Larger, centered box */
+.auth-form {
+    background-color: var(--grey);
+    padding: 45px 50px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     color: var(--white);
-    font-size: 0.85rem;
-    font-weight: bold;
 }
 
-button {
+.auth-form h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Inputs */
+.auth-input {
     width: 100%;
-    /* margin-top: 0.25rem; */
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-
-    border-color: transparent;
-    border-radius: 0.5rem;
-
-    transition: background-color 0.25s;
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
     background-color: var(--light-grey);
     color: var(--white);
 }
 
-button:hover {
+.auth-input:focus {
+    outline: 2px solid var(--purple);
+}
+
+/* Button */
+.auth-button {
+    padding: 12px;
+    background-color: var(--purple);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
+    font-weight: bold;
+}
+
+.auth-button:hover {
     background-color: var(--hover);
 }
 
-button:active {
-    opacity: 0.7;
+/* Footer */
+.auth-footer {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.auth-footer a {
+    color: var(--purple);
+    text-decoration: none;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Message area */
+.auth-msg {
+    height: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
 }

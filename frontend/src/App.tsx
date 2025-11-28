@@ -5,6 +5,8 @@ import ProfilePage from "./pages/ProfilePage";
 import AuthPage from "./pages/AuthPage";
 import Layout from "./components/Layout";
 import ResultPage from "./pages/ResultPage";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
 
 
 
@@ -20,7 +22,9 @@ function App() {
         { path: "/result", element: <ResultPage /> },
       ]
     },
-    { path: "/auth", element: <AuthPage /> }
+    { path: "/auth", element: <AuthPage /> },
+    { path: "/signup", element: <Signup /> },
+    { path: "/login", element: <Login /> }
   ]);
 
   return (
