@@ -38,12 +38,30 @@ export type LetterHandle = {
 }
 
 export type LoginRespone = {
-    success: boolean;
-    message: string;
+    success: boolean
+    message: string
     data: {
-        token: string;
-        verified: boolean;
-        user: any;
+        token: string
+        verified: boolean
+        user: any
     };
     error?: string
+}
+
+export type LeaderboardObject = {
+    wpm: number
+    accuracy: number
+    user: {
+        _id: string
+        username: string
+    }
+    createdAt: string
+}
+
+export type LeaderboardResponse = {
+    success: boolean
+    message: string
+    data: {
+        topResults: Array<LeaderboardObject>
+    }
 }
