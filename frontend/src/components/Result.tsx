@@ -15,7 +15,7 @@ const Results = ({ result }: { result: Result }) => {
 
     <div className="main-results">
       <div className='wpm-container'>
-        <div className='main-num' id='wpm-num'>${wpm}</div>
+        <div className='main-num' id='wpm-num'>{wpm}</div>
         <div className='main-text' id='wpm-text'> WPM </div>
       </div>
 

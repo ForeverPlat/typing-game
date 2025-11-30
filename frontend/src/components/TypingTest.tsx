@@ -6,7 +6,7 @@ import { createSearchParams, useNavigate } from "react-router-dom";
 
 const TypingTest = ({ resetToken }: { resetToken: number }) => {
 
-    const [text] = useState("hello world");
+    const [text] = useState("hello to the world");
     const [words] = useState<string[]>(text.split(" "));
     const [wordIndex, setWordIndex] = useState(0);
     const [letterIndex, setLetterIndex] = useState(0);
