@@ -77,6 +77,11 @@ export type Profile = {
     timeTyping: string
 }
 
+export type ProfileHeaderProp = {
+    username: string
+    profile: Profile
+}
+
 // export type Result = {
 //     _id: string
 

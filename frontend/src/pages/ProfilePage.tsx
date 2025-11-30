@@ -36,6 +36,11 @@ const ProfilePage = () => {
                 return;
             }
 
+            setProfile(prev => ({
+                ...prev,
+                username: result.user.username
+            }));
+
         }
         getAccess();
     }, [])
@@ -213,7 +218,7 @@ const ProfilePage = () => {
 
 
   return (
-    <div>
+    <div className="profile-page">
         <ProfileHeader profile={profile} />
         <ProfileStat profile={profile} />
     </div>
