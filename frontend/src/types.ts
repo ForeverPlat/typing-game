@@ -65,3 +65,19 @@ export type LeaderboardResponse = {
         topResults: Array<LeaderboardObject>
     }
 }
+
+export type Profile = {
+    username: string
+    highestWpm: number
+    averageWpm: number
+    averageWpmLastFive: number
+    highestAccuracy: number
+    averageAccuracy: number
+    averageAccuracyLastFive: number
+    timeTyping: string
+}
+
+// export type Result = {
+//     _id: string
+
+// }

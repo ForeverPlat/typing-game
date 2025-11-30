@@ -20,11 +20,11 @@ function App() {
         { path: "/leaderboard", element: <LeaderboardPage /> },
         { path: "/profile", element: <ProfilePage /> },
         { path: "/result", element: <ResultPage /> },
+        { path: "/auth", element: <AuthPage /> },
+        { path: "/signup", element: <Signup /> },
+        { path: "/login", element: <Login /> }
       ]
     },
-    { path: "/auth", element: <AuthPage /> },
-    { path: "/signup", element: <Signup /> },
-    { path: "/login", element: <Login /> }
   ]);
 
   return (
