@@ -16,7 +16,7 @@ const Letter = forwardRef<LetterHandle, LetterProps>(({ letter }, ref) => {
 
   return (
     <div
-      className={letter}
+      className="letter"
       id="letter"
       ref={el}
       style={{ color:

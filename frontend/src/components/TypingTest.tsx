@@ -1,20 +1,39 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import Word from "./Word"
-import type { LetterStatus, WordHandle } from "../types";
+import Line from "./Line";
+import type { LetterStatus, LineHandle } from "../types";
 import TypingCursor from "./TypingCursor";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const TypingTest = ({ resetToken }: { resetToken: number }) => {
 
-    const [text] = useState("hello to the world");
-    const [words] = useState<string[]>(text.split(" "));
+    // const [text] = useState("hello to the world");
+    const [text]= useState(
+        "\tfunction greet(name) {\n" +
+        "\t\tif (!name) {\n" +
+        "\t\t\treturn \"No name provided\";\n" +
+        "\t\t}\n\n" +
+        "\t\tconst msg = `Hello, ${name}!`;\n" +
+        "\t\tconsole.log(msg);\n" +
+        "\t\treturn msg;\n" +
+        "\t}\n\n" +
+        "\tgreet(\"Ava\");\n"
+    );
+
+    const [lines] = useState(
+        text.split("\n").map(line =>
+            line.length === 0 ? [""] : line.split(" ")
+        )
+    );
+    // const [words] = useState<string[]>(lines.split(" "));
+    const [lineIndex, setLineIndex] = useState(0);
     const [wordIndex, setWordIndex] = useState(0);
     const [letterIndex, setLetterIndex] = useState(0);
     const [elapsedTime, setElapsedTime] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const [hasFinished, setHasFinished] = useState(false);
 
-    const wordComponentRefs = useRef<(WordHandle | null)[]>([]);
+    const lineRefs = useRef<(LineHandle | null)[]>([]);
+    // const wordComponentRefs = useRef<(WordHandle | null)[]>([]);
     const cursorRef = useRef<HTMLDivElement | null>(null);
 
     const navigate = useNavigate();
@@ -22,10 +41,10 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
     const totalLetters = text?.replaceAll(" ", "").length;
 
     const handleReset = () => {
-        for (const wordRef of wordComponentRefs.current) {
-            wordRef?.setPending();
+        for (const lineRef of lineRefs.current) {
+            lineRef?.setPending();
         }
-    }
+    };
 
     useEffect(() => {
         handleReset();
@@ -55,27 +74,32 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
     const getAccuracy = () => {
         let incorrect = 0;
 
-        for (const wordRef of wordComponentRefs.current) {
+        for (const lineRef of lineRefs.current) {
+        if (!lineRef) continue;
+
+        const wordCount = lineRef.getWordCount();
+        for (let wi = 0; wi < wordCount; wi++) {
+            const wordRef = lineRef.getWord(wi);
             if (!wordRef) continue;
 
             const lettersCount = wordRef.getLetterCount();
+            for (let li = 0; li < lettersCount; li++) {
+            const letterRef = wordRef.getLetter(li);
+            if (!letterRef) continue;
 
-            for (let i = 0; i < lettersCount; i++) {
-                const letterRef = wordRef.getLetter(i);
-                if (!letterRef) continue;
-
-                letterRef.getStatus() === "incorrect" ? incorrect++ : null;
+            if (letterRef.getStatus() === "incorrect") incorrect++;
             }
         }
-        return Math.round((totalLetters - incorrect)/(totalLetters) * 100);
+        }
+        return Math.round(((totalLetters - incorrect) / totalLetters) * 100);
     }
 
     const getWpm = () => {
-        const accuracy = getAccuracy();
-        const time = elapsedTime/60000;
+        const accuracy = getAccuracy() / 100;
+        const time = elapsedTime / 60000;
         const correctChars = totalLetters * accuracy;
-
-        return Math.min(Math.round((correctChars/ 5) / time), 300);
+        if (time === 0) return 0;
+        return Math.min(Math.round((correctChars / 5) / time), 300);
     }
 
     const endGame = () => {
@@ -106,18 +130,19 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
         console.log("wpm", getWpm());
     }
 
-    const setLetterStatus = (wordI: number, letterI: number, key: string, force?: LetterStatus ) => {
-        const wordComponent = wordComponentRefs.current[wordI];
+    const setLetterStatus = (lineI: number, wordI: number, letterI: number, key: string, force?: LetterStatus ) => {
+        const lineComponent = lineRefs.current[lineI];
+        const wordComponent = lineComponent?.getWord(wordI);
         const letterComponent = wordComponent?.getLetter(letterI);
         if (!letterComponent) return;
 
         if (force) {
-            letterComponent.setStatus(force);
-            return;
+        letterComponent.setStatus(force);
+        return;
         }
 
-        const word = words[wordI][letterI];
-        const status = word === key ? "correct" : "incorrect";
+        const expectedChar = lines[lineI][wordI][letterI];
+        const status: LetterStatus = expectedChar === key ? "correct" : "incorrect";
         letterComponent.setStatus(status);
     }
 
@@ -127,48 +152,101 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
 
         if (hasFinished) return;
 
-        const lettersTyped = words
-            .slice(0, wordIndex)
-            .reduce((sum, word) => sum + word.length, 0) + letterIndex
+        const lettersTypedBeforeCurrentLine = lines
+            .slice(0, lineIndex)
+            .reduce((sum, lineWords) => sum + lineWords
+                .reduce((wSum, w) => wSum + w.length, 0),
+                0
+            );
 
-        if (!isRunning && (/^[a-zA-Z]$/.test(event.key) || event.key === " ")) {
+        const lettersTypedInCurrentLine = lines[lineIndex]
+            .slice(0, wordIndex)
+            .reduce((sum, w) => sum + w.length, 0);
+
+        const lettersTyped =
+            lettersTypedBeforeCurrentLine + lettersTypedInCurrentLine + letterIndex;
+
+        if ( !isRunning && (key.length === 1 || key === " ")) {
             startTimer();
         }
 
         if (key === "Backspace") {
-            setLetterIndex(prevLetterIndex => {
-                if (wordIndex === 0 && prevLetterIndex === 0) {
-                    return 0;
-                }
+            setLetterIndex((prevLetterIndex) => {
+            // nothing to delete at very start
+            if ( lineIndex === 0 && wordIndex === 0 && prevLetterIndex === 0) {
+                return 0;
+            }
 
-                if (prevLetterIndex === 0) {
+            // move to previous word / line if at start of word
+            if (prevLetterIndex === 0) {
+                if (wordIndex > 0) {
                     const newWordIndex = wordIndex - 1;
-                    const newLetterIndex = words[newWordIndex].length;
+                    const newLetterIndex =
+                        lines[lineIndex][newWordIndex].length;
 
                     setWordIndex(newWordIndex);
+                    setLetterStatus(
+                        lineIndex,
+                        newWordIndex,
+                        newLetterIndex - 1,
+                        "",
+                        "pending"
+                    );
+                    return newLetterIndex;
+                } else if (lineIndex > 0) {
+                    const newLineIndex = lineIndex - 1;
+                    const lastWordIndex = lines[newLineIndex].length - 1;
+                    const newLetterIndex =
+                        lines[newLineIndex][lastWordIndex].length;
+
+                    setLineIndex(newLineIndex);
+                    setWordIndex(lastWordIndex);
+                    setLetterStatus(
+                        newLineIndex,
+                        lastWordIndex,
+                        newLetterIndex - 1,
+                        "",
+                        "pending"
+                    );
                     return newLetterIndex;
                 }
+            }
 
-                const newLetterIndex = prevLetterIndex - 1;
-                setLetterStatus(wordIndex, newLetterIndex, "", "pending");
-                return newLetterIndex;
+            // normal backspace inside word
+            const newLetterIndex = prevLetterIndex - 1;
+            setLetterStatus(
+                lineIndex,
+                wordIndex,
+                newLetterIndex,
+                "",
+                "pending"
+            );
+            return newLetterIndex;
             });
             return;
         }
 
-        if (key == " ") {
-            setWordIndex((prevWordIndex) => prevWordIndex + 1);
-            setLetterIndex(0)
+        if (key === " ") {
+            const wordsInLine = lines[lineIndex];
+            if (wordIndex < wordsInLine.length - 1) {
+                setWordIndex((prev) => prev + 1);
+                setLetterIndex(0);
+            } else if (lineIndex < lines.length - 1) {
+                setLineIndex((prev) => prev + 1);
+                setWordIndex(0);
+                setLetterIndex(0);
+            }
             return;
         }
 
-        if (/^[a-zA-Z]$/.test(key)) {
-            const isLastLetter = lettersTyped === totalLetters - 1
+        if (key.length === 1) {
+            const isLastLetter = lettersTyped === totalLetters - 1;
 
             setLetterIndex((prevLetterIndex) => {
-                if (prevLetterIndex >= words[wordIndex].length) return prevLetterIndex;
+                const currentWord = lines[lineIndex][wordIndex];
+                if (prevLetterIndex >= currentWord.length) return prevLetterIndex;
 
-                setLetterStatus(wordIndex, prevLetterIndex, key)
+                setLetterStatus(lineIndex, wordIndex, prevLetterIndex, key);
                 return prevLetterIndex + 1;
             });
 
@@ -177,7 +255,7 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
             }
             return;
         }
-    }, [ wordIndex, letterIndex, words, isRunning, text, elapsedTime ])
+    }, [lineIndex, wordIndex, letterIndex, lines, isRunning, text, elapsedTime, hasFinished])
 
     useEffect(() => {
         window.addEventListener("keydown", handleKeyDown);
@@ -189,47 +267,52 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
     }, [letterIndex])
 
     useEffect(() => {
-        const wordComponent = wordComponentRefs.current[wordIndex];
+        const lineComponent = lineRefs.current[lineIndex];
+        const wordComponent = lineComponent?.getWord(wordIndex);
         const container = document.getElementById("typing-test");
 
-        let rect = null;
+        let rect: { left: number; top: number } | DOMRect | null = null;
 
-        if (letterIndex < words[wordIndex].length) {
-            const letter = wordComponent?.getLetter(letterIndex);
+        const currentWord = lines[lineIndex]?.[wordIndex];
+
+        if (!currentWord || !wordComponent) return;
+
+        if (letterIndex < currentWord.length) {
+            const letter = wordComponent.getLetter(letterIndex);
             rect = letter?.getRect() ?? null;
         } else {
-            rect = wordComponent?.getEndRect() ?? null;
+            rect = wordComponent.getEndRect();
         }
 
         if (!rect || !cursorRef.current || !container) return;
-        
+
         const containerRect = container.getBoundingClientRect();
         const x = rect.left - containerRect.left;
         const y = rect.top - containerRect.top;
 
         cursorRef.current.style.transform = `translate(${x}px, ${y}px)`;
-    }, [wordIndex, letterIndex])
+    }, [lineIndex, wordIndex, letterIndex, lines])
 
     useEffect(() => {
         if (!cursorRef.current) return;
 
-        if (letterIndex > 0 || wordIndex > 0) {
+        if (letterIndex > 0 || wordIndex > 0 || lineIndex > 0) {
             cursorRef.current.classList.add("no-blink");
         } else {
             cursorRef.current.classList.remove("no-blink");
         }
-    }, [letterIndex]);
+    }, [letterIndex, wordIndex, lineIndex]);
 
   return (
     <div id="typing-test" className="typing-test">
         <TypingCursor ref={cursorRef} />
-        {words.map((word, i) => (
-            <Word 
-                key={`${i}-${resetToken}`} 
-                word={word}
-                status="pending"
-                ref={(element) => {
-                    wordComponentRefs.current[i] = element
+
+        {lines.map((words, idx) => (
+            <Line
+                key={idx}
+                words={words}
+                ref={(el) => {
+                    lineRefs.current[idx] = el;
                 }}
             />
         ))}

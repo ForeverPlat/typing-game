@@ -9,6 +9,17 @@ export type Result = {
     duration: number
 }
 
+
+export type LineProps = {
+    words: string[]
+}
+
+export type LineHandle = {
+    getWord: (wordIndex: number) => WordHandle | null
+    getWordCount: () => number
+    setPending: () => void
+}
+
 export type LetterProps = {
     letter: string
     status: LetterStatus
@@ -36,6 +47,7 @@ export type LetterHandle = {
     setStatus: (status: LetterStatus) => void
     getRect: () => DOMRect | null
 }
+
 
 export type LoginRespone = {
     success: boolean

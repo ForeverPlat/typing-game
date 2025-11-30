@@ -1,0 +1,6 @@
+.line {
+  display: flex;
+  flex-direction: row;
+  /* This gives you actual line breaks instead of one big flex row */
+  width: 100%;
+}
