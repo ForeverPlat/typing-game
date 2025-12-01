@@ -11,6 +11,7 @@ export type Result = {
 export type LineProps = {
     words: string[];
     indent: number;
+    resetToken: number;
 };
 
 export type LineHandle = {

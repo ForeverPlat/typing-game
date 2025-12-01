@@ -8,7 +8,7 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
 
     // const [text] = useState("hello to the world");
     const [text]= useState(
-        "\tfunction greet(name) {\n" +
+        "\const greet = (name) => {\n" +
         "\t\tif (!name) {\n" +
         "\t\t\treturn \"No name provided\";\n" +
         "\t\t}\n\n" +
@@ -333,9 +333,10 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
 
         {lines.map((line, idx) => (
             <Line
-                key={idx}
+                key={`${idx}-${resetToken}`}
                 words={line.words}
                 indent={line.indent}
+                resetToken={resetToken}
                 ref={(el) => {
                     lineRefs.current[idx] = el;
                 }}

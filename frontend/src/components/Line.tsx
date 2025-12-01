@@ -3,7 +3,7 @@ import Word from "./Word";
 import type { LineHandle, LineProps, WordHandle } from "../types";
 import "../styles/line.css"; // optional but recommended
 
-const Line = forwardRef<LineHandle, LineProps>(({ words, indent }, ref) => {
+const Line = forwardRef<LineHandle, LineProps>(({ words, indent, resetToken }, ref) => {
     const wordRefs = useRef<(WordHandle | null)[]>([]);
 
     useImperativeHandle(ref, () => ({
@@ -21,11 +21,11 @@ const Line = forwardRef<LineHandle, LineProps>(({ words, indent }, ref) => {
             <div className="indent" style={{ width: `${indent * 2}rem` }} />
             {words.map((word, i) => (
                 <Word
-                    key={i}
+                    key={`${i}-${resetToken}`}
                     word={word}
                     status="pending"
                     ref={(el) => {
-                    wordRefs.current[i] = el;
+                        wordRefs.current[i] = el;
                     }}
                 />
             ))}
