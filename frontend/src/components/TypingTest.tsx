@@ -15,16 +15,26 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
         "\t\tconst msg = `Hello, ${name}!`;\n" +
         "\t\tconsole.log(msg);\n" +
         "\t\treturn msg;\n" +
-        "\t}\n\n" +
+        "\t}\n" +
         "\tgreet(\"Ava\");\n"
     );
 
-    const [lines] = useState(
-        text.split("\n").map(line =>
-            line.length === 0 ? [""] : line.split(" ")
-        )
-    );
-    // const [words] = useState<string[]>(lines.split(" "));
+    const extractIndentation = (line: string) => {
+        const indentMatch = line.match(/^\t+/); // one or more tabs
+        const indent = indentMatch ? indentMatch[0].length : 0;
+        const noIndent = line.replace(/^\t+/, "");
+        return { indent, noIndent };
+    }
+
+    const processedLines = text.split("\n").map((rawLine) => {
+        const { indent, noIndent } = extractIndentation(rawLine);
+        return {
+            indent,
+            words: noIndent.length > 0 ? noIndent.split(" ") : [""]
+        };
+    });
+
+    const [lines] = useState(processedLines);
     const [lineIndex, setLineIndex] = useState(0);
     const [wordIndex, setWordIndex] = useState(0);
     const [letterIndex, setLetterIndex] = useState(0);
@@ -38,7 +48,9 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
 
     const navigate = useNavigate();
 
-    const totalLetters = text?.replaceAll(" ", "").length;
+    const totalLetters = lines.reduce( (sum, line) =>
+            sum + line.words.reduce((s, w) => s + w.length, 0), 0
+    );
 
     const handleReset = () => {
         for (const lineRef of lineRefs.current) {
@@ -141,7 +153,7 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
         return;
         }
 
-        const expectedChar = lines[lineI][wordI][letterI];
+        const expectedChar = lines[lineI].words[wordI][letterI];
         const status: LetterStatus = expectedChar === key ? "correct" : "incorrect";
         letterComponent.setStatus(status);
     }
@@ -154,12 +166,12 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
 
         const lettersTypedBeforeCurrentLine = lines
             .slice(0, lineIndex)
-            .reduce((sum, lineWords) => sum + lineWords
+            .reduce((sum, lineObj) => sum + lineObj.words
                 .reduce((wSum, w) => wSum + w.length, 0),
                 0
             );
 
-        const lettersTypedInCurrentLine = lines[lineIndex]
+        const lettersTypedInCurrentLine = lines[lineIndex].words
             .slice(0, wordIndex)
             .reduce((sum, w) => sum + w.length, 0);
 
@@ -182,7 +194,7 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
                 if (wordIndex > 0) {
                     const newWordIndex = wordIndex - 1;
                     const newLetterIndex =
-                        lines[lineIndex][newWordIndex].length;
+                        lines[lineIndex].words[newWordIndex].length;
 
                     setWordIndex(newWordIndex);
                     setLetterStatus(
@@ -195,9 +207,9 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
                     return newLetterIndex;
                 } else if (lineIndex > 0) {
                     const newLineIndex = lineIndex - 1;
-                    const lastWordIndex = lines[newLineIndex].length - 1;
+                    const lastWordIndex = lines[newLineIndex].words.length - 1;
                     const newLetterIndex =
-                        lines[newLineIndex][lastWordIndex].length;
+                        lines[newLineIndex].words[lastWordIndex].length;
 
                     setLineIndex(newLineIndex);
                     setWordIndex(lastWordIndex);
@@ -226,14 +238,26 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
             return;
         }
 
-        if (key === " ") {
-            const wordsInLine = lines[lineIndex];
-            if (wordIndex < wordsInLine.length - 1) {
-                setWordIndex((prev) => prev + 1);
-                setLetterIndex(0);
-            } else if (lineIndex < lines.length - 1) {
-                setLineIndex((prev) => prev + 1);
+        if (key === "Enter") {
+            const isLastLine = lineIndex === lines.length - 1;
+
+            if (!isLastLine) {
+                setLineIndex(lineIndex + 1);
                 setWordIndex(0);
+                setLetterIndex(0);
+                return;
+            }
+
+            endGame();
+            return;
+        }
+
+        if (key === " ") {
+            const wordsInLine = lines[lineIndex].words;
+            const isLastWord = wordIndex === wordsInLine.length - 1;
+
+            if (!isLastWord) {
+                setWordIndex(wordIndex + 1);
                 setLetterIndex(0);
             }
             return;
@@ -243,7 +267,7 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
             const isLastLetter = lettersTyped === totalLetters - 1;
 
             setLetterIndex((prevLetterIndex) => {
-                const currentWord = lines[lineIndex][wordIndex];
+                const currentWord = lines[lineIndex].words[wordIndex];
                 if (prevLetterIndex >= currentWord.length) return prevLetterIndex;
 
                 setLetterStatus(lineIndex, wordIndex, prevLetterIndex, key);
@@ -273,7 +297,7 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
 
         let rect: { left: number; top: number } | DOMRect | null = null;
 
-        const currentWord = lines[lineIndex]?.[wordIndex];
+        const currentWord = lines[lineIndex].words?.[wordIndex];
 
         if (!currentWord || !wordComponent) return;
 
@@ -307,10 +331,11 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
     <div id="typing-test" className="typing-test">
         <TypingCursor ref={cursorRef} />
 
-        {lines.map((words, idx) => (
+        {lines.map((line, idx) => (
             <Line
                 key={idx}
-                words={words}
+                words={line.words}
+                indent={line.indent}
                 ref={(el) => {
                     lineRefs.current[idx] = el;
                 }}

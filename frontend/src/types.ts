@@ -1,5 +1,3 @@
-import type { ReactElement } from "react"
-
 export type LetterStatus = "pending" | "correct" | "incorrect" 
 
 export type Result = {
@@ -11,8 +9,9 @@ export type Result = {
 
 
 export type LineProps = {
-    words: string[]
-}
+    words: string[];
+    indent: number;
+};
 
 export type LineHandle = {
     getWord: (wordIndex: number) => WordHandle | null
