@@ -3,21 +3,12 @@ import Line from "./Line";
 import type { LetterStatus, LineHandle } from "../types";
 import TypingCursor from "./TypingCursor";
 import { useNavigate } from "react-router-dom";
+import { getJavascriptText } from '../../utils/generateTypingText'
 
 const TypingTest = ({ resetToken }: { resetToken: number }) => {
 
     // const [text] = useState("hello to the world");
-    const [text]= useState(
-        "\const greet = (name) => {\n" +
-        "\t\tif (!name) {\n" +
-        "\t\t\treturn \"No name provided\";\n" +
-        "\t\t}\n\n" +
-        "\t\tconst msg = `Hello, ${name}!`;\n" +
-        "\t\tconsole.log(msg);\n" +
-        "\t\treturn msg;\n" +
-        "\t}\n" +
-        "\tgreet(\"Ava\");\n"
-    );
+    const [text, setText] = useState(getJavascriptText);
 
     const extractIndentation = (line: string) => {
         const indentMatch = line.match(/^\t+/); // one or more tabs
@@ -26,15 +17,17 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
         return { indent, noIndent };
     }
 
-    const processedLines = text.split("\n").map((rawLine) => {
-        const { indent, noIndent } = extractIndentation(rawLine);
-        return {
-            indent,
-            words: noIndent.length > 0 ? noIndent.split(" ") : [""]
-        };
-    });
+    const processText = (text: string) => {
+        return text.split("\n").map(rawLine => {
+            const { indent, noIndent } = extractIndentation(rawLine);
+            return {
+                indent,
+                words: noIndent.length > 0 ? noIndent.split(" ") : [""]
+            };
+        });
+    };
 
-    const [lines] = useState(processedLines);
+    const [lines, setLines] = useState(() => processText(text));
     const [lineIndex, setLineIndex] = useState(0);
     const [wordIndex, setWordIndex] = useState(0);
     const [letterIndex, setLetterIndex] = useState(0);
@@ -58,10 +51,17 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
         }
     };
 
+    const newText = () => setText(getJavascriptText());
+
     useEffect(() => {
         handleReset();
         resetTimer();
+        newText();
     }, [resetToken])
+
+    useEffect(() => {
+        setLines(processText(text));
+    }, [text]);
 
     useEffect(() => {
         let timeInterval;
