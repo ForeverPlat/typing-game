@@ -1,0 +1,40 @@
+.language-selector {
+    display: flex;
+    justify-content: right;
+    margin: 15px 0;
+}
+
+.language-selector select {
+    background: var(--grey);
+    color: var(--white);
+    font-size: 1rem;
+    border: 2px solid var(--grey);
+    border-radius: 6px;
+    padding: 8px 14px;
+    cursor: pointer;
+    outline: none;
+    font-family: inherit;
+    transition: 0.2s ease;
+}
+
+/* hover */
+.language-selector select:hover {
+    background: var(--hover);
+}
+
+/* focus styling */
+.language-selector select:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 6px var(--purple);
+}
+
+/* dropdown options */
+.language-selector select option {
+    background: var(--grey);
+    color: var(--white);
+}
+
+/* optional: active click feedback */
+.language-selector select:active {
+    transform: scale(0.98);
+}

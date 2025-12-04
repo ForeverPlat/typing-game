@@ -1,5 +1,7 @@
 export type LetterStatus = "pending" | "correct" | "incorrect" 
 
+export type Language = "javascript" | "python" | "java"
+
 export type Result = {
     accuracy: number
     wpm: number
@@ -92,6 +94,11 @@ export type Profile = {
 export type ProfileHeaderProp = {
     username: string
     profile: Profile
+}
+
+export type TypingTestProp = {
+    resetToken: number
+    selectedLanguage: Language
 }
 
 // export type Result = {

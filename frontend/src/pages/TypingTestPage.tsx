@@ -1,17 +1,25 @@
+import LangaugeSelector from "../components/LangaugeSelector";
 import TypingTest from "../components/TypingTest"
 import '../styles/typingTestPage.css'
-import { useState } from "react"
+import { useState, type ChangeEventHandler } from "react"
+import type { Language } from "../types";
 
 const TypingTestPage = () => {
     const [resetToken, setResetToken] = useState(0);
+    const [selectedLanguage, setSelectedLanguage] = useState<Language>("javascript")
 
     const handleReload = () => {
         setResetToken(r => r + 1)
     }
 
+    const handleLanguageSelect: ChangeEventHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedLanguage(event.target.value as Language)
+    }
+
   return (
     <div>
-        <TypingTest resetToken={resetToken} />
+        <LangaugeSelector handleChange={handleLanguageSelect} />
+        <TypingTest resetToken={resetToken} selectedLanguage={selectedLanguage} />
         <svg className="reset" id="reset-button" onClick={handleReload} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>

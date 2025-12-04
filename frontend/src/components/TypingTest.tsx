@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import Line from "./Line";
-import type { LetterStatus, LineHandle } from "../types";
+import type { Language, LetterStatus, LineHandle, TypingTestProp } from "../types";
 import TypingCursor from "./TypingCursor";
 import { useNavigate } from "react-router-dom";
-import { getJavascriptText } from '../../utils/generateTypingText'
+import { getText } from '../../utils/generateTypingText'
 
-const TypingTest = ({ resetToken }: { resetToken: number }) => {
+const TypingTest = ({ resetToken, selectedLanguage }: TypingTestProp) => {
 
-    // const [text] = useState("hello to the world");
-    const [text, setText] = useState(getJavascriptText);
+    const [language, setLangauge] = useState<Language>(selectedLanguage);
+    
+    const [text, setText] = useState(() => getText(language));
+    console.log(text);
+    
 
     const extractIndentation = (line: string) => {
         const indentMatch = line.match(/^\t+/); // one or more tabs
@@ -51,13 +54,19 @@ const TypingTest = ({ resetToken }: { resetToken: number }) => {
         }
     };
 
-    const newText = () => setText(getJavascriptText());
+    const newText = () => setText(getText(language));
 
     useEffect(() => {
         handleReset();
         resetTimer();
         newText();
     }, [resetToken])
+
+    useEffect(() => {
+        handleReset();
+        setLangauge(selectedLanguage)
+        setText(getText(selectedLanguage))
+    }, [selectedLanguage])
 
     useEffect(() => {
         setLines(processText(text));
