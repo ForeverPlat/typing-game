@@ -10,8 +10,6 @@ const TypingTest = ({ resetToken, selectedLanguage }: TypingTestProp) => {
     const [language, setLangauge] = useState<Language>(selectedLanguage);
     
     const [text, setText] = useState(() => getText(language));
-    console.log(text);
-    
 
     const extractIndentation = (line: string) => {
         const indentMatch = line.match(/^\t+/); // one or more tabs
@@ -64,8 +62,10 @@ const TypingTest = ({ resetToken, selectedLanguage }: TypingTestProp) => {
 
     useEffect(() => {
         handleReset();
+        resetTimer();
         setLangauge(selectedLanguage)
         setText(getText(selectedLanguage))
+        lineRefs.current = []
     }, [selectedLanguage])
 
     useEffect(() => {
@@ -73,20 +73,40 @@ const TypingTest = ({ resetToken, selectedLanguage }: TypingTestProp) => {
     }, [text]);
 
     useEffect(() => {
-        let timeInterval;
+        const letter = lineRefs.current[lineIndex]
+            ?.getWord(wordIndex)
+            ?.getLetter(letterIndex)
+            ?.getLetter();
+
+        console.log(letter);
+    }, [lineIndex, wordIndex, letterIndex]);
+
+    useEffect(() => {
+        let timeInterval: number | undefined;
+
         if (isRunning) {
-            timeInterval = setInterval(() => {
-                setElapsedTime((prevTime) => prevTime + 1000)
+            timeInterval = window.setInterval(() => {
+                setElapsedTime(prev => prev + 1000);
             }, 1000);
         }
+
+        return () => {
+            if (timeInterval !== undefined) {
+                clearInterval(timeInterval);
+            }
+        }
+    }, [isRunning]);
+
+    useEffect(() => {
         console.log(elapsedTime);
-    }, [isRunning])
+    }, [elapsedTime])
 
     const startTimer = () => setIsRunning(true);
     const stopTimer = () => setIsRunning(false);
     const resetTimer = () => {
         setIsRunning(false);
         setElapsedTime(0);
+        setLineIndex(0);
         setWordIndex(0);
         setLetterIndex(0);
         setHasFinished(false);
@@ -158,11 +178,11 @@ const TypingTest = ({ resetToken, selectedLanguage }: TypingTestProp) => {
         if (!letterComponent) return;
 
         if (force) {
-        letterComponent.setStatus(force);
-        return;
+            letterComponent.setStatus(force);
+            return;
         }
 
-        const expectedChar = lines[lineI].words[wordI][letterI];
+        const expectedChar = letterComponent.getLetter();
         const status: LetterStatus = expectedChar === key ? "correct" : "incorrect";
         letterComponent.setStatus(status);
     }
@@ -176,16 +196,14 @@ const TypingTest = ({ resetToken, selectedLanguage }: TypingTestProp) => {
         const lettersTypedBeforeCurrentLine = lines
             .slice(0, lineIndex)
             .reduce((sum, lineObj) => sum + lineObj.words
-                .reduce((wSum, w) => wSum + w.length, 0),
-                0
+                .reduce((wSum, w) => wSum + w.length, 0), 0
             );
 
         const lettersTypedInCurrentLine = lines[lineIndex].words
             .slice(0, wordIndex)
             .reduce((sum, w) => sum + w.length, 0);
 
-        const lettersTyped =
-            lettersTypedBeforeCurrentLine + lettersTypedInCurrentLine + letterIndex;
+        const lettersTyped = lettersTypedBeforeCurrentLine + lettersTypedInCurrentLine + letterIndex;
 
         if ( !isRunning && (key.length === 1 || key === " ")) {
             startTimer();
@@ -194,7 +212,7 @@ const TypingTest = ({ resetToken, selectedLanguage }: TypingTestProp) => {
         if (key === "Backspace") {
             setLetterIndex((prevLetterIndex) => {
             // nothing to delete at very start
-            if ( lineIndex === 0 && wordIndex === 0 && prevLetterIndex === 0) {
+            if (lineIndex === 0 && wordIndex === 0 && prevLetterIndex === 0) {
                 return 0;
             }
 
@@ -342,7 +360,7 @@ const TypingTest = ({ resetToken, selectedLanguage }: TypingTestProp) => {
 
         {lines.map((line, idx) => (
             <Line
-                key={`${idx}-${resetToken}`}
+                key={`${language}-${idx}-${resetToken}`}
                 words={line.words}
                 indent={line.indent}
                 resetToken={resetToken}

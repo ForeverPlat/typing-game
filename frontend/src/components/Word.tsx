@@ -7,7 +7,7 @@ import '../styles/word.css';
 const Word = forwardRef<WordHandle, WordProps>(({ word }, ref)  => {
 
   const [status, setStatus] = useState<WordStatus>("pending");
-  const [letters, setLetters] = useState<string[]>(word.split(""));
+  const letters = word.split("");
 
   const letterComponentRefs = useRef<(LetterHandle | null)[]>([]);
 
