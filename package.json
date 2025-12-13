@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node backend/server",
-    "dev": "node --watch backend/server"
+    "dev": "node --watch backend/server",
+    "build": "cd frontend && npm install && npm run build"
   },
   "repository": {
     "type": "git",
