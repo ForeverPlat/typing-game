@@ -15,21 +15,28 @@ import leaderboard from './Routes/leaderboard.js';
 import errorHandler from './Middlewares/errorMiddleware.js';
 import { createError } from './utils/createError.js';
 
-dotenv.config({ path: './.env' });
-
-const PORT = process.env.PORT || 3000;
-
 //  Get the directory name
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// const frontendDir = path.join(__dirname, '..', 'frontend');
 
+dotenv.config({ path: path.join(__dirname, '.env') });
+
+// console.log('NODE_ENV:', process.env.NODE_ENV);
+
+const PORT = process.env.PORT || 3000;
 const app = express();
 
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true
-}));
+if (process.env.NODE_ENV !== 'production') {
+    app.use(cors({
+        origin: 'http://localhost:5173',
+        credentials: true
+    }));
+}
+
+// app.use(cors({
+//   origin: 'http://localhost:5173',
+//   credentials: true
+// }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

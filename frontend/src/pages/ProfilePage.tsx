@@ -3,6 +3,7 @@ import ProfileStat from "../components/ProfileStats"
 import { useNavigate } from "react-router-dom";
 import type { Profile, Result } from "../types";
 import ProfileHeader from "../components/ProfileHeader";
+import API_URL from '../config';
 
 const ProfilePage = () => {
     const [profile, setProfile] = useState<Profile>({
@@ -17,12 +18,11 @@ const ProfilePage = () => {
         });
     const navigate = useNavigate();
 
-    const backendURL = 'http://localhost:3000';
     const token = localStorage.getItem('token');
 
     useEffect(() => {
         const getAccess = async () => {
-            const res = await fetch(`${backendURL}/api/profile`, {
+            const res = await fetch(`${API_URL}/profile`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -188,7 +188,7 @@ const ProfilePage = () => {
         
         const getStats = async () => {
 
-            const res = await fetch(`${backendURL}/api/test-result`, {
+            const res = await fetch(`${API_URL}/test-result`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
