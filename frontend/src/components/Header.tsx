@@ -49,14 +49,24 @@ const Header = () => {
                         </g>
                     </svg> */}
 
-                    <svg className="logo-image" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    {/* <svg className="logo-image" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
                             <path d="M7 7L6 7C4.89543 7 4 7.89543 4 9L4 10.4721C4 10.7956 3.81722 11.0914 3.52786 11.2361V11.2361C2.89835 11.5508 2.89835 12.4492 3.52786 12.7639V12.7639C3.81722 12.9086 4 13.2044 4 13.5279L4 15C4 16.1046 4.89543 17 6 17L7 17" stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                             <path d="M17 7L18 7C19.1046 7 20 7.89543 20 9L20 10.4721C20 10.7956 20.1828 11.0914 20.4721 11.2361V11.2361C21.1017 11.5508 21.1017 12.4492 20.4721 12.7639V12.7639C20.1828 12.9086 20 13.2044 20 13.5279L20 15C20 16.1046 19.1046 17 18 17L17 17" stroke="#323232" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                         </g>
-                    </svg>
+                    </svg> */}
+
+                    {/* <svg className='logo-image' viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M8.01005 0.858582L6.01005 14.8586L7.98995 15.1414L9.98995 1.14142L8.01005 0.858582Z" fill="currentColor"></path>
+                            <path d="M12.5 11.5L11.0858 10.0858L13.1716 8L11.0858 5.91422L12.5 4.5L16 8L12.5 11.5Z" fill="currentColor"></path>
+                            <path d="M2.82843 8L4.91421 10.0858L3.5 11.5L0 8L3.5 4.5L4.91421 5.91422L2.82843 8Z" fill="currentColor"></path>
+                        </g>
+                    </svg> */}
 
                     <div className="logo-text">
                         println
@@ -71,8 +81,8 @@ const Header = () => {
                     <LeaderboardButton />
 
                     <svg className="profile-button" id="profile-button" onClick={handleProfileClick} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
                             <path d="M12 11.796C14.7189 11.796 16.9231 9.60308 16.9231 6.89801C16.9231 4.19294 14.7189 2.00005 12 2.00005C9.28106 2.00005 7.07692 4.19294 7.07692 6.89801C7.07692 9.60308 9.28106 11.796 12 11.796Z" fill="currentColor"></path> 
                             <path d="M14.5641 13.8369H9.4359C6.46154 13.8369 4 16.2859 4 19.245C4 19.9593 4.30769 20.5716 4.92308 20.8777C5.84615 21.3879 7.89744 22.0001 12 22.0001C16.1026 22.0001 18.1538 21.3879 19.0769 20.8777C19.5897 20.5716 20 19.9593 20 19.245C20 16.1838 17.5385 13.8369 14.5641 13.8369Z" fill="currentColor"></path>

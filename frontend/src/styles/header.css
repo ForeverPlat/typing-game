@@ -19,7 +19,7 @@
 
 .logo-image {
     display: inline;
-    height: 60%;
+    width: 2.5rem;
     color: var(--purple);
 }
 

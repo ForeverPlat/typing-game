@@ -384,5 +384,6 @@ export const getText = (language: Language) => {
     const index = Math.floor(Math.random() * texts.length);
     
     return texts[index]
-    
 }
+
+// please get gpt to generate snippeets that are all the same size

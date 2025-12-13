@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
+import '../styles/typingTest.css'
 import Line from "./Line";
 import type { Language, LetterStatus, LineHandle, TypingTestProp } from "../types";
 import TypingCursor from "./TypingCursor";
