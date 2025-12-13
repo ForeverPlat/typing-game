@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { forwardRef, useImperativeHandle, useRef, useState } from "react"
 import type { LetterHandle, LetterProps, LetterStatus } from "../types"
 
 const Letter = forwardRef<LetterHandle, LetterProps>(({ letter }, ref) => {

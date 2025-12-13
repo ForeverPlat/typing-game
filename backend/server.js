@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 3000;
 //  Get the directory name
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const frontendDir = path.join(__dirname, '..', 'frontend');
+// const frontendDir = path.join(__dirname, '..', 'frontend');
 
 const app = express();
 
@@ -34,44 +34,26 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//  setup static folder
-app.use(express.static(path.join(frontendDir, 'public')));
-
-// app.use((req, res, next) => {
-//   console.log('Middleware triggered for path:', req.path); // Debug request path
-//   const filePath = path.join(frontendDir, 'public', req.path);
-//   console.log('Calculated filePath:', filePath); // Debug file path
-//   // Only process if the path is for a static HTML file, not an API route
-//   if (req.path.startsWith('/api/') || req.path.startsWith('/api/auth/')) {
-//     console.log('Skipping API route:', req.path);
-//     return next();
-//   }
-//   if (filePath.endsWith('.html')) {
-//     try {
-//       console.log('Attempting to read HTML file:', filePath);
-//       const htmlContent = fs.readFileSync(filePath, 'utf-8'); // Sync for simplicity
-//       const backendURL = process.env.BACKEND_URL || `http://localhost:${PORT}`;
-//       console.log(`Injecting backendURL: ${backendURL} for ${req.path}`);
-//       const updatedHTML = htmlContent.replace(
-//         '</head>',
-//         `<script>window.BACKEND_URL = '${backendURL}';</script></head>`
-//       );
-//       return res.send(updatedHTML);
-//     } catch (error) {
-//       return next(); // Pass to next middleware if file not found
-//     }
-//   }
-//   console.log('Not an HTML file or API route, proceeding to next middleware');
-//   next(); // Proceed to other routes if not an HTML file
-// });
-
-
 app.use('/api/auth', auth);
 app.use('/api/auth', verify);
 app.use('/api/auth', verifyEmail);
 app.use('/api', profile);
 app.use('/api', testResult);
 app.use('/api', leaderboard);
+
+const frontendDist = path.join(__dirname, '..', 'frontend', 'dist');
+app.use(express.static(frontendDist));
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(frontendDist, 'index.html'));
+// });
+app.use((req, res, next) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  } else {
+    next();
+  }
+});
 
 app.use(errorHandler);
 
