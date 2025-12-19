@@ -2,388 +2,274 @@ import type { Language } from "../src/types";
 
 const snippets: Record<Language, string[]> = {
     "javascript": [
-        "const greet = (name) => {\n" +
-        "\t\tif (!name) {\n" +
-        "\t\t\treturn \"No name provided\";\n" +
+        "const greet = (user) => {\n" +
+        "\t\tif (!user) {\n" +
+        "\t\t\treturn \"Missing user value\";\n" +
         "\t\t}\n\n" +
-        "\t\tconst msg = `Hello, ${name}!`;\n" +
+        "\t\tconst msg = `Welcome, ${user}!`;\n" +
         "\t\tconsole.log(msg);\n" +
         "\t\treturn msg;\n" +
         "\t}\n" +
-        "\tgreet(\"Ava\");\n",
+        "\tgreet(\"Liam\");\n",
 
-        "const sum = (a, b) => {\n" +
-        "\t\tif (typeof a !== 'number' || typeof b !== 'number') {\n" +
-        "\t\t\treturn 'Invalid input';\n" +
+        "const square = (n) => {\n" +
+        "\t\tif (typeof n !== 'number') {\n" +
+        "\t\t\treturn \"Invalid number\";\n" +
         "\t\t}\n\n" +
-        "\t\tconst result = a + b;\n" +
-        "\t\tconsole.log(result);\n" +
-        "\t\treturn result;\n" +
+        "\t\tconst res = n * n;\n" +
+        "\t\tconsole.log(res);\n" +
+        "\t\treturn res;\n" +
         "\t}\n" +
-        "\tsum(3, 7);\n",
+        "\tsquare(6);\n",
 
-        "function fetchData(url) {\n" +
-        "\t\treturn fetch(url)\n" +
-        "\t\t\t.then(res => res.json())\n" +
-        "\t\t\t.then(data => {\n" +
-        "\t\t\t\tconsole.log(data);\n" +
-        "\t\t\t\treturn data;\n" +
-        "\t\t\t});\n" +
-        "\t}\n" +
-        "\tfetchData('/api/user');\n",
-
-        "class User {\n" +
-        "\t\tconstructor(name) {\n" +
-        "\t\t\tthis.name = name;\n" +
+        "const upper = (text) => {\n" +
+        "\t\tif (!text) {\n" +
+        "\t\t\treturn \"No text supplied\";\n" +
         "\t\t}\n\n" +
-        "\t\tsayHi() {\n" +
-        "\t\t\tconsole.log(`Hi, I'm ${this.name}`);\n" +
-        "\t\t}\n" +
+        "\t\tconst out = text.toUpperCase();\n" +
+        "\t\tconsole.log(out);\n" +
+        "\t\treturn out;\n" +
         "\t}\n" +
-        "\tnew User('Mia').sayHi();\n",
+        "\tupper(\"code\");\n",
 
-        "const nums = [1,2,3,4];\n" +
-        "\t\tconst doubled = nums.map(n => n * 2);\n" +
-        "\t\tconsole.log(doubled);\n" +
-        "\t\tconsole.log('Done');\n",
-
-        "let counter = 0;\n" +
-        "\t\tconst inc = () => {\n" +
-        "\t\t\tcounter++;\n" +
-        "\t\t\tconsole.log(counter);\n" +
-        "\t\t}\n" +
-        "\tinc(); inc();\n",
-
-        "const isEven = (n) => {\n" +
-        "\t\tif (n % 2 === 0) return true;\n" +
-        "\t\treturn false;\n" +
+        "const repeat = (str) => {\n" +
+        "\t\tif (!str) {\n" +
+        "\t\t\treturn \"Empty string\";\n" +
+        "\t\t}\n\n" +
+        "\t\tconst out = str + str;\n" +
+        "\t\tconsole.log(out);\n" +
+        "\t\treturn out;\n" +
         "\t}\n" +
-        "\tconsole.log(isEven(5));\n",
+        "\trepeat(\"hi\");\n",
 
-        "const person = {name:'Lily', age:22};\n" +
-        "\t\tfor (const key in person) {\n" +
-        "\t\t\tconsole.log(key, person[key]);\n" +
-        "\t\t}\n",
-
-        "async function wait(ms){\n" +
-        "\t\treturn new Promise(r => setTimeout(r, ms));\n" +
-        "\t}\n\n" +
-        "\tawait wait(500);\n" +
-        "\tconsole.log('Done');\n",
-
-        "const items = ['a','b','c'];\n" +
-        "\t\titems.forEach(i => console.log(i));\n" +
-        "\t\tconsole.log('Listed');\n",
-
-        "try {\n" +
-        "\t\tJSON.parse('{broken json');\n" +
-        "\t} catch (err) {\n" +
-        "\t\tconsole.error('Error:', err.message);\n" +
-        "\t}\n",
-
-        "function factorial(n) {\n" +
-        "\t\tif (n <= 1) return 1;\n" +
-        "\t\treturn n * factorial(n - 1);\n" +
+        "const negate = (n) => {\n" +
+        "\t\tif (typeof n !== 'number') {\n" +
+        "\t\t\treturn \"Invalid number\";\n" +
+        "\t\t}\n\n" +
+        "\t\tconst res = -n;\n" +
+        "\t\tconsole.log(res);\n" +
+        "\t\treturn res;\n" +
         "\t}\n" +
-        "\tconsole.log(factorial(5));\n",
+        "\tnegate(4);\n",
 
-        "const obj = {a:1,b:2};\n" +
-        "\t\tconst {a,b} = obj;\n" +
-        "\t\tconsole.log(a+b);\n",
-
-        "const greetUser = (user='Guest') => {\n" +
-        "\t\tconsole.log(`Welcome ${user}`);\n" +
-        "\t\treturn user;\n" +
+        "const length = (s) => {\n" +
+        "\t\tif (!s) {\n" +
+        "\t\t\treturn \"Empty string\";\n" +
+        "\t\t}\n\n" +
+        "\t\tconst res = s.length;\n" +
+        "\t\tconsole.log(res);\n" +
+        "\t\treturn res;\n" +
         "\t}\n" +
-        "\tgreetUser();\n",
+        "\tlength(\"test\");\n",
 
-        "const addUnique = (set,val) => {\n" +
-        "\t\tif (!set.has(val)) set.add(val);\n" +
-        "\t\tconsole.log(set);\n" +
+        "const trim = (s) => {\n" +
+        "\t\tif (!s) {\n" +
+        "\t\t\treturn \"No value given\";\n" +
+        "\t\t}\n\n" +
+        "\t\tconst out = s.trim();\n" +
+        "\t\tconsole.log(out);\n" +
+        "\t\treturn out;\n" +
         "\t}\n" +
-        "\taddUnique(new Set(),3);\n",
+        "\ttrim(\" hi \");\n",
 
-        "const rand = () => Math.floor(Math.random()*10);\n" +
-        "\t\tconsole.log(rand());\n" +
-        "\t\tconsole.log(rand());\n",
-
-        "const logProps = (obj) => {\n" +
-        "\t\tObject.entries(obj).forEach(([k,v]) => {\n" +
-        "\t\t\tconsole.log(k,v);\n" +
-        "\t\t});\n" +
+        "const double = (n) => {\n" +
+        "\t\tif (typeof n !== 'number') {\n" +
+        "\t\t\treturn \"Invalid number\";\n" +
+        "\t\t}\n\n" +
+        "\t\tconst res = n * 2;\n" +
+        "\t\tconsole.log(res);\n" +
+        "\t\treturn res;\n" +
         "\t}\n" +
-        "\tlogProps({x:1,y:2});\n",
+        "\tdouble(7);\n",
 
-        "const reverse = str => {\n" +
-        "\t\treturn str.split('').reverse().join('');\n" +
+        "const lower = (s) => {\n" +
+        "\t\tif (!s) {\n" +
+        "\t\t\treturn \"No text supplied\";\n" +
+        "\t\t}\n\n" +
+        "\t\tconst out = s.toLowerCase();\n" +
+        "\t\tconsole.log(out);\n" +
+        "\t\treturn out;\n" +
         "\t}\n" +
-        "\tconsole.log(reverse('code'));\n",
+        "\tlower(\"CODE\");\n",
 
-        "let x = 10;\n" +
-        "\t\twhile (x > 7) {\n" +
-        "\t\t\tconsole.log(x--);\n" +
-        "\t\t}\n",
-
-        "const apiCall = async() => {\n" +
-        "\t\ttry {\n" +
-        "\t\t\tconst res = await fetch('/data');\n" +
-        "\t\t\treturn await res.json();\n" +
-        "\t\t} catch(e) {\n" +
-        "\t\t\tconsole.error(e);\n" +
-        "\t\t}\n" +
+        "const absVal = (n) => {\n" +
+        "\t\tif (typeof n !== 'number') {\n" +
+        "\t\t\treturn \"Invalid number\";\n" +
+        "\t\t}\n\n" +
+        "\t\tconst res = Math.abs(n);\n" +
+        "\t\tconsole.log(res);\n" +
+        "\t\treturn res;\n" +
         "\t}\n" +
-        "\tapiCall();\n",
-
-        "function multiply(...nums) {\n" +
-        "\t\treturn nums.reduce((a,b) => a*b,1);\n" +
-        "\t}\n" +
-        "\tconsole.log(multiply(2,3,4));\n"
+        "\tabsVal(-5);\n"
     ],
+
     "python": [
-        "\ndef greet(name=None):\n" +
-        "\t\tif not name:\n" +
-        "\t\t\treturn \"No name provided\"\n\n" +
-        "\t\tmsg = f\"Hello, {name}!\"\n" +
+        "\ndef greet(user=None):\n" +
+        "\t\tif not user:\n" +
+        "\t\t\treturn \"Missing user value\"\n\n" +
+        "\t\tmsg = f\"Welcome, {user}!\"\n" +
         "\t\tprint(msg)\n" +
         "\t\treturn msg\n\n" +
-        "greet(\"Ava\")\n",
+        "greet(\"Liam\")\n",
 
-        "\ndef add(a, b):\n" +
-        "\t\tif not isinstance(a, int) or not isinstance(b, int):\n" +
-        "\t\t\treturn \"Invalid input\"\n\n" +
-        "\t\tres = a + b\n" +
+        "\ndef square(n):\n" +
+        "\t\tif not isinstance(n, int):\n" +
+        "\t\t\treturn \"Invalid number\"\n\n" +
+        "\t\tres = n * n\n" +
         "\t\tprint(res)\n" +
         "\t\treturn res\n\n" +
-        "add(3, 7)\n",
+        "square(6)\n",
 
-        "\nimport requests\n\ndef fetch_data(url):\n" +
-        "\t\tres = requests.get(url)\n" +
-        "\t\tdata = res.json()\n" +
-        "\t\tprint(data)\n" +
-        "\t\treturn data\n\n" +
-        "fetch_data('https://api.example.com')\n",
+        "\ndef upper(text):\n" +
+        "\t\tif not text:\n" +
+        "\t\t\treturn \"No text supplied\"\n\n" +
+        "\t\tout = text.upper()\n" +
+        "\t\tprint(out)\n" +
+        "\t\treturn out\n\n" +
+        "upper(\"code\")\n",
 
-        "\nclass User:\n" +
-        "\t\tdef __init__(self, name):\n" +
-        "\t\t\tself.name = name\n\n" +
-        "\t\tdef say_hi(self):\n" +
-        "\t\t\tprint(f\"Hi, I'm {self.name}\")\n\n" +
-        "User('Mia').say_hi()\n",
+        "\ndef repeat(s):\n" +
+        "\t\tif not s:\n" +
+        "\t\t\treturn \"Empty string\"\n\n" +
+        "\t\tout = s + s\n" +
+        "\t\tprint(out)\n" +
+        "\t\treturn out\n\n" +
+        "repeat(\"hi\")\n",
 
-        "\nnums = [1,2,3,4]\n" +
-        "\tdoubled = [n*2 for n in nums]\n" +
-        "\tprint(doubled)\n" +
-        "\tprint('Done')\n",
+        "\ndef negate(n):\n" +
+        "\t\tif not isinstance(n, int):\n" +
+        "\t\t\treturn \"Invalid number\"\n\n" +
+        "\t\tres = -n\n" +
+        "\t\tprint(res)\n" +
+        "\t\treturn res\n\n" +
+        "negate(4)\n",
 
-        "\ncounter = 0\n\ndef inc():\n" +
-        "\t\tglobal counter\n" +
-        "\t\tcounter += 1\n" +
-        "\t\tprint(counter)\n\n" +
-        "inc(); inc()\n",
+        "\ndef length(s):\n" +
+        "\t\tif not s:\n" +
+        "\t\t\treturn \"Empty string\"\n\n" +
+        "\t\tres = len(s)\n" +
+        "\t\tprint(res)\n" +
+        "\t\treturn res\n\n" +
+        "length(\"test\")\n",
 
-        "\ndef is_even(n):\n" +
-        "\t\treturn n % 2 == 0\n\n" +
-        "print(is_even(5))\n",
+        "\ndef trim(s):\n" +
+        "\t\tif not s:\n" +
+        "\t\t\treturn \"No value given\"\n\n" +
+        "\t\tout = s.strip()\n" +
+        "\t\tprint(out)\n" +
+        "\t\treturn out\n\n" +
+        "trim(\" hi \")\n",
 
-        "\nperson = {'name':'Lily','age':22}\n" +
-        "\tfor k,v in person.items():\n" +
-        "\t\tprint(k,v)\n",
+        "\ndef double(n):\n" +
+        "\t\tif not isinstance(n, int):\n" +
+        "\t\t\treturn \"Invalid number\"\n\n" +
+        "\t\tres = n * 2\n" +
+        "\t\tprint(res)\n" +
+        "\t\treturn res\n\n" +
+        "double(7)\n",
 
-        "\nimport time\n\nasync def wait(ms):\n" +
-        "\t\ttime.sleep(ms/1000)\n\n" +
-        "await wait(500)\n" +
-        "print('Done')\n",
+        "\ndef lower(s):\n" +
+        "\t\tif not s:\n" +
+        "\t\t\treturn \"No text supplied\"\n\n" +
+        "\t\tout = s.lower()\n" +
+        "\t\tprint(out)\n" +
+        "\t\treturn out\n\n" +
+        "lower(\"CODE\")\n",
 
-        "\nitems = ['a','b','c']\n" +
-        "\tfor i in items:\n" +
-        "\t\tprint(i)\n" +
-        "\tprint('Listed')\n",
-
-        "\ntry:\n" +
-        "\t\tint('bad')\n" +
-        "except Exception as e:\n" +
-        "\t\tprint('Error:',e)\n",
-
-        "\ndef factorial(n):\n" +
-        "\t\tif n<=1:\n" +
-        "\t\t\treturn 1\n" +
-        "\t\treturn n*factorial(n-1)\n\n" +
-        "print(factorial(5))\n",
-
-        "\nobj={'a':1,'b':2}\n" +
-        "\ta=obj['a']; b=obj['b']\n" +
-        "\tprint(a+b)\n",
-
-        "\ndef greet_user(user='Guest'):\n" +
-        "\t\tprint(f'Welcome {user}')\n" +
-        "\t\treturn user\n\n" +
-        "greet_user()\n",
-
-        "\ndef add_unique(s,val):\n" +
-        "\t\tif val not in s:\n" +
-        "\t\t\ts.add(val)\n" +
-        "\t\tprint(s)\n\n" +
-        "add_unique(set(),3)\n",
-
-        "\nimport random\n" +
-        "\tprint(random.randint(0,9))\n" +
-        "\tprint(random.randint(0,9))\n",
-
-        "\ndef log_props(obj):\n" +
-        "\t\tfor k,v in obj.items():\n" +
-        "\t\t\tprint(k,v)\n\n" +
-        "log_props({'x':1,'y':2})\n",
-
-        "\ndef reverse(s):\n" +
-        "\t\treturn s[::-1]\n\n" +
-        "print(reverse('code'))\n",
-
-        "\nx=10\n" +
-        "\twhile x>7:\n" +
-        "\t\tprint(x)\n" +
-        "\t\tx-=1\n",
-
-        "\nfrom functools import reduce\n\ndef multiply(*nums):\n" +
-        "\t\treturn reduce(lambda a,b:a*b,nums,1)\n\n" +
-        "print(multiply(2,3,4))\n"
+        "\ndef abs_val(n):\n" +
+        "\t\tif not isinstance(n, int):\n" +
+        "\t\t\treturn \"Invalid number\"\n\n" +
+        "\t\tres = abs(n)\n" +
+        "\t\tprint(res)\n" +
+        "\t\treturn res\n\n" +
+        "abs_val(-5)\n"
     ],
+
     "java": [
         "\npublic class Main {\n" +
-        "\t\tstatic String greet(String name){\n" +
-        "\t\t\tif(name==null) return \"No name provided\";\n\n" +
-        "\t\t\tString msg = \"Hello, \" + name + \"!\";\n" +
+        "\t\tstatic String greet(String user) {\n" +
+        "\t\t\tif (user == null) return \"Missing user value\";\n\n" +
+        "\t\t\tString msg = \"Welcome, \" + user + \"!\";\n" +
         "\t\t\tSystem.out.println(msg);\n" +
         "\t\t\treturn msg;\n" +
-        "\t\t}\n\n" +
-        "\t\tpublic static void main(String[] args){\n" +
-        "\t\t\tgreet(\"Ava\");\n" +
         "\t\t}\n" +
+        "\t\tpublic static void main(String[] a) { greet(\"Liam\"); }\n" +
         "}\n",
 
         "\npublic class Main {\n" +
-        "\t\tstatic Object sum(Object a,Object b){\n" +
-        "\t\t\tif(!(a instanceof Integer) || !(b instanceof Integer)) return \"Invalid input\";\n\n" +
-        "\t\t\tint r=(int)a+(int)b;\n" +
-        "\t\t\tSystem.out.println(r);\n" +
-        "\t\t\treturn r;\n" +
-        "\t\t}\n\n" +
-        "\t\tpublic static void main(String[]args){sum(3,7);} \n" +
-        "}\n",
-
-        "\nimport java.net.*;\nimport java.io.*;\npublic class Main{\n" +
-        "\t\tstatic void fetchData(String url)throws Exception{\n" +
-        "\t\t\tvar conn=new URL(url).openConnection();\n" +
-        "\t\t\ttry(var in=new BufferedReader(new InputStreamReader(conn.getInputStream()))){\n" +
-        "\t\t\t\tSystem.out.println(in.readLine());\n" +
-        "\t\t\t}\n" +
+        "\t\tstatic Object square(Object n) {\n" +
+        "\t\t\tif (!(n instanceof Integer)) return \"Invalid number\";\n\n" +
+        "\t\t\tint res = (int)n * (int)n;\n" +
+        "\t\t\tSystem.out.println(res);\n" +
+        "\t\t\treturn res;\n" +
         "\t\t}\n" +
-        "\t\tpublic static void main(String[]a)throws Exception{fetchData(\"https://example.com\");}\n" +
+        "\t\tpublic static void main(String[] a) { square(6); }\n" +
         "}\n",
 
-        "\nclass User{\n" +
-        "\t\tString name;\n" +
-        "\t\tUser(String n){this.name=n;}\n\n" +
-        "\t\tvoid sayHi(){System.out.println(\"Hi, I'm \"+name);}\n" +
-        "}\n" +
-        "public class Main{\n" +
-        "\t\tpublic static void main(String[]a){new User(\"Mia\").sayHi();}\n" +
-        "}\n",
-
-        "\nimport java.util.*;\npublic class Main{\n" +
-        "\t\tpublic static void main(String[]a){\n" +
-        "\t\t\tList<Integer> nums=Arrays.asList(1,2,3,4);\n" +
-        "\t\t\tnums.stream().map(n->n*2).forEach(System.out::println);\n" +
-        "\t\t\tSystem.out.println(\"Done\");\n" +
+        "\npublic class Main {\n" +
+        "\t\tstatic String upper(String text) {\n" +
+        "\t\t\tif (text == null) return \"No text supplied\";\n\n" +
+        "\t\t\tString out = text.toUpperCase();\n" +
+        "\t\t\tSystem.out.println(out);\n" +
+        "\t\t\treturn out;\n" +
         "\t\t}\n" +
+        "\t\tpublic static void main(String[] a) { upper(\"code\"); }\n" +
         "}\n",
 
-        "\npublic class Main{\n" +
-        "\t\tstatic int counter=0;\n" +
-        "\t\tstatic void inc(){System.out.println(++counter);} \n\n" +
-        "\t\tpublic static void main(String[]a){inc();inc();}\n" +
-        "}\n",
-
-        "\npublic class Main{\n" +
-        "\t\tstatic boolean isEven(int n){return n%2==0;}\n" +
-        "\t\tpublic static void main(String[]a){System.out.println(isEven(5));}\n" +
-        "}\n",
-
-        "\nimport java.util.*;\npublic class Main{\n" +
-        "\t\tpublic static void main(String[]a){\n" +
-        "\t\t\tMap<String,Object> p=Map.of(\"name\",\"Lily\",\"age\",22);\n" +
-        "\t\t\tp.forEach((k,v)->System.out.println(k+\" \"+v));\n" +
+        "\npublic class Main {\n" +
+        "\t\tstatic String repeat(String s) {\n" +
+        "\t\t\tif (s == null) return \"Empty string\";\n\n" +
+        "\t\t\tString out = s + s;\n" +
+        "\t\t\tSystem.out.println(out);\n" +
+        "\t\t\treturn out;\n" +
         "\t\t}\n" +
+        "\t\tpublic static void main(String[] a) { repeat(\"hi\"); }\n" +
         "}\n",
 
-        "\npublic class Main{\n" +
-        "\t\tstatic void waitMs(long ms)throws Exception{Thread.sleep(ms);} \n" +
-        "\t\tpublic static void main(String[]a)throws Exception{waitMs(500);System.out.println(\"Done\");}\n" +
-        "}\n",
-
-        "\nimport java.util.*;\npublic class Main{\n" +
-        "\t\tpublic static void main(String[]a){\n" +
-        "\t\t\tList<String> items=Arrays.asList(\"a\",\"b\",\"c\");\n" +
-        "\t\t\titems.forEach(System.out::println);\n" +
-        "\t\t\tSystem.out.println(\"Listed\");\n" +
+        "\npublic class Main {\n" +
+        "\t\tstatic Object negate(Object n) {\n" +
+        "\t\t\tif (!(n instanceof Integer)) return \"Invalid number\";\n\n" +
+        "\t\t\tint res = -(int)n;\n" +
+        "\t\t\tSystem.out.println(res);\n" +
+        "\t\t\treturn res;\n" +
         "\t\t}\n" +
+        "\t\tpublic static void main(String[] a) { negate(4); }\n" +
         "}\n",
 
-        "\npublic class Main{\n" +
-        "\t\tpublic static void main(String[]a){\n" +
-        "\t\t\ttry{Integer.parseInt(\"broken\");}\n" +
-        "\t\t\tcatch(Exception e){System.out.println(\"Error: \"+e.getMessage());}\n" +
+        "\npublic class Main {\n" +
+        "\t\tstatic Object length(String s) {\n" +
+        "\t\t\tif (s == null) return \"Empty string\";\n\n" +
+        "\t\t\tint res = s.length();\n" +
+        "\t\t\tSystem.out.println(res);\n" +
+        "\t\t\treturn res;\n" +
         "\t\t}\n" +
+        "\t\tpublic static void main(String[] a) { length(\"test\"); }\n" +
         "}\n",
 
-        "\npublic class Main{\n" +
-        "\t\tstatic int factorial(int n){return n<=1?1:n*factorial(n-1);} \n" +
-        "\t\tpublic static void main(String[]a){System.out.println(factorial(5));}\n" +
+        "\npublic class Main {\n" +
+        "\t\tstatic String trim(String s) {\n" +
+        "\t\t\tif (s == null) return \"No value given\";\n\n" +
+        "\t\t\tString out = s.trim();\n" +
+        "\t\t\tSystem.out.println(out);\n" +
+        "\t\t\treturn out;\n" +
+        "\t\t}\n" +
+        "\t\tpublic static void main(String[] a) { trim(\" hi \"); }\n" +
         "}\n",
 
-        "\npublic class Main{\n" +
-        "\t\tpublic static void main(String[]a){int a1=1,b1=2;System.out.println(a1+b1);} \n" +
-        "}\n",
-
-        "\npublic class Main{\n" +
-        "\t\tstatic String greetUser(String u){System.out.println(\"Welcome \"+u);return u;} \n" +
-        "\t\tpublic static void main(String[]a){greetUser(\"Guest\");}\n" +
-        "}\n",
-
-        "\nimport java.util.*;\npublic class Main{\n" +
-        "\t\tstatic void addUnique(Set<Integer>s,int v){s.add(v);System.out.println(s);} \n" +
-        "\t\tpublic static void main(String[]a){addUnique(new HashSet<>(),3);} \n" +
-        "}\n",
-
-        "\nimport java.util.*;\npublic class Main{\n" +
-        "\t\tpublic static void main(String[]a){Random r=new Random();System.out.println(r.nextInt(10));System.out.println(r.nextInt(10));}\n" +
-        "}\n",
-
-        "\nimport java.util.*;\npublic class Main{\n" +
-        "\t\tstatic void logProps(Map<String,Object>m){m.forEach((k,v)->System.out.println(k+\" \"+v));} \n" +
-        "\t\tpublic static void main(String[]a){logProps(Map.of(\"x\",1,\"y\",2));}\n" +
-        "}\n",
-
-        "\npublic class Main{\n" +
-        "\t\tstatic String reverse(String s){return new StringBuilder(s).reverse().toString();} \n" +
-        "\t\tpublic static void main(String[]a){System.out.println(reverse(\"code\"));}\n" +
-        "}\n",
-
-        "\npublic class Main{\n" +
-        "\t\tpublic static void main(String[]a){int x=10;while(x>7)System.out.println(x--);} \n" +
-        "}\n",
-
-        "\nimport java.util.*;\npublic class Main{\n" +
-        "\t\tstatic int multiply(int...n){int r=1;for(int i:n)r*=i;return r;} \n" +
-        "\t\tpublic static void main(String[]a){System.out.println(multiply(2,3,4));}\n" +
+        "\npublic class Main {\n" +
+        "\t\tstatic Object absVal(Object n) {\n" +
+        "\t\t\tif (!(n instanceof Integer)) return \"Invalid number\";\n\n" +
+        "\t\t\tint res = Math.abs((int)n);\n" +
+        "\t\t\tSystem.out.println(res);\n" +
+        "\t\t\treturn res;\n" +
+        "\t\t}\n" +
+        "\t\tpublic static void main(String[] a) { absVal(-5); }\n" +
         "}\n"
     ]
-}
+};
 
-export const getText = (language: Language) => { 
+export const getText = (language: Language) => {
     const texts = snippets[language];
     const index = Math.floor(Math.random() * texts.length);
-    
-    return texts[index]
-}
-
-// please get gpt to generate snippeets that are all the same size
+    return texts[index];
+};
