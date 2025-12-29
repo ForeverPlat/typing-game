@@ -1,12 +1,16 @@
 import LangaugeSelector from "../components/LangaugeSelector";
 import TypingTest from "../components/TypingTest"
 import '../styles/typingTestPage.css'
+import 'driver.js/dist/driver.css'
 import { useState, type ChangeEventHandler } from "react"
 import type { Language } from "../types";
+import { useTypingTour } from "../onboarding/useTypingTour";
 
 const TypingTestPage = () => {
     const [resetToken, setResetToken] = useState(0);
     const [selectedLanguage, setSelectedLanguage] = useState<Language>("javascript")
+
+    useTypingTour();
 
     const handleReload = () => {
         setResetToken(r => r + 1)
