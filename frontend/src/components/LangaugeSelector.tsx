@@ -10,7 +10,7 @@ const LangaugeSelector = ({ handleChange }: { handleChange: React.ChangeEventHan
 
   return (
     <div id='language-selector' className='language-selector'>
-        <select onChange={handleChange}>
+        <select id='language-select' onChange={handleChange}>
             <option value={"javascript"}>Javascript</option>
             <option value={"python"}>Python</option>
             <option value={"java"}>Java</option>

@@ -4,47 +4,47 @@ export const typingTour = driver({
     showProgress: true,
     nextBtnText: 'Next',
     prevBtnText: 'Back',
+    doneBtnText: 'Start Typing!',
     steps: [
         {
             element: "#typing-test",
             popover: {
-                title: "Type here",
-                description: "Accuracy matters more than speed.",
+                title: "Welcome to the Typing Test",
+                description: "Start typing to begin. Focus on accuracy first, speed will follow naturally.",
                 side: "top"
+            },
+        },
+        {
+            element: "#language-select",
+            popover: {
+                title: "Choose Your Language",
+                description: "Practice with real code snippets in JavaScript, Python, or Java.",
+                side: "bottom"
             },
         },
         {
             element: "#reset-button",
             popover: {
-                title: "Reset Button",
-                description: "Click this to generate a new test.",
+                title: "Need a Fresh Start?",
+                description: "Generate a new code snippet anytime to keep practicing.",
                 side: "top"
-            },
-        },
-        {
-            element: "#language-selector",
-            popover: {
-                title: "Langauge Selector",
-                description: "Choose what langauge you want to test.",
-                side: "bottom"
             },
         },
         {
             element: "#leaderboard-button",
             popover: {
-                title: "Leaderboard Button",
-                description: "Click this to see the leaderboard.",
+                title: "Compete with Others",
+                description: "Check the leaderboard to see how you stack up against other typists.",
                 side: "bottom"
             },
         },
         {
             element: "#profile-button",
             popover: {
-                title: "Profile Button",
-                description: "Create an account to track your results.",
+                title: "Track Your Progress",
+                description: "Create an account to save your results and watch your skills improve over time.",
                 side: "bottom"
             },
         },
-    // more steps after
     ]
 })

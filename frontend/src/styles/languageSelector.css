@@ -1,7 +1,7 @@
 .language-selector {
     display: flex;
-    /* justify-content: right; */
-    margin: 15px 0;
+    justify-content: right;
+    /* margin: 15px 0; */
     /* for putting or right side test with onboarding */
     /* margin-left: auto; */
     /* width: fit-content; */
