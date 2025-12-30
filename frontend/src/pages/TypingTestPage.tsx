@@ -2,6 +2,7 @@ import LangaugeSelector from "../components/LangaugeSelector";
 import TypingTest from "../components/TypingTest"
 import '../styles/typingTestPage.css'
 import 'driver.js/dist/driver.css'
+import '../styles/driverCustom.css'
 import { useState, type ChangeEventHandler } from "react"
 import type { Language } from "../types";
 import { useTypingTour } from "../onboarding/useTypingTour";
