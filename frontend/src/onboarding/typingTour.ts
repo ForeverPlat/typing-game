@@ -10,7 +10,7 @@ export const typingTour = driver({
             element: "#typing-test",
             popover: {
                 title: "Welcome to the Typing Test",
-                description: "Start typing to begin. Focus on accuracy first, speed will follow naturally.",
+                description: "Start typing the text shown.  Correct keystrokes appear white, mistakes turn red. Use Backspace to fix errors and keep going.",
                 side: "top"
             },
         },
